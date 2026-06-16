@@ -1,0 +1,219 @@
+/* Settings Page - Clean & Simple */
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profileCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profileAvatar {
+  width: 64px;
+  height: 64px;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.profileInfo h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.profileInfo p {
+  font-size: 0.875rem;
+  color: var(--text-sub);
+  margin-bottom: 0.5rem;
+}
+
+.profileRole {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.settingsCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.cardHeader svg {
+  width: 22px;
+  height: 22px;
+  color: var(--primary);
+}
+
+.cardHeader h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.settingItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.settingItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.settingInfo {
+  flex: 1;
+}
+
+.settingLabel {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-main);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.settingDesc {
+  font-size: 0.8125rem;
+  color: var(--text-sub);
+}
+
+.themeSwitch,
+.languageSwitch {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.themeBtn,
+.langBtn {
+  padding: 0.5rem 1rem;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.themeBtn:hover,
+.langBtn:hover {
+  background: var(--bg-hover);
+}
+
+.themeBtn.active,
+.langBtn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.toggle {
+  width: 48px;
+  height: 26px;
+  background: var(--border);
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.toggle.checked {
+  background: var(--primary);
+}
+
+.toggle::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.15s;
+}
+
+.toggle.checked::after {
+  transform: translateX(22px);
+}
+
+.select {
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.actionBtn {
+  padding: 0.5rem 1rem;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.actionBtn:hover {
+  background: var(--bg-hover);
+}
+
+.actionBtn.danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.actionBtn.danger:hover {
+  background: var(--danger-light);
+}

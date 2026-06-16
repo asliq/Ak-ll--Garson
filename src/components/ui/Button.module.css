@@ -1,0 +1,92 @@
+/* Button Component - Simple & Clean */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnPrimary {
+  background: var(--primary);
+  color: white;
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+.btnSecondary {
+  background: var(--bg-page);
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+.btnSecondary:hover:not(:disabled) {
+  background: var(--bg-hover);
+}
+
+.btnOutline {
+  background: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btnOutline:hover:not(:disabled) {
+  background: var(--primary-light);
+}
+
+.btnGhost {
+  background: transparent;
+  color: var(--text-sub);
+}
+
+.btnGhost:hover:not(:disabled) {
+  background: var(--bg-hover);
+  color: var(--text-main);
+}
+
+.btnSuccess {
+  background: var(--success);
+  color: white;
+}
+
+.btnWarning {
+  background: var(--warning);
+  color: white;
+}
+
+.btnDanger {
+  background: var(--danger);
+  color: white;
+}
+
+.btnSmall {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.btnLarge {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.btnBlock {
+  width: 100%;
+}
+
+.btnIcon {
+  padding: 0.5rem;
+}

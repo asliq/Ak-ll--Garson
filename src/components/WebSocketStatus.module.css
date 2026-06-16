@@ -1,0 +1,64 @@
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.3s ease;
+}
+
+.connected {
+  color: var(--success);
+  border-color: var(--success-subtle);
+  background: var(--success-bg);
+}
+
+.disconnected {
+  color: var(--error);
+  border-color: var(--error-subtle);
+  background: var(--error-bg);
+}
+
+.label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.reconnectBtn {
+  background: none;
+  border: none;
+  color: currentColor;
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  margin-left: 4px;
+  transition: opacity 0.2s;
+}
+
+.reconnectBtn:hover {
+  opacity: 0.7;
+}
+

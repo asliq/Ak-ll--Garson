@@ -1,0 +1,158 @@
+/* ==========================================
+   PERFORMANCE MONITOR - Dev Tools Style
+   ========================================== */
+
+.container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(20, 21, 26, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid #2e3039;
+  border-radius: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.625rem;
+  z-index: 1000;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.container:hover {
+  border-color: #3e404d;
+}
+
+.container.expanded {
+  min-width: 280px;
+}
+
+/* Compact View */
+.compactView {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #71717a;
+}
+
+.indicator span:first-of-type {
+  color: #f4f4f5;
+  font-weight: 600;
+}
+
+.indicator .label {
+  color: #52556a;
+  font-weight: 400;
+}
+
+.divider {
+  width: 1px;
+  height: 14px;
+  background: #2e3039;
+}
+
+/* Status Colors */
+.excellent {
+  color: #22c55e !important;
+}
+
+.good {
+  color: #f59e0b !important;
+}
+
+.poor {
+  color: #ef4444 !important;
+}
+
+.slow {
+  color: #f59e0b !important;
+}
+
+.offline {
+  color: #71717a !important;
+}
+
+/* Expanded View */
+.expandedView {
+  padding: 12px;
+  border-top: 1px solid #2e3039;
+}
+
+.metricRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.metricItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+}
+
+.metricIcon {
+  color: #e85d04;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.metricInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metricValue {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.metricValue svg {
+  color: #22c55e;
+}
+
+.metricLabel {
+  font-size: 0.5625rem;
+  color: #52556a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.uptimeBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(232, 93, 4, 0.1);
+  border-radius: 6px;
+  color: #e85d04;
+  font-size: 0.625rem;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    top: auto;
+    bottom: 70px;
+    right: 10px;
+  }
+  
+  .expandedView {
+    display: none;
+  }
+}
+

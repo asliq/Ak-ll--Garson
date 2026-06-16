@@ -1,0 +1,261 @@
+/* ==========================================
+   COMMAND PALETTE - Professional POS
+   ========================================== */
+
+/* Trigger Hint - Fixed Position */
+.triggerHint {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(30, 32, 40, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid #2e3039;
+  border-radius: 8px;
+  color: #71717a;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  z-index: 1000;
+  transition: all 150ms ease;
+}
+
+.triggerHint:hover {
+  background: rgba(232, 93, 4, 0.1);
+  border-color: #e85d04;
+  color: #e85d04;
+}
+
+.triggerHint span {
+  font-family: 'Space Mono', monospace;
+  padding: 2px 6px;
+  background: #2e3039;
+  border-radius: 4px;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+}
+
+/* Palette */
+.palette {
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 560px;
+  max-width: calc(100vw - 40px);
+  max-height: 70vh;
+  background: #1a1b21;
+  border: 1px solid #2e3039;
+  border-radius: 12px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Search Wrapper */
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #2e3039;
+}
+
+.searchIcon {
+  color: #52556a;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  font-size: 1rem;
+  color: #f4f4f5;
+  background: transparent;
+}
+
+.searchInput::placeholder {
+  color: #52556a;
+}
+
+.searchShortcut {
+  display: flex;
+  gap: 4px;
+}
+
+.searchShortcut span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  background: #2e3039;
+  border-radius: 4px;
+  color: #71717a;
+}
+
+/* Command List */
+.commandList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.commandGroup {
+  margin-bottom: 8px;
+}
+
+.groupLabel {
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: #52556a;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 12px 6px;
+}
+
+.commandItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #94a3b8;
+  transition: all 100ms ease;
+  position: relative;
+}
+
+.commandItem:hover,
+.commandItem.selected {
+  background: rgba(232, 93, 4, 0.1);
+  color: #f4f4f5;
+}
+
+.commandIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.commandItem.selected .commandIcon {
+  background: rgba(232, 93, 4, 0.15);
+  color: #e85d04;
+}
+
+.commandContent {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.commandLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #f4f4f5;
+}
+
+.commandDesc {
+  display: block;
+  font-size: 0.6875rem;
+  color: #52556a;
+  margin-top: 1px;
+}
+
+.commandShortcut {
+  display: flex;
+  gap: 4px;
+}
+
+.commandShortcut span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  padding: 3px 6px;
+  background: #2e3039;
+  border-radius: 4px;
+  color: #71717a;
+}
+
+.selectArrow {
+  color: #e85d04;
+  margin-left: 8px;
+}
+
+/* No Results */
+.noResults {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #52556a;
+  text-align: center;
+}
+
+.noResults p {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #71717a;
+  margin-top: 12px;
+}
+
+.noResults span {
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  gap: 16px;
+  padding: 12px 18px;
+  border-top: 1px solid #2e3039;
+  background: #14151a;
+}
+
+.footerHint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6875rem;
+  color: #52556a;
+}
+
+.key {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  padding: 3px 6px;
+  background: #2e3039;
+  border-radius: 4px;
+  color: #71717a;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .palette {
+    top: 10%;
+    width: calc(100vw - 32px);
+  }
+  
+  .triggerHint {
+    bottom: 80px;
+  }
+}
+

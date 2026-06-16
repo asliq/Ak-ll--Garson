@@ -1,0 +1,196 @@
+/* ==========================================
+   QUICK ACTIONS - Floating Menu
+   ========================================== */
+
+/* Floating Button */
+.floatingButton {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #e85d04 0%, #d45304 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 8px 32px rgba(232, 93, 4, 0.4);
+  z-index: 100;
+  transition: all 200ms ease;
+}
+
+.floatingButton:hover {
+  box-shadow: 0 12px 40px rgba(232, 93, 4, 0.5);
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 999;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 480px;
+  max-width: calc(100vw - 32px);
+  background: #1a1b21;
+  border: 1px solid #2e3039;
+  border-radius: 16px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #2e3039;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.headerIcon {
+  color: #e85d04;
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #71717a;
+  transition: all 150ms ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f4f4f5;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 16px;
+}
+
+/* Action Card */
+.actionCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  text-align: left;
+  transition: all 150ms ease;
+}
+
+.actionCard:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: #2e3039;
+}
+
+.actionCard:hover .arrow {
+  color: #e85d04;
+  transform: translateX(2px);
+}
+
+.actionIcon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.actionContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.actionLabel {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.actionDesc {
+  display: block;
+  font-size: 0.6875rem;
+  color: #52556a;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arrow {
+  color: #52556a;
+  flex-shrink: 0;
+  transition: all 150ms ease;
+}
+
+/* Footer */
+.footer {
+  padding: 12px 20px;
+  border-top: 1px solid #2e3039;
+  background: #14151a;
+}
+
+.shortcut {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6875rem;
+  color: #52556a;
+}
+
+.shortcut kbd {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.5625rem;
+  padding: 3px 6px;
+  background: #2e3039;
+  border-radius: 4px;
+  color: #71717a;
+}
+
+/* Responsive */
+@media (max-width: 540px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .floatingButton {
+    bottom: 80px;
+  }
+}
+

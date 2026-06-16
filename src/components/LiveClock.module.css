@@ -1,0 +1,135 @@
+/* ==========================================
+   LIVE CLOCK - Professional POS Widget
+   ========================================== */
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #2e3039;
+  border-radius: 8px;
+}
+
+/* Time Section */
+.timeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.time {
+  display: flex;
+  align-items: baseline;
+  font-family: 'Space Mono', monospace;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.hours,
+.minutes {
+  font-size: 1.125rem;
+  letter-spacing: -0.5px;
+}
+
+.separator {
+  font-size: 1.125rem;
+  color: #e85d04;
+  animation: blink 1s step-end infinite;
+}
+
+.seconds {
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.625rem;
+  color: #52556a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Status Section */
+.statusSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 16px;
+  border-left: 1px solid #2e3039;
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.625rem;
+  font-family: 'Space Mono', monospace;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.indicator.excellent {
+  color: #22c55e;
+}
+
+.indicator.good {
+  color: #f59e0b;
+}
+
+.indicator.slow {
+  color: #ef4444;
+}
+
+.indicator.offline {
+  color: #71717a;
+}
+
+.indicator.active {
+  color: #e85d04;
+  position: relative;
+}
+
+.pulse {
+  width: 6px;
+  height: 6px;
+  background: #e85d04;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.3);
+    opacity: 0.5;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 8px 10px;
+    gap: 10px;
+  }
+  
+  .statusSection {
+    display: none;
+  }
+}
+

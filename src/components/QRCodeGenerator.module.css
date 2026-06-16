@@ -1,0 +1,96 @@
+/* QR Code Generator - Professional */
+
+.qrGenerator {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.qrCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  max-width: 300px;
+}
+
+.qrHeader {
+  margin-bottom: 1rem;
+}
+
+.qrHeader h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+}
+
+.qrSubtitle {
+  font-size: 0.875rem;
+  color: var(--text-sub);
+}
+
+.qrCanvas {
+  background: white;
+  padding: 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+}
+
+.qrCanvas canvas {
+  display: block;
+  margin: 0 auto;
+  border-radius: var(--radius-sm);
+}
+
+.qrUrl {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 0.75rem;
+  background: var(--bg-page);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  word-break: break-all;
+  font-family: var(--font-mono);
+}
+
+.qrActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.downloadBtn,
+.printBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.downloadBtn {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.downloadBtn:hover {
+  background: var(--primary-dark);
+}
+
+.printBtn {
+  background: var(--bg-page);
+  color: var(--text-main);
+}
+
+.printBtn:hover {
+  background: var(--bg-hover);
+}
+

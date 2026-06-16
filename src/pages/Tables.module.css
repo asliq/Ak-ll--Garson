@@ -1,0 +1,199 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-muted);
+}
+
+.filterGroup span {
+  font-size: 0.875rem;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filterBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--transition-fast);
+}
+
+.filterBtn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.filterBtn.active {
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.2), rgba(212, 165, 116, 0.1));
+  color: var(--accent-gold);
+  border-color: rgba(212, 165, 116, 0.3);
+}
+
+.actions {
+  margin-left: auto;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Summary */
+.summary {
+  display: flex;
+  gap: 2rem;
+}
+
+.summaryItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot.available { background: var(--accent-emerald); }
+.dot.occupied { background: var(--accent-ruby); }
+.dot.reserved { background: var(--accent-gold); }
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Table Card */
+.tableCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.tableCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.tableCard.available::before {
+  background: linear-gradient(90deg, var(--accent-emerald), transparent);
+}
+
+.tableCard.occupied::before {
+  background: linear-gradient(90deg, var(--accent-ruby), transparent);
+}
+
+.tableCard.reserved::before {
+  background: linear-gradient(90deg, var(--accent-gold), transparent);
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.statusBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.tableNumber {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-top: 0.5rem;
+}
+
+.available .tableNumber {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--accent-emerald);
+  border: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+.occupied .tableNumber {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--accent-ruby);
+  border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+.reserved .tableNumber {
+  background: rgba(212, 165, 116, 0.1);
+  color: var(--accent-gold);
+  border: 2px solid rgba(212, 165, 116, 0.3);
+}
+
+.tableInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+

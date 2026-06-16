@@ -1,0 +1,1148 @@
+{
+  "tables": [
+    {
+      "id": "1",
+      "number": 1,
+      "capacity": 4,
+      "status": "available",
+      "section": "İç Mekan",
+      "waiterId": 1
+    },
+    {
+      "id": "2",
+      "number": 2,
+      "capacity": 2,
+      "status": "occupied",
+      "section": "İç Mekan",
+      "waiterId": 1
+    },
+    {
+      "id": "3",
+      "number": 3,
+      "capacity": 6,
+      "status": "reserved",
+      "section": "İç Mekan",
+      "waiterId": 1
+    },
+    {
+      "id": "4",
+      "number": 4,
+      "capacity": 4,
+      "status": "available",
+      "section": "İç Mekan",
+      "waiterId": 1
+    },
+    {
+      "id": "5",
+      "number": 5,
+      "capacity": 8,
+      "status": "occupied",
+      "section": "Teras",
+      "waiterId": 2
+    },
+    {
+      "id": "6",
+      "number": 6,
+      "capacity": 4,
+      "status": "available",
+      "section": "Teras",
+      "waiterId": 2
+    },
+    {
+      "id": "7",
+      "number": 7,
+      "capacity": 2,
+      "status": "available",
+      "section": "Teras",
+      "waiterId": 2
+    },
+    {
+      "id": "8",
+      "number": 8,
+      "capacity": 6,
+      "status": "reserved",
+      "section": "Bahçe",
+      "waiterId": 2
+    },
+    {
+      "id": "9",
+      "number": 9,
+      "capacity": 4,
+      "status": "available",
+      "section": "Bahçe",
+      "waiterId": 3
+    },
+    {
+      "id": "10",
+      "number": 10,
+      "capacity": 10,
+      "status": "available",
+      "section": "VIP",
+      "waiterId": 3
+    },
+    {
+      "id": "11",
+      "number": 11,
+      "capacity": 8,
+      "status": "occupied",
+      "section": "VIP",
+      "waiterId": 3
+    },
+    {
+      "id": "12",
+      "number": 12,
+      "capacity": 6,
+      "status": "available",
+      "section": "VIP",
+      "waiterId": 3
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Başlangıçlar",
+      "icon": "🥗",
+      "color": "#10b981",
+      "order": 1
+    },
+    {
+      "id": "2",
+      "name": "Ana Yemekler",
+      "icon": "🍖",
+      "color": "#f59e0b",
+      "order": 2
+    },
+    {
+      "id": "3",
+      "name": "Pizzalar",
+      "icon": "🍕",
+      "color": "#ef4444",
+      "order": 3
+    },
+    {
+      "id": "4",
+      "name": "Makarnalar",
+      "icon": "🍝",
+      "color": "#8b5cf6",
+      "order": 4
+    },
+    {
+      "id": "5",
+      "name": "Burgerler",
+      "icon": "🍔",
+      "color": "#ec4899",
+      "order": 5
+    },
+    {
+      "id": "6",
+      "name": "Deniz Ürünleri",
+      "icon": "🦐",
+      "color": "#0ea5e9",
+      "order": 6
+    },
+    {
+      "id": "7",
+      "name": "Tatlılar",
+      "icon": "🍰",
+      "color": "#06b6d4",
+      "order": 7
+    },
+    {
+      "id": "8",
+      "name": "İçecekler",
+      "icon": "🥤",
+      "color": "#3b82f6",
+      "order": 8
+    },
+    {
+      "id": "9",
+      "name": "Kahveler",
+      "icon": "☕",
+      "color": "#78350f",
+      "order": 9
+    },
+    {
+      "id": "10",
+      "name": "Alkollü İçecekler",
+      "icon": "🍷",
+      "color": "#be123c",
+      "order": 10
+    }
+  ],
+  "menuItems": [
+    {
+      "id": "1",
+      "categoryId": 1,
+      "name": "Çoban Salata",
+      "description": "Taze domates, salatalık, biber, soğan, zeytinyağı ile",
+      "price": 85,
+      "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400",
+      "preparationTime": 5,
+      "isAvailable": true,
+      "calories": 120,
+      "allergens": []
+    },
+    {
+      "id": "2",
+      "categoryId": 1,
+      "name": "Mercimek Çorbası",
+      "description": "Geleneksel Türk mercimek çorbası, limon ve kruton ile",
+      "price": 65,
+      "image": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400",
+      "preparationTime": 3,
+      "isAvailable": false,
+      "calories": 180,
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "id": "3",
+      "categoryId": 1,
+      "name": "Humus",
+      "description": "Tahin, nohut, zeytinyağı, pide eşliğinde",
+      "price": 75,
+      "image": "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400",
+      "preparationTime": 5,
+      "isAvailable": false,
+      "calories": 220,
+      "allergens": [
+        "susam"
+      ]
+    },
+    {
+      "id": "4",
+      "categoryId": 1,
+      "name": "Sigara Böreği",
+      "description": "Peynirli, el açması, 4 adet",
+      "price": 95,
+      "image": "https://images.unsplash.com/photo-1519864600395-8d9f55c66461?w=400",
+      "preparationTime": 10,
+      "isAvailable": true,
+      "calories": 340,
+      "allergens": [
+        "gluten",
+        "süt"
+      ]
+    },
+    {
+      "id": "5",
+      "categoryId": 2,
+      "name": "Izgara Köfte",
+      "description": "El yapımı köfte, pilav, salata ve közlenmiş biber ile",
+      "price": 180,
+      "image": "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400",
+      "preparationTime": 20,
+      "isAvailable": true,
+      "calories": 650,
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "id": "6",
+      "categoryId": 2,
+      "name": "Tavuk Şiş",
+      "description": "Marine edilmiş tavuk göğsü, sebze ve pilav ile",
+      "price": 165,
+      "image": "https://images.unsplash.com/photo-1532636875304-0c89f5e0ef52?w=400",
+      "preparationTime": 18,
+      "isAvailable": false,
+      "calories": 480,
+      "allergens": []
+    },
+    {
+      "id": "7",
+      "categoryId": 2,
+      "name": "Kuzu Pirzola",
+      "description": "Fırında pişmiş kuzu pirzola, patates pure ile",
+      "price": 320,
+      "image": "https://images.unsplash.com/photo-1544025162-d76694265947?w=400",
+      "preparationTime": 25,
+      "isAvailable": false,
+      "calories": 720,
+      "allergens": [
+        "süt"
+      ]
+    },
+    {
+      "id": "8",
+      "categoryId": 2,
+      "name": "Adana Kebap",
+      "description": "Acılı kıyma kebabı, lavaş ve közlenmiş sebzeler ile",
+      "price": 195,
+      "image": "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=400",
+      "preparationTime": 22,
+      "isAvailable": true,
+      "calories": 580,
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "id": "9",
+      "categoryId": 3,
+      "name": "Margherita Pizza",
+      "description": "Domates sos, mozzarella, taze fesleğen",
+      "price": 145,
+      "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400",
+      "preparationTime": 15,
+      "isAvailable": true,
+      "calories": 850,
+      "allergens": [
+        "gluten",
+        "süt"
+      ]
+    },
+    {
+      "id": "10",
+      "categoryId": 3,
+      "name": "Karışık Pizza",
+      "description": "Sucuk, sosis, mantar, biber, zeytin, mozzarella",
+      "price": 175,
+      "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400",
+      "preparationTime": 18,
+      "isAvailable": true,
+      "calories": 980,
+      "allergens": [
+        "gluten",
+        "süt"
+      ]
+    },
+    {
+      "id": "11",
+      "categoryId": 3,
+      "name": "Pepperoni Pizza",
+      "description": "Bol pepperoni, mozzarella, domates sos",
+      "price": 165,
+      "image": "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400",
+      "preparationTime": 15,
+      "isAvailable": true,
+      "calories": 920,
+      "allergens": [
+        "gluten",
+        "süt"
+      ]
+    },
+    {
+      "id": "12",
+      "categoryId": 4,
+      "name": "Fettuccine Alfredo",
+      "description": "Kremalı parmesan soslu fettuccine",
+      "price": 135,
+      "image": "https://images.unsplash.com/photo-1645112411341-6c4fd023714a?w=400",
+      "preparationTime": 12,
+      "isAvailable": false,
+      "calories": 780,
+      "allergens": [
+        "gluten",
+        "süt"
+      ]
+    },
+    {
+      "id": "13",
+      "categoryId": 4,
+      "name": "Bolonez Spagetti",
+      "description": "Kıymalı domates soslu spagetti, parmesan ile",
+      "price": 125,
+      "image": "https://images.unsplash.com/photo-1622973536968-3ead9e780960?w=400",
+      "preparationTime": 12,
+      "isAvailable": true,
+      "calories": 720,
+      "allergens": [
+        "gluten",
+        "süt"
+      ]
+    },
+    {
+      "id": "14",
+      "categoryId": 4,
+      "name": "Penne Arrabbiata",
+      "description": "Acılı domates soslu penne",
+      "price": 115,
+      "image": "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400",
+      "preparationTime": 10,
+      "isAvailable": true,
+      "calories": 580,
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "id": "15",
+      "categoryId": 5,
+      "name": "Klasik Burger",
+      "description": "180gr dana eti, cheddar, turşu, özel sos, patates",
+      "price": 165,
+      "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400",
+      "preparationTime": 15,
+      "isAvailable": true,
+      "calories": 850,
+      "allergens": [
+        "gluten",
+        "süt"
+      ]
+    },
+    {
+      "id": "16",
+      "categoryId": 5,
+      "name": "Tavuk Burger",
+      "description": "Çıtır tavuk, marul, domates, mayonez, patates",
+      "price": 145,
+      "image": "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400",
+      "preparationTime": 12,
+      "isAvailable": true,
+      "calories": 720,
+      "allergens": [
+        "gluten"
+      ]
+    },
+    {
+      "id": "17",
+      "categoryId": 5,
+      "name": "BBQ Burger",
+      "description": "200gr dana, bacon, BBQ sos, soğan halkası",
+      "price": 185,
+      "image": "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400",
+      "preparationTime": 18,
+      "isAvailable": true,
+      "calories": 980,
+      "allergens": [
+        "gluten",
+        "süt"
+      ]
+    },
+    {
+      "id": "18",
+      "categoryId": 6,
+      "name": "Izgara Somon",
+      "description": "Tereyağlı somon, asparagus ve limon ile",
+      "price": 285,
+      "image": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400",
+      "preparationTime": 20,
+      "isAvailable": true,
+      "calories": 520,
+      "allergens": [
+        "balık",
+        "süt"
+      ]
+    },
+    {
+      "id": "19",
+      "categoryId": 6,
+      "name": "Karides Güveç",
+      "description": "Tereyağlı karides, sarımsak, domates sos",
+      "price": 245,
+      "image": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400",
+      "preparationTime": 18,
+      "isAvailable": true,
+      "calories": 380,
+      "allergens": [
+        "kabuklu deniz ürünü",
+        "süt"
+      ]
+    },
+    {
+      "id": "20",
+      "categoryId": 6,
+      "name": "Kalamar Tava",
+      "description": "Çıtır kalamar, tartar sos ile",
+      "price": 195,
+      "image": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400",
+      "preparationTime": 15,
+      "isAvailable": true,
+      "calories": 420,
+      "allergens": [
+        "gluten",
+        "kabuklu deniz ürünü"
+      ]
+    },
+    {
+      "id": "21",
+      "categoryId": 7,
+      "name": "Çikolatalı Sufle",
+      "description": "Sıcak servis, vanilya dondurması ile",
+      "price": 95,
+      "image": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400",
+      "preparationTime": 12,
+      "isAvailable": true,
+      "calories": 450,
+      "allergens": [
+        "gluten",
+        "süt",
+        "yumurta"
+      ]
+    },
+    {
+      "id": "22",
+      "categoryId": 7,
+      "name": "Tiramisu",
+      "description": "Geleneksel İtalyan tatlısı",
+      "price": 85,
+      "image": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400",
+      "preparationTime": 3,
+      "isAvailable": true,
+      "calories": 380,
+      "allergens": [
+        "gluten",
+        "süt",
+        "yumurta"
+      ]
+    },
+    {
+      "id": "23",
+      "categoryId": 7,
+      "name": "Cheesecake",
+      "description": "New York usulü, çilek sos ile",
+      "price": 90,
+      "image": "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400",
+      "preparationTime": 3,
+      "isAvailable": true,
+      "calories": 420,
+      "allergens": [
+        "gluten",
+        "süt"
+      ]
+    },
+    {
+      "id": "24",
+      "categoryId": 7,
+      "name": "Künefe",
+      "description": "Antep fıstıklı, kaymak ile",
+      "price": 110,
+      "image": "https://images.unsplash.com/photo-1579888944880-d98341245702?w=400",
+      "preparationTime": 15,
+      "isAvailable": true,
+      "calories": 520,
+      "allergens": [
+        "gluten",
+        "süt",
+        "fıstık"
+      ]
+    },
+    {
+      "id": "25",
+      "categoryId": 8,
+      "name": "Taze Sıkılmış Portakal",
+      "description": "300ml, taze sıkım",
+      "price": 45,
+      "image": "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400",
+      "preparationTime": 3,
+      "isAvailable": true,
+      "calories": 120,
+      "allergens": []
+    },
+    {
+      "id": "26",
+      "categoryId": 8,
+      "name": "Limonata",
+      "description": "Ev yapımı, taze nane ile",
+      "price": 35,
+      "image": "https://images.unsplash.com/photo-1523677011781-c91d1bbe2f9e?w=400",
+      "preparationTime": 2,
+      "isAvailable": true,
+      "calories": 90,
+      "allergens": []
+    },
+    {
+      "id": "27",
+      "categoryId": 8,
+      "name": "Mojito (Alkolsüz)",
+      "description": "Nane, lime, soda",
+      "price": 55,
+      "image": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400",
+      "preparationTime": 3,
+      "isAvailable": true,
+      "calories": 80,
+      "allergens": []
+    },
+    {
+      "id": "28",
+      "categoryId": 9,
+      "name": "Türk Kahvesi",
+      "description": "Geleneksel pişirme, lokum ile",
+      "price": 40,
+      "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400",
+      "preparationTime": 5,
+      "isAvailable": true,
+      "calories": 15,
+      "allergens": []
+    },
+    {
+      "id": "29",
+      "categoryId": 9,
+      "name": "Latte",
+      "description": "Espresso, sütlü köpük",
+      "price": 55,
+      "image": "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=400",
+      "preparationTime": 4,
+      "isAvailable": true,
+      "calories": 120,
+      "allergens": [
+        "süt"
+      ]
+    },
+    {
+      "id": "30",
+      "categoryId": 9,
+      "name": "Cappuccino",
+      "description": "Espresso, buharla ısıtılmış süt",
+      "price": 50,
+      "image": "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400",
+      "preparationTime": 4,
+      "isAvailable": true,
+      "calories": 100,
+      "allergens": [
+        "süt"
+      ]
+    },
+    {
+      "id": "31",
+      "categoryId": 10,
+      "name": "Ev Şarabı (Kadeh)",
+      "description": "Kırmızı veya beyaz",
+      "price": 75,
+      "image": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400",
+      "preparationTime": 1,
+      "isAvailable": true,
+      "calories": 125,
+      "allergens": [
+        "sülfitler"
+      ]
+    },
+    {
+      "id": "32",
+      "categoryId": 10,
+      "name": "Bira",
+      "description": "Yerli veya ithal, 500ml",
+      "price": 65,
+      "image": "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400",
+      "preparationTime": 1,
+      "isAvailable": true,
+      "calories": 180,
+      "allergens": [
+        "gluten"
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "1",
+      "tableId": 2,
+      "waiterId": 1,
+      "items": [
+        {
+          "menuItemId": 5,
+          "quantity": 2,
+          "notes": "Az tuzlu",
+          "status": "preparing"
+        },
+        {
+          "menuItemId": 25,
+          "quantity": 2,
+          "notes": "",
+          "status": "ready"
+        }
+      ],
+      "status": "completed",
+      "priority": "normal",
+      "createdAt": "2025-12-19T10:30:00Z",
+      "updatedAt": "2025-12-19T10:35:00Z",
+      "totalAmount": 450,
+      "discount": 0,
+      "notes": ""
+    },
+    {
+      "id": "2",
+      "tableId": 5,
+      "waiterId": 2,
+      "items": [
+        {
+          "menuItemId": 9,
+          "quantity": 1,
+          "notes": "",
+          "status": "served"
+        },
+        {
+          "menuItemId": 15,
+          "quantity": 2,
+          "notes": "Ekstra peynir",
+          "status": "served"
+        },
+        {
+          "menuItemId": 26,
+          "quantity": 3,
+          "notes": "",
+          "status": "served"
+        }
+      ],
+      "status": "completed",
+      "priority": "normal",
+      "createdAt": "2025-12-19T09:45:00Z",
+      "updatedAt": "2025-12-19T10:15:00Z",
+      "totalAmount": 580,
+      "discount": 0,
+      "notes": "VIP müşteri"
+    },
+    {
+      "id": "3",
+      "tableId": 11,
+      "waiterId": 3,
+      "items": [
+        {
+          "menuItemId": 7,
+          "quantity": 2,
+          "notes": "",
+          "status": "pending"
+        },
+        {
+          "menuItemId": 18,
+          "quantity": 1,
+          "notes": "İyi pişmiş",
+          "status": "pending"
+        },
+        {
+          "menuItemId": 31,
+          "quantity": 4,
+          "notes": "",
+          "status": "ready"
+        }
+      ],
+      "status": "completed",
+      "priority": "high",
+      "createdAt": "2025-12-19T11:00:00Z",
+      "updatedAt": "2025-12-19T11:00:00Z",
+      "totalAmount": 1225,
+      "discount": 50,
+      "notes": "Doğum günü kutlaması"
+    },
+    {
+      "id": "8b79",
+      "tableId": 2,
+      "items": [
+        {
+          "menuItemId": "11",
+          "quantity": 1,
+          "notes": ""
+        },
+        {
+          "menuItemId": "10",
+          "quantity": 1,
+          "notes": ""
+        }
+      ],
+      "status": "completed",
+      "totalAmount": 290,
+      "createdAt": "2025-12-19T13:06:49.347Z"
+    },
+    {
+      "id": "8bef",
+      "tableId": 2,
+      "items": [
+        {
+          "menuItemId": "12",
+          "quantity": 2,
+          "notes": ""
+        },
+        {
+          "menuItemId": "16",
+          "quantity": 2,
+          "notes": ""
+        }
+      ],
+      "status": "completed",
+      "totalAmount": 560,
+      "createdAt": "2025-12-22T16:56:55.596Z"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "1",
+      "tableId": 3,
+      "customerName": "Ahmet Yılmaz",
+      "customerPhone": "0532 123 4567",
+      "customerEmail": "ahmet@email.com",
+      "guestCount": 4,
+      "date": "2025-12-19",
+      "time": "19:00",
+      "duration": 120,
+      "status": "completed",
+      "notes": "Pencere kenarı tercih",
+      "createdAt": "2025-12-18T14:00:00Z"
+    },
+    {
+      "id": "2",
+      "tableId": 8,
+      "customerName": "Ayşe Demir",
+      "customerPhone": "0533 987 6543",
+      "customerEmail": "ayse@email.com",
+      "guestCount": 6,
+      "date": "2025-12-19",
+      "time": "20:00",
+      "duration": 150,
+      "status": "completed",
+      "notes": "Vejetaryen menü",
+      "createdAt": "2025-12-17T10:00:00Z"
+    },
+    {
+      "id": "3",
+      "tableId": 10,
+      "customerName": "Mehmet Kaya",
+      "customerPhone": "0542 555 1234",
+      "customerEmail": "mehmet@email.com",
+      "guestCount": 8,
+      "date": "2025-12-20",
+      "time": "13:00",
+      "duration": 180,
+      "status": "completed",
+      "notes": "İş yemeği",
+      "createdAt": "2025-12-19T09:00:00Z"
+    },
+    {
+      "id": "4",
+      "tableId": 6,
+      "customerName": "Zeynep Aksoy",
+      "customerPhone": "0555 444 3333",
+      "customerEmail": "",
+      "guestCount": 2,
+      "date": "2025-12-20",
+      "time": "19:30",
+      "duration": 90,
+      "status": "completed",
+      "notes": "Yıldönümü",
+      "createdAt": "2025-12-19T11:00:00Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "1",
+      "orderId": 2,
+      "tableId": 5,
+      "amount": 580,
+      "tip": 50,
+      "method": "credit_card",
+      "status": "completed",
+      "processedAt": "2025-12-19T10:20:00Z",
+      "receiptNumber": "RCP-2025-001"
+    }
+  ],
+  "waiters": [
+    {
+      "id": "1",
+      "name": "Ahmet Yılmaz",
+      "avatar": "👨‍🍳",
+      "email": "ahmet@restaurant.com",
+      "phone": "0532 111 2222",
+      "shift": "morning",
+      "isActive": true,
+      "tablesAssigned": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "salesTotal": 4520
+    },
+    {
+      "id": "2",
+      "name": "Ayşe Demir",
+      "avatar": "👩‍🍳",
+      "email": "ayse@restaurant.com",
+      "phone": "0533 222 3333",
+      "shift": "evening",
+      "isActive": true,
+      "tablesAssigned": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "salesTotal": 6780
+    },
+    {
+      "id": "3",
+      "name": "Mehmet Kaya",
+      "avatar": "👨‍🍳",
+      "email": "mehmet@restaurant.com",
+      "phone": "0542 333 4444",
+      "shift": "evening",
+      "isActive": true,
+      "tablesAssigned": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "salesTotal": 8920
+    }
+  ],
+  "notifications": [
+    {
+      "id": "1",
+      "type": "order",
+      "title": "Yeni Sipariş",
+      "message": "Masa 2'den yeni sipariş geldi",
+      "read": false,
+      "createdAt": "2025-12-19T10:30:00Z"
+    },
+    {
+      "id": "2",
+      "type": "kitchen",
+      "title": "Sipariş Hazır",
+      "message": "Masa 5 siparişi servise hazır",
+      "read": true,
+      "createdAt": "2025-12-19T10:15:00Z"
+    },
+    {
+      "id": "3",
+      "type": "reservation",
+      "title": "Yeni Rezervasyon",
+      "message": "20 Aralık için yeni rezervasyon",
+      "read": false,
+      "createdAt": "2025-12-19T09:00:00Z"
+    }
+  ],
+  "kitchenOrders": [
+    {
+      "id": "1",
+      "orderId": 1,
+      "items": [
+        {
+          "menuItemId": 5,
+          "name": "Izgara Köfte",
+          "quantity": 2,
+          "notes": "Az tuzlu",
+          "status": "ready",
+          "startedAt": "2025-12-19T10:32:00Z",
+          "completedAt": "2025-12-21T14:22:28.651Z"
+        }
+      ],
+      "priority": "normal",
+      "tableNumber": 2,
+      "createdAt": "2025-12-19T10:30:00Z"
+    },
+    {
+      "id": "2",
+      "orderId": 3,
+      "items": [
+        {
+          "menuItemId": 7,
+          "name": "Kuzu Pirzola",
+          "quantity": 2,
+          "notes": "",
+          "status": "ready",
+          "startedAt": null,
+          "completedAt": "2025-12-22T13:24:31.169Z"
+        },
+        {
+          "menuItemId": 18,
+          "name": "Izgara Somon",
+          "quantity": 1,
+          "notes": "İyi pişmiş",
+          "status": "ready",
+          "startedAt": null,
+          "completedAt": "2025-12-22T13:24:31.169Z"
+        }
+      ],
+      "priority": "high",
+      "tableNumber": 11,
+      "createdAt": "2025-12-19T11:00:00Z",
+      "completedAt": "2025-12-22T13:24:31.169Z"
+    }
+  ],
+  "dailyStats": [
+    {
+      "date": "2025-12-13",
+      "orders": 42,
+      "revenue": 11250,
+      "avgOrderValue": 268,
+      "topCategory": "Ana Yemekler",
+      "id": "8923"
+    },
+    {
+      "date": "2025-12-14",
+      "orders": 56,
+      "revenue": 15680,
+      "avgOrderValue": 280,
+      "topCategory": "Pizzalar",
+      "id": "dde1"
+    },
+    {
+      "date": "2025-12-15",
+      "orders": 48,
+      "revenue": 13420,
+      "avgOrderValue": 280,
+      "topCategory": "Ana Yemekler",
+      "id": "f8e2"
+    },
+    {
+      "date": "2025-12-16",
+      "orders": 38,
+      "revenue": 9850,
+      "avgOrderValue": 259,
+      "topCategory": "Burgerler",
+      "id": "ad40"
+    },
+    {
+      "date": "2025-12-17",
+      "orders": 51,
+      "revenue": 14200,
+      "avgOrderValue": 278,
+      "topCategory": "Ana Yemekler",
+      "id": "9e2f"
+    },
+    {
+      "date": "2025-12-18",
+      "orders": 62,
+      "revenue": 17890,
+      "avgOrderValue": 289,
+      "topCategory": "Deniz Ürünleri",
+      "id": "3cf6"
+    },
+    {
+      "date": "2025-12-19",
+      "orders": 45,
+      "revenue": 12450,
+      "avgOrderValue": 277,
+      "topCategory": "Ana Yemekler",
+      "id": "71c6"
+    }
+  ],
+  "inventory": [
+    {
+      "id": "INV-001",
+      "name": "Dana Kıyma",
+      "unit": "kg",
+      "quantity": 25,
+      "minStock": 10,
+      "price": 280,
+      "category": "Et"
+    },
+    {
+      "id": "INV-002",
+      "name": "Tavuk Göğsü",
+      "unit": "kg",
+      "quantity": 18,
+      "minStock": 8,
+      "price": 150,
+      "category": "Et"
+    },
+    {
+      "id": "INV-003",
+      "name": "Kuzu Pirzola",
+      "unit": "kg",
+      "quantity": 8,
+      "minStock": 5,
+      "price": 450,
+      "category": "Et"
+    },
+    {
+      "id": "INV-004",
+      "name": "Somon",
+      "unit": "kg",
+      "quantity": 3,
+      "minStock": 4,
+      "price": 380,
+      "category": "Deniz Ürünü"
+    },
+    {
+      "id": "INV-005",
+      "name": "Mozzarella",
+      "unit": "kg",
+      "quantity": 12,
+      "minStock": 5,
+      "price": 220,
+      "category": "Süt Ürünü"
+    },
+    {
+      "id": "INV-006",
+      "name": "Domates",
+      "unit": "kg",
+      "quantity": 30,
+      "minStock": 15,
+      "price": 25,
+      "category": "Sebze"
+    },
+    {
+      "id": "INV-007",
+      "name": "Soğan",
+      "unit": "kg",
+      "quantity": 20,
+      "minStock": 10,
+      "price": 15,
+      "category": "Sebze"
+    },
+    {
+      "id": "INV-008",
+      "name": "Zeytinyağı",
+      "unit": "lt",
+      "quantity": 2,
+      "minStock": 8,
+      "price": 180,
+      "category": "Yağ"
+    },
+    {
+      "id": "INV-009",
+      "name": "Un",
+      "unit": "kg",
+      "quantity": 0,
+      "minStock": 20,
+      "price": 12,
+      "category": "Tahıl"
+    }
+  ],
+  "discounts": [
+    {
+      "id": "DISC-001",
+      "name": "Yılbaşı Kampanyası",
+      "type": "percentage",
+      "value": 15,
+      "code": "YIL2025",
+      "minAmount": 100,
+      "startDate": "2025-12-20",
+      "endDate": "2026-01-05",
+      "maxUses": 100,
+      "usedCount": 5,
+      "isActive": true,
+      "createdAt": "2025-12-20T10:00:00Z"
+    },
+    {
+      "id": "DISC-002",
+      "name": "Öğle Menüsü İndirimi",
+      "type": "fixed",
+      "value": 20,
+      "code": "OGLE20",
+      "minAmount": 50,
+      "startDate": "2025-12-01",
+      "endDate": "2026-02-28",
+      "maxUses": null,
+      "usedCount": 45,
+      "isActive": true,
+      "createdAt": "2025-12-01T08:00:00Z"
+    },
+    {
+      "id": "DISC-003",
+      "name": "Hafta Sonu Özel",
+      "type": "percentage",
+      "value": 10,
+      "code": "WEEKEND",
+      "minAmount": 150,
+      "startDate": "2025-12-01",
+      "endDate": "2026-01-31",
+      "maxUses": 200,
+      "usedCount": 87,
+      "isActive": true,
+      "createdAt": "2025-12-01T08:00:00Z"
+    }
+  ],
+  "settings": {
+    "restaurantName": "Lezzet Durağı",
+    "currency": "TRY",
+    "taxRate": 10,
+    "serviceCharge": 0,
+    "openingTime": "11:00",
+    "closingTime": "23:00",
+    "reservationDuration": 120,
+    "maxReservationDays": 30
+  }
+}
