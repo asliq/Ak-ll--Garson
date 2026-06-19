@@ -7,7 +7,9 @@ import {
   ToggleRight,
   Edit3,
   Check,
-  X
+  X,
+  Plus,
+  Trash2
 } from 'lucide-react'
 import { Card, CardContent } from '../components/ui/Card'
 import { Button, IconButton } from '../components/ui/Button'
@@ -15,19 +17,36 @@ import { SkeletonCard } from '../components/ui/Skeleton'
 import { 
   useMenuWithCategories, 
   useUpdateMenuAvailability,
-  useUpdateMenuPrice 
+  useUpdateMenuPrice,
+  useCreateMenuItem,
+  useDeleteMenuItem
 } from '../hooks/useMenu'
 import styles from './Menu.module.css'
+
+const emptyForm = {
+  name: '',
+  description: '',
+  price: '',
+  preparationTime: 10,
+  image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop',
+  categoryId: null,
+  isAvailable: true,
+}
 
 export default function Menu() {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [editingPrice, setEditingPrice] = useState(null)
   const [newPrice, setNewPrice] = useState('')
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [addForm, setAddForm] = useState(emptyForm)
+  const [deleteConfirm, setDeleteConfirm] = useState(null) // item id
 
-  const { categories, menuItems, isLoading, refetch } = useMenuWithCategories()
+  const { categories, menuItems, isLoading } = useMenuWithCategories()
   const updateAvailability = useUpdateMenuAvailability()
   const updatePrice = useUpdateMenuPrice()
+  const createItem = useCreateMenuItem()
+  const deleteItem = useDeleteMenuItem()
 
   // Filtreleme
   const filteredItems = menuItems.filter(item => {
@@ -38,15 +57,10 @@ export default function Menu() {
     return categoryMatch && searchMatch
   })
 
-  // Stok durumunu değiştir
   const toggleAvailability = (item) => {
-    updateAvailability.mutate({ 
-      id: item.id, 
-      isAvailable: !item.isAvailable 
-    })
+    updateAvailability.mutate({ id: item.id, isAvailable: !item.isAvailable })
   }
 
-  // Fiyat düzenleme
   const startEditPrice = (item) => {
     setEditingPrice(item.id)
     setNewPrice(item.price.toString())
@@ -64,6 +78,30 @@ export default function Menu() {
   const cancelEdit = () => {
     setEditingPrice(null)
     setNewPrice('')
+  }
+
+  const handleAddSubmit = (e) => {
+    e.preventDefault()
+    const price = parseFloat(addForm.price)
+    if (!addForm.name || isNaN(price) || price <= 0 || !addForm.categoryId) return
+
+    createItem.mutate({
+      ...addForm,
+      price,
+      preparationTime: parseInt(addForm.preparationTime) || 10,
+    }, {
+      onSuccess: () => {
+        setShowAddModal(false)
+        setAddForm(emptyForm)
+      }
+    })
+  }
+
+  const handleDeleteConfirm = () => {
+    if (!deleteConfirm) return
+    deleteItem.mutate(deleteConfirm, {
+      onSuccess: () => setDeleteConfirm(null)
+    })
   }
 
   if (isLoading) {
@@ -85,20 +123,29 @@ export default function Menu() {
 
   return (
     <div className={styles.page}>
-      {/* Arama */}
-      <div className={styles.searchBar}>
-        <Search size={20} />
-        <input
-          type="text"
-          placeholder="Menüde ara..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        {searchQuery && (
-          <button onClick={() => setSearchQuery('')}>
-            <X size={18} />
-          </button>
-        )}
+      {/* Toolbar */}
+      <div className={styles.toolbar}>
+        <div className={styles.searchBar}>
+          <Search size={20} />
+          <input
+            type="text"
+            placeholder="Menüde ara..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')}>
+              <X size={18} />
+            </button>
+          )}
+        </div>
+        <Button
+          variant="primary"
+          icon={Plus}
+          onClick={() => { setAddForm({ ...emptyForm, categoryId: categories[0]?.id || null }); setShowAddModal(true) }}
+        >
+          Ürün Ekle
+        </Button>
       </div>
 
       {/* Kategoriler */}
@@ -134,10 +181,7 @@ export default function Menu() {
       </div>
 
       {/* Menü Grid */}
-      <motion.div 
-        className={styles.grid}
-        layout
-      >
+      <motion.div className={styles.grid} layout>
         <AnimatePresence mode="popLayout">
           {filteredItems.map((item, index) => {
             const category = categories.find(c => c.id === item.categoryId)
@@ -171,10 +215,17 @@ export default function Menu() {
                         <span>Stokta Yok</span>
                       </div>
                     )}
+                    {/* Sil Butonu */}
+                    <button
+                      className={styles.deleteBtn}
+                      onClick={() => setDeleteConfirm(item.id)}
+                      title="Ürünü sil"
+                    >
+                      <Trash2 size={14} />
+                    </button>
                   </div>
 
                   <CardContent className={styles.cardContent}>
-                    {/* Başlık ve Süre */}
                     <div className={styles.header}>
                       <h3 className={styles.name}>{item.name}</h3>
                       <div className={styles.prepTime}>
@@ -183,10 +234,8 @@ export default function Menu() {
                       </div>
                     </div>
 
-                    {/* Açıklama */}
                     <p className={styles.description}>{item.description}</p>
 
-                    {/* Fiyat ve Kontroller */}
                     <div className={styles.footer}>
                       {editingPrice === item.id ? (
                         <div className={styles.priceEdit}>
@@ -227,15 +276,9 @@ export default function Menu() {
                         disabled={updateAvailability.isPending}
                       >
                         {item.isAvailable ? (
-                          <>
-                            <ToggleRight size={20} />
-                            <span>Stokta</span>
-                          </>
+                          <><ToggleRight size={20} /><span>Stokta</span></>
                         ) : (
-                          <>
-                            <ToggleLeft size={20} />
-                            <span>Yok</span>
-                          </>
+                          <><ToggleLeft size={20} /><span>Yok</span></>
                         )}
                       </button>
                     </div>
@@ -250,12 +293,152 @@ export default function Menu() {
       {filteredItems.length === 0 && (
         <div className={styles.emptyState}>
           <p>Aramanızla eşleşen ürün bulunamadı.</p>
-          <Button variant="secondary" onClick={() => { setSearchQuery(''); setSelectedCategory(null); }}>
+          <Button variant="secondary" onClick={() => { setSearchQuery(''); setSelectedCategory(null) }}>
             Filtreleri Temizle
           </Button>
         </div>
       )}
+
+      {/* Ürün Ekleme Modalı */}
+      <AnimatePresence>
+        {showAddModal && (
+          <>
+            <motion.div
+              className={styles.modalOverlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowAddModal(false)}
+            />
+            <motion.div
+              className={styles.modal}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            >
+              <div className={styles.modalHeader}>
+                <h2>Yeni Ürün Ekle</h2>
+                <button onClick={() => setShowAddModal(false)}><X size={20} /></button>
+              </div>
+              <form onSubmit={handleAddSubmit} className={styles.addForm}>
+                <div className={styles.formRow}>
+                  <label>Ürün Adı *</label>
+                  <input
+                    type="text"
+                    value={addForm.name}
+                    onChange={e => setAddForm(p => ({ ...p, name: e.target.value }))}
+                    placeholder="Örn: Kuzu Tandır"
+                    required
+                  />
+                </div>
+                <div className={styles.formRow}>
+                  <label>Açıklama</label>
+                  <textarea
+                    value={addForm.description}
+                    onChange={e => setAddForm(p => ({ ...p, description: e.target.value }))}
+                    placeholder="Ürün açıklaması..."
+                    rows={2}
+                  />
+                </div>
+                <div className={styles.formGrid}>
+                  <div className={styles.formRow}>
+                    <label>Fiyat (₺) *</label>
+                    <input
+                      type="number"
+                      min="1"
+                      step="0.5"
+                      value={addForm.price}
+                      onChange={e => setAddForm(p => ({ ...p, price: e.target.value }))}
+                      placeholder="0"
+                      required
+                    />
+                  </div>
+                  <div className={styles.formRow}>
+                    <label>Hazırlama Süresi (dk)</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="120"
+                      value={addForm.preparationTime}
+                      onChange={e => setAddForm(p => ({ ...p, preparationTime: e.target.value }))}
+                    />
+                  </div>
+                </div>
+                <div className={styles.formRow}>
+                  <label>Kategori *</label>
+                  <select
+                    value={addForm.categoryId || ''}
+                    onChange={e => setAddForm(p => ({ ...p, categoryId: parseInt(e.target.value) }))}
+                    required
+                  >
+                    <option value="">Kategori seçin...</option>
+                    {categories.map(c => (
+                      <option key={c.id} value={c.id}>{c.icon} {c.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className={styles.formRow}>
+                  <label>Görsel URL</label>
+                  <input
+                    type="url"
+                    value={addForm.image}
+                    onChange={e => setAddForm(p => ({ ...p, image: e.target.value }))}
+                    placeholder="https://..."
+                  />
+                </div>
+                <div className={styles.modalActions}>
+                  <Button type="button" variant="secondary" onClick={() => setShowAddModal(false)}>
+                    İptal
+                  </Button>
+                  <Button type="submit" variant="primary" disabled={createItem.isPending}>
+                    {createItem.isPending ? 'Ekleniyor...' : 'Ekle'}
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Silme Onay Modalı */}
+      <AnimatePresence>
+        {deleteConfirm && (
+          <>
+            <motion.div
+              className={styles.modalOverlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setDeleteConfirm(null)}
+            />
+            <motion.div
+              className={`${styles.modal} ${styles.confirmModal}`}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+            >
+              <Trash2 size={32} className={styles.confirmIcon} />
+              <h3>Ürünü sil?</h3>
+              <p>
+                <strong>{menuItems.find(i => i.id === deleteConfirm)?.name}</strong> menüden
+                kalıcı olarak silinecek. Bu işlem geri alınamaz.
+              </p>
+              <div className={styles.modalActions}>
+                <Button variant="secondary" onClick={() => setDeleteConfirm(null)}>
+                  İptal
+                </Button>
+                <button
+                  className={styles.dangerBtn}
+                  onClick={handleDeleteConfirm}
+                  disabled={deleteItem.isPending}
+                >
+                  {deleteItem.isPending ? 'Siliniyor...' : 'Evet, Sil'}
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
-
