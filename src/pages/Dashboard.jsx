@@ -19,6 +19,7 @@ import { useMenuItems } from '../hooks/useMenu'
 import { useAppStore } from '../store/useAppStore'
 import { ActivityFeed } from '../components/ActivityFeed'
 import { QuickActions } from '../components/QuickActions'
+import { RealtimeChart } from '../components/RealtimeChart'
 import styles from './Dashboard.module.css'
 
 const formatCurrency = (value) => {
@@ -321,6 +322,11 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Realtime Chart */}
+      <div className={styles.chartRow}>
+        <RealtimeChart />
       </div>
 
       {/* Activity Feed & Quick Actions */}

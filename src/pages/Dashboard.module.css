@@ -519,6 +519,20 @@
   }
 }
 
+/* RealtimeChart row */
+.chartRow {
+  margin-top: 1.5rem;
+}
+
+/* Bottom row: ActivityFeed + QuickActions */
+.bottomRow {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 768px) {
   .statsGrid {
     grid-template-columns: 1fr;
@@ -534,5 +548,9 @@
   
   .quickActions {
     grid-template-columns: 1fr;
+  }
+
+  .bottomRow {
+    flex-direction: column;
   }
 }
