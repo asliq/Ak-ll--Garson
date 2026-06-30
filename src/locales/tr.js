@@ -270,6 +270,40 @@ export const tr = {
     queries: 'Sorgu'
   },
 
+  // Daily Report
+  dailyReport: {
+    title: 'Günlük Rapor',
+    print: 'Yazdır / PDF',
+    totalRevenue: 'Toplam Gelir',
+    totalOrders: 'Toplam Sipariş',
+    avgOrder: 'Ort. Sipariş',
+    cancelled: 'İptal',
+    hourlySales: 'Saatlik Sipariş Dağılımı',
+    topItems: 'En Çok Satan Ürünler',
+    paymentMethods: 'Ödeme Yöntemleri',
+    paymentSummary: 'Ödeme Özeti',
+    noData: 'Bu tarih için veri bulunamadı',
+  },
+
+  // Waiters
+  waiters: {
+    title: 'Garson Yönetimi',
+    add: 'Garson Ekle',
+    edit: 'Garson Düzenle',
+    delete: 'Garson Sil',
+    name: 'Ad Soyad',
+    phone: 'Telefon',
+    email: 'E-posta',
+    shift: 'Vardiya',
+    morning: 'Sabah',
+    evening: 'Akşam',
+    active: 'Aktif',
+    inactive: 'Pasif',
+    totalSales: 'Toplam Satış',
+    tables: 'Masa',
+    orders: 'Sipariş',
+  },
+
   // Errors
   errors: {
     network: 'Ağ bağlantısı hatası',

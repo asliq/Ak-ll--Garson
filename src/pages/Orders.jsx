@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Clock, 
   CheckCircle, 
@@ -8,76 +9,59 @@ import {
   CreditCard,
   XCircle,
   RefreshCw,
-  Filter,
   User,
-  Printer
+  Printer,
+  Wallet,
+  DollarSign,
+  X,
+  Banknote,
+  Receipt
 } from 'lucide-react'
 import { useOrders, useUpdateOrderStatus } from '../hooks/useOrders'
-import { useTables } from '../hooks/useTables'
+import { useTables, useUpdateTableStatus } from '../hooks/useTables'
 import { useMenuItems } from '../hooks/useMenu'
-import { printReceipt, printKitchenTicket, printOrderList } from '../utils/printUtils'
+import { printReceipt } from '../utils/printUtils'
+import { useSoundEffects } from '../hooks/useSoundEffects'
+import { useTranslation } from '../hooks/useTranslation'
 import styles from './Orders.module.css'
 
 const statusConfig = {
-  pending: { 
-    label: 'Bekliyor', 
-    icon: AlertCircle, 
-    color: 'warning'
-  },
-  preparing: { 
-    label: 'Hazırlanıyor', 
-    icon: ChefHat, 
-    color: 'info'
-  },
-  ready: { 
-    label: 'Hazır', 
-    icon: Utensils, 
-    color: 'success'
-  },
-  served: { 
-    label: 'Servis Edildi', 
-    icon: CheckCircle, 
-    color: 'success'
-  },
-  completed: { 
-    label: 'Tamamlandı', 
-    icon: CreditCard, 
-    color: 'success'
-  },
-  cancelled: { 
-    label: 'İptal', 
-    icon: XCircle, 
-    color: 'danger'
-  }
+  pending:   { label: 'Bekliyor',       icon: AlertCircle,   color: 'warning'  },
+  preparing: { label: 'Hazırlanıyor',   icon: ChefHat,       color: 'info'     },
+  ready:     { label: 'Hazır',          icon: Utensils,      color: 'success'  },
+  served:    { label: 'Servis Edildi',  icon: CheckCircle,   color: 'success'  },
+  completed: { label: 'Tamamlandı',     icon: CreditCard,    color: 'success'  },
+  cancelled: { label: 'İptal',          icon: XCircle,       color: 'danger'   },
 }
 
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat('tr-TR', { 
-    style: 'currency', 
-    currency: 'TRY',
-    minimumFractionDigits: 0
-  }).format(value)
-}
+const paymentMethods = [
+  { id: 'cash',   label: 'Nakit',   icon: Banknote  },
+  { id: 'card',   label: 'Kart',    icon: CreditCard },
+  { id: 'online', label: 'Online',  icon: DollarSign },
+]
 
-const formatTime = (date) => {
-  return new Date(date).toLocaleTimeString('tr-TR', { 
-    hour: '2-digit', 
-    minute: '2-digit' 
-  })
-}
+const formatCurrency = (value) =>
+  new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', minimumFractionDigits: 0 }).format(value)
+
+const formatTime = (date) =>
+  new Date(date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })
 
 export default function Orders() {
   const [statusFilter, setStatusFilter] = useState('all')
+  const [paymentOrder, setPaymentOrder] = useState(null)   // sipariş objesi
+  const [paymentMethod, setPaymentMethod] = useState('cash')
+
   const { data: orders, isLoading, refetch, isRefetching } = useOrders()
   const { data: tables } = useTables()
   const { data: menuItems } = useMenuItems()
   const updateStatus = useUpdateOrderStatus()
+  const updateTableStatus = useUpdateTableStatus()
+  const { play } = useSoundEffects()
+  const { t } = useTranslation()
 
   const filteredOrders = orders?.filter(order => {
     if (statusFilter === 'all') return true
-    if (statusFilter === 'active') {
-      return ['pending', 'preparing', 'ready'].includes(order.status)
-    }
+    if (statusFilter === 'active') return ['pending', 'preparing', 'ready'].includes(order.status)
     return order.status === statusFilter
   }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || []
 
@@ -86,9 +70,24 @@ export default function Orders() {
   }
 
   const handleCancel = (orderId) => {
-    if (confirm('Siparişi iptal etmek istediğinize emin misiniz?')) {
+    if (window.confirm('Siparişi iptal etmek istediğinize emin misiniz?')) {
       updateStatus.mutate({ id: orderId, status: 'cancelled' })
     }
+  }
+
+  const handlePaymentConfirm = () => {
+    if (!paymentOrder) return
+    updateStatus.mutate(
+      { id: paymentOrder.id, status: 'completed', paymentMethod },
+      {
+        onSuccess: () => {
+          // Masayı serbest bırak
+          updateTableStatus.mutate({ id: paymentOrder.tableId, status: 'available' })
+          play('payment')
+          setPaymentOrder(null)
+        }
+      }
+    )
   }
 
   const getTableNumber = (tableId) => {
@@ -101,64 +100,51 @@ export default function Orders() {
     return item ? item.name : 'Bilinmeyen Ürün'
   }
 
-  if (isLoading) {
-    return <div className={styles.orders}>Yükleniyor...</div>
+  const handlePrint = (order) => {
+    const table = tables?.find(t => t.id === order.tableId) || { number: order.tableId }
+    const enriched = {
+      ...order,
+      items: order.items.map(item => {
+        const mi = menuItems?.find(m => m.id === item.menuItemId)
+        return { ...item, name: mi?.name || 'Ürün', price: item.price || mi?.price || 0 }
+      })
+    }
+    printReceipt(enriched, table, { name: 'Lezzet Durağı' })
   }
+
+  if (isLoading) return <div className={styles.orders}>Yükleniyor...</div>
 
   return (
     <div className={styles.orders}>
       {/* Header */}
       <div className={styles.ordersHeader}>
         <div>
-          <h1>Siparişler</h1>
-          <p>{filteredOrders.length} sipariş bulundu</p>
+          <h1>{t('orders.title')}</h1>
+          <p>{filteredOrders.length} sipariş</p>
         </div>
-        <button 
-          className={`${styles.refreshBtn} ${isRefetching ? styles.spinning : ''}`}
-          onClick={() => refetch()}
-        >
+        <button className={`${styles.refreshBtn} ${isRefetching ? styles.spinning : ''}`} onClick={() => refetch()}>
           <RefreshCw size={18} />
         </button>
       </div>
 
       {/* Filters */}
       <div className={styles.filters}>
-        <button
-          className={`${styles.filterBtn} ${statusFilter === 'all' ? styles.active : ''}`}
-          onClick={() => setStatusFilter('all')}
-        >
-          Tümü
-        </button>
-        <button
-          className={`${styles.filterBtn} ${statusFilter === 'active' ? styles.active : ''}`}
-          onClick={() => setStatusFilter('active')}
-        >
-          Aktif
-        </button>
-        <button
-          className={`${styles.filterBtn} ${statusFilter === 'pending' ? styles.active : ''}`}
-          onClick={() => setStatusFilter('pending')}
-        >
-          Bekliyor
-        </button>
-        <button
-          className={`${styles.filterBtn} ${statusFilter === 'preparing' ? styles.active : ''}`}
-          onClick={() => setStatusFilter('preparing')}
-        >
-          Hazırlanıyor
-        </button>
-        <button
-          className={`${styles.filterBtn} ${statusFilter === 'ready' ? styles.active : ''}`}
-          onClick={() => setStatusFilter('ready')}
-        >
-          Hazır
-        </button>
-        <button
-          className={`${styles.filterBtn} ${statusFilter === 'completed' ? styles.active : ''}`}
-          onClick={() => setStatusFilter('completed')}
-        >
-          Tamamlandı
-        </button>
+        {[
+          { key: 'all',       label: 'Tümü'       },
+          { key: 'active',    label: 'Aktif'      },
+          { key: 'pending',   label: 'Bekliyor'   },
+          { key: 'preparing', label: 'Hazırlanıyor'},
+          { key: 'ready',     label: 'Hazır'      },
+          { key: 'completed', label: 'Tamamlandı' },
+        ].map(({ key, label }) => (
+          <button
+            key={key}
+            className={`${styles.filterBtn} ${statusFilter === key ? styles.active : ''}`}
+            onClick={() => setStatusFilter(key)}
+          >
+            {label}
+          </button>
+        ))}
       </div>
 
       {/* Orders List */}
@@ -171,7 +157,7 @@ export default function Orders() {
           </div>
         ) : (
           filteredOrders.map(order => {
-            const status = statusConfig[order.status]
+            const status = statusConfig[order.status] || statusConfig.pending
             const StatusIcon = status.icon
 
             return (
@@ -197,26 +183,8 @@ export default function Orders() {
                       )}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <button
-                      className={styles.printBtn}
-                      onClick={() => {
-                        const table = tables?.find(t => t.id === order.tableId) || { number: order.tableId }
-                        const enrichedOrder = {
-                          ...order,
-                          items: order.items.map(item => {
-                            const menuItem = menuItems?.find(m => m.id === item.menuItemId)
-                            return {
-                              ...item,
-                              name: menuItem?.name || 'Ürün',
-                              price: menuItem?.price || 0
-                            }
-                          })
-                        }
-                        printReceipt(enrichedOrder, table, { name: 'Lezzet Durağı' })
-                      }}
-                      title="Fiş Yazdır"
-                    >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button className={styles.printBtn} onClick={() => handlePrint(order)} title="Fiş Yazdır">
                       <Printer size={16} />
                     </button>
                     <div className={`${styles.orderStatus} ${styles[status.color]}`}>
@@ -244,43 +212,42 @@ export default function Orders() {
                   <div className={styles.orderActions}>
                     {order.status === 'pending' && (
                       <>
-                        <button
-                          className={`${styles.actionBtn} ${styles.primary}`}
-                          onClick={() => handleStatusUpdate(order.id, 'preparing')}
-                        >
+                        <button className={`${styles.actionBtn} ${styles.primary}`}
+                          onClick={() => handleStatusUpdate(order.id, 'preparing')}>
                           Hazırlamaya Başla
                         </button>
-                        <button
-                          className={`${styles.actionBtn} ${styles.danger}`}
-                          onClick={() => handleCancel(order.id)}
-                        >
+                        <button className={`${styles.actionBtn} ${styles.danger}`}
+                          onClick={() => handleCancel(order.id)}>
                           İptal
                         </button>
                       </>
                     )}
                     {order.status === 'preparing' && (
-                      <button
-                        className={`${styles.actionBtn} ${styles.success}`}
-                        onClick={() => handleStatusUpdate(order.id, 'ready')}
-                      >
+                      <button className={`${styles.actionBtn} ${styles.success}`}
+                        onClick={() => handleStatusUpdate(order.id, 'ready')}>
                         Hazır
                       </button>
                     )}
                     {order.status === 'ready' && (
-                      <button
-                        className={`${styles.actionBtn} ${styles.success}`}
-                        onClick={() => handleStatusUpdate(order.id, 'served')}
-                      >
+                      <button className={`${styles.actionBtn} ${styles.success}`}
+                        onClick={() => handleStatusUpdate(order.id, 'served')}>
                         Servis Et
                       </button>
                     )}
                     {order.status === 'served' && (
                       <button
-                        className={`${styles.actionBtn} ${styles.success}`}
-                        onClick={() => handleStatusUpdate(order.id, 'completed')}
+                        className={`${styles.actionBtn} ${styles.payment}`}
+                        onClick={() => { setPaymentOrder(order); setPaymentMethod('cash') }}
                       >
-                        Tamamla
+                        <Wallet size={16} />
+                        Ödeme Al
                       </button>
+                    )}
+                    {order.status === 'completed' && order.paymentMethod && (
+                      <span className={styles.paymentBadge}>
+                        {order.paymentMethod === 'cash' ? '💵 Nakit' :
+                         order.paymentMethod === 'card' ? '💳 Kart' : '📱 Online'}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -289,6 +256,80 @@ export default function Orders() {
           })
         )}
       </div>
+
+      {/* Ödeme Modalı */}
+      <AnimatePresence>
+        {paymentOrder && (
+          <>
+            <motion.div
+              className={styles.modalOverlay}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setPaymentOrder(null)}
+            />
+            <motion.div
+              className={styles.paymentModal}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            >
+              <div className={styles.paymentModalHeader}>
+                <div className={styles.paymentModalTitle}>
+                  <Receipt size={22} />
+                  <div>
+                    <h2>Ödeme Al</h2>
+                    <p>Sipariş #{paymentOrder.id} • Masa {getTableNumber(paymentOrder.tableId)}</p>
+                  </div>
+                </div>
+                <button className={styles.modalCloseBtn} onClick={() => setPaymentOrder(null)}>
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Sipariş Özeti */}
+              <div className={styles.paymentItems}>
+                {paymentOrder.items.map((item, i) => (
+                  <div key={i} className={styles.paymentItem}>
+                    <span className={styles.paymentItemQty}>{item.quantity}x</span>
+                    <span className={styles.paymentItemName}>{getMenuItemName(item.menuItemId)}</span>
+                    <span className={styles.paymentItemPrice}>{formatCurrency(item.price * item.quantity)}</span>
+                  </div>
+                ))}
+                <div className={styles.paymentTotal}>
+                  <span>Toplam</span>
+                  <strong>{formatCurrency(paymentOrder.total)}</strong>
+                </div>
+              </div>
+
+              {/* Ödeme Yöntemi */}
+              <div className={styles.paymentMethodSection}>
+                <p className={styles.paymentMethodLabel}>Ödeme Yöntemi</p>
+                <div className={styles.paymentMethodGrid}>
+                  {paymentMethods.map(({ id, label, icon: Icon }) => (
+                    <button
+                      key={id}
+                      className={`${styles.paymentMethodBtn} ${paymentMethod === id ? styles.selected : ''}`}
+                      onClick={() => setPaymentMethod(id)}
+                    >
+                      <Icon size={24} />
+                      <span>{label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Onayla */}
+              <button
+                className={styles.confirmPaymentBtn}
+                onClick={handlePaymentConfirm}
+                disabled={updateStatus.isPending}
+              >
+                <CheckCircle size={20} />
+                {updateStatus.isPending ? 'İşleniyor...' : `Ödemeyi Onayla — ${formatCurrency(paymentOrder.total)}`}
+              </button>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

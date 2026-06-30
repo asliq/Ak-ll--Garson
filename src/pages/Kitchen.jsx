@@ -16,6 +16,7 @@ import {
   useKitchenStats
 } from '../hooks/useKitchen'
 import { useMenuItems } from '../hooks/useMenu'
+import { useTranslation } from '../hooks/useTranslation'
 import styles from './Kitchen.module.css'
 
 const PRIORITY_TIMES = {
@@ -39,6 +40,7 @@ const itemStatusLabel = {
 
 export default function Kitchen() {
   const [filter, setFilter] = useState('all')
+  const { t } = useTranslation()
 
   const { data: kitchenOrders, refetch, isRefetching } = useKitchenOrders()
   const { data: menuItems } = useMenuItems()
@@ -91,7 +93,7 @@ export default function Kitchen() {
         <div className={styles.headerLeft}>
           <ChefHat size={32} />
           <div>
-            <h1>Mutfak Ekranı</h1>
+            <h1>{t('kitchen.title')}</h1>
             <p>{allOrdersCount} aktif sipariş</p>
           </div>
         </div>
@@ -115,10 +117,10 @@ export default function Kitchen() {
       {/* Filters */}
       <div className={styles.filters}>
         {[
-          { key: 'all', label: `Tümü (${allOrdersCount})` },
-          { key: 'pending', label: `Bekliyor (${pendingCount})` },
-          { key: 'preparing', label: `Hazırlanıyor (${preparingCount})` },
-          { key: 'ready', label: `Hazır (${readyCount})` },
+          { key: 'all',       label: `Tümü (${allOrdersCount})` },
+          { key: 'pending',   label: `${t('orders.statuses.pending')} (${pendingCount})` },
+          { key: 'preparing', label: `${t('orders.statuses.preparing')} (${preparingCount})` },
+          { key: 'ready',     label: `${t('orders.statuses.ready')} (${readyCount})` },
         ].map(({ key, label }) => (
           <button
             key={key}

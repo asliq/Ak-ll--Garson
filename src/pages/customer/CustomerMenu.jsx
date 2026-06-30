@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   ShoppingCart, 
   Plus, 
@@ -13,7 +14,9 @@ import {
   Wallet,
   DollarSign,
   Check,
-  MessageSquare
+  MessageSquare,
+  Star,
+  Info
 } from 'lucide-react'
 import { useMenuWithCategories } from '../../hooks/useMenu'
 import { useCreateOrder } from '../../hooks/useOrders'
@@ -37,7 +40,8 @@ export default function CustomerMenu() {
   const [paymentMethod, setPaymentMethod] = useState('cash')
   const [customerTable, setCustomerTable] = useState(null)
   const [orderNotes, setOrderNotes] = useState('')
-  
+  const [detailItem, setDetailItem] = useState(null)   // item detail modal
+
   const { categories, menuItems, isLoading } = useMenuWithCategories()
   const createOrder = useCreateOrder()
 
@@ -171,43 +175,124 @@ export default function CustomerMenu() {
           onClick={() => setSelectedCategory('all')}
         >
           Tümü
+          <span className={styles.catCount}>{menuItems?.filter(i => i.isAvailable).length || 0}</span>
         </button>
-        {categories?.map(category => (
-          <button
-            key={category.id}
-            className={`${styles.categoryBtn} ${selectedCategory === category.id ? styles.active : ''}`}
-            onClick={() => setSelectedCategory(category.id)}
-          >
-            {category.name}
-          </button>
-        ))}
+        {categories?.map(category => {
+          const count = menuItems?.filter(i => i.isAvailable && i.categoryId === category.id).length || 0
+          return (
+            <button
+              key={category.id}
+              className={`${styles.categoryBtn} ${selectedCategory === category.id ? styles.active : ''}`}
+              onClick={() => setSelectedCategory(category.id)}
+            >
+              {category.name}
+              {count > 0 && <span className={styles.catCount}>{count}</span>}
+            </button>
+          )
+        })}
       </div>
 
       {/* Menu Items */}
       <div className={styles.menuGrid}>
-        {filteredMenu.map(item => (
-          <div key={item.id} className={styles.menuItem}>
-            <div className={styles.itemImage}>
-              {item.image ? (
-                <img src={item.image} alt={item.name} />
-              ) : (
-                <div className={styles.itemImagePlaceholder}>🍽️</div>
-              )}
-            </div>
-            <div className={styles.itemContent}>
-              <h3>{item.name}</h3>
-              <p className={styles.itemDesc}>{item.description}</p>
-              <div className={styles.itemFooter}>
-                <div className={styles.itemPrice}>{formatCurrency(item.price)}</div>
-                <button className={styles.addBtn} onClick={() => addToCart(item)}>
-                  <Plus size={16} />
-                  Ekle
+        {filteredMenu.length === 0 && (
+          <div className={styles.noResults}>
+            <Search size={32} />
+            <p>Arama sonucu bulunamadı</p>
+          </div>
+        )}
+        {filteredMenu.map(item => {
+          const inCart = cart.find(c => c.id === item.id)
+          return (
+            <motion.div
+              key={item.id}
+              className={styles.menuItem}
+              layout
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <div className={styles.itemImage} onClick={() => setDetailItem(item)}>
+                {item.image ? (
+                  <img src={item.image} alt={item.name} />
+                ) : (
+                  <div className={styles.itemImagePlaceholder}>🍽️</div>
+                )}
+                <button className={styles.infoBtn}><Info size={14} /></button>
+              </div>
+              <div className={styles.itemContent}>
+                <h3 onClick={() => setDetailItem(item)}>{item.name}</h3>
+                <p className={styles.itemDesc}>{item.description}</p>
+                <div className={styles.itemFooter}>
+                  <div className={styles.itemPrice}>{formatCurrency(item.price)}</div>
+                  {inCart ? (
+                    <div className={styles.cartControls}>
+                      <button onClick={() => updateQuantity(item.id, -1)}><Minus size={14} /></button>
+                      <span>{inCart.quantity}</span>
+                      <button onClick={() => updateQuantity(item.id, 1)}><Plus size={14} /></button>
+                    </div>
+                  ) : (
+                    <button className={styles.addBtn} onClick={() => addToCart(item)}>
+                      <Plus size={16} />
+                      Ekle
+                    </button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )
+        })}
+      </div>
+
+      {/* Item Detail Modal */}
+      <AnimatePresence>
+        {detailItem && (
+          <>
+            <motion.div className={styles.overlay}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setDetailItem(null)} />
+            <motion.div className={styles.detailModal}
+              initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 40 }}>
+              <div className={styles.detailModalImage}>
+                {detailItem.image
+                  ? <img src={detailItem.image} alt={detailItem.name} />
+                  : <div className={styles.detailImagePlaceholder}>🍽️</div>
+                }
+                <button className={styles.detailCloseBtn} onClick={() => setDetailItem(null)}>
+                  <X size={20} />
                 </button>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+              <div className={styles.detailModalContent}>
+                <div className={styles.detailModalHeader}>
+                  <h2>{detailItem.name}</h2>
+                  <div className={styles.detailPrice}>{formatCurrency(detailItem.price)}</div>
+                </div>
+                {detailItem.description && (
+                  <p className={styles.detailDesc}>{detailItem.description}</p>
+                )}
+                {detailItem.calories && (
+                  <div className={styles.detailMeta}>
+                    <span>🔥 {detailItem.calories} kcal</span>
+                  </div>
+                )}
+                {detailItem.allergens?.length > 0 && (
+                  <div className={styles.allergens}>
+                    <strong>Alerjenler:</strong>
+                    {detailItem.allergens.map(a => (
+                      <span key={a} className={styles.allergenTag}>{a}</span>
+                    ))}
+                  </div>
+                )}
+                <button
+                  className={styles.detailAddBtn}
+                  onClick={() => { addToCart(detailItem); setDetailItem(null) }}
+                >
+                  <ShoppingCart size={18} />
+                  Sepete Ekle — {formatCurrency(detailItem.price)}
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Quick Actions */}
       <div className={styles.quickActions}>

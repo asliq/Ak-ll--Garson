@@ -66,6 +66,27 @@
   --glass-blur: 24px;
   --accent-primary: #6366f1;
   --accent-secondary: #8b5cf6;
+  --accent-emerald: #10b981;
+  --accent-ruby: #ef4444;
+
+  /* Extended shadows */
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+
+  /* Monospace font */
+  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+
+  /* Transition */
+  --transition-fast: 0.15s ease;
+  --transition: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  /* Light mode semantic */
+  --primary-light: #eff6ff;
+  --success-light: #dcfce7;
+  --warning-light: #ffedd5;
+  --danger-light: #fee2e2;
+  --info-light: #e0f2fe;
 }
 
 [data-theme='dark'] {
@@ -75,24 +96,55 @@
   --bg-hover: #2a2a2a;
   --bg-secondary: #1f1f1f;
   --bg-primary: #1a1a1a;
+
   --text-main: #f5f5f5;
   --text-sub: #b0b0b0;
   --text-muted: #808080;
   --text-primary: #f5f5f5;
+
   --border: #333333;
   --border-light: #262626;
   --border-subtle: #404040;
+
   --shadow: 0 1px 3px rgba(0,0,0,0.4);
   --shadow-md: 0 4px 6px rgba(0,0,0,0.5);
   --shadow-lg: 0 10px 15px rgba(0,0,0,0.6);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.7), 0 10px 10px -5px rgba(0,0,0,0.5);
+  --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.8);
+
+  /* Dark semantic colors */
+  --primary-light: #1e3a5f;
+  --success-light: #14532d;
   --success-bg: #14532d;
   --success-subtle: #16a34a;
+  --warning-light: #431407;
+  --warning: #fb923c;
+  --danger-light: #450a0a;
+  --info-light: #0c1a2e;
   --error-bg: #7f1d1d;
   --error-subtle: #dc2626;
+
   --glass-bg: rgba(30, 30, 60, 0.6);
   --glass-border: rgba(255, 255, 255, 0.08);
   --accent-primary: #818cf8;
   --accent-secondary: #a78bfa;
+  --accent-emerald: #34d399;
+  --accent-ruby: #f87171;
+}
+
+/* Input dark mode global */
+[data-theme='dark'] input,
+[data-theme='dark'] textarea,
+[data-theme='dark'] select {
+  background: var(--bg-hover);
+  color: var(--text-main);
+  border-color: var(--border);
+  color-scheme: dark;
+}
+
+[data-theme='dark'] input::placeholder,
+[data-theme='dark'] textarea::placeholder {
+  color: var(--text-muted);
 }
 
 /* Reset */

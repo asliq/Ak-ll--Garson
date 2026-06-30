@@ -15,6 +15,7 @@ import {
 import { useOrders } from '../hooks/useOrders'
 import { useTables } from '../hooks/useTables'
 import { useAppStore } from '../store/useAppStore'
+import { soundEffects } from '../utils/soundUtils'
 import styles from './NotificationProvider.module.css'
 
 const NotificationContext = createContext(null)
@@ -72,42 +73,17 @@ export function NotificationProvider({ children }) {
   const { data: orders } = useOrders()
   const { data: tables } = useTables()
 
-  // Ses çal
+  // Ses çal — soundUtils ile
   const playSound = useCallback((type) => {
     if (!soundEnabled) return
-    
-    // Web Audio API ile basit bip sesi
-    try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)()
-      const oscillator = audioContext.createOscillator()
-      const gainNode = audioContext.createGain()
-      
-      oscillator.connect(gainNode)
-      gainNode.connect(audioContext.destination)
-      
-      // Ses tipine göre frekans
-      const frequencies = {
-        order: [523, 659, 784], // C5, E5, G5 - pozitif ses
-        ready: [784, 659], // G5, E5
-        notification: [440], // A4
-        alert: [880, 440, 880] // A5, A4, A5 - dikkat çekici
-      }
-      
-      const freqs = frequencies[type] || [440]
-      let time = audioContext.currentTime
-      
-      freqs.forEach((freq, i) => {
-        oscillator.frequency.setValueAtTime(freq, time + i * 0.15)
-      })
-      
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5)
-      
-      oscillator.start()
-      oscillator.stop(audioContext.currentTime + 0.5)
-    } catch (e) {
-      console.log('Audio not supported')
+    const soundMap = {
+      order: 'newOrder',
+      ready: 'orderReady',
+      notification: 'success',
+      alert: 'warning',
     }
+    const fn = soundEffects[soundMap[type] || 'success']
+    if (fn) fn()
   }, [soundEnabled])
 
   // Bildirim ekle

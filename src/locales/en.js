@@ -270,6 +270,40 @@ export const en = {
     queries: 'Queries'
   },
 
+  // Daily Report
+  dailyReport: {
+    title: 'Daily Report',
+    print: 'Print / PDF',
+    totalRevenue: 'Total Revenue',
+    totalOrders: 'Total Orders',
+    avgOrder: 'Avg. Order',
+    cancelled: 'Cancelled',
+    hourlySales: 'Hourly Order Distribution',
+    topItems: 'Best Selling Items',
+    paymentMethods: 'Payment Methods',
+    paymentSummary: 'Payment Summary',
+    noData: 'No data found for this date',
+  },
+
+  // Waiters
+  waiters: {
+    title: 'Waiter Management',
+    add: 'Add Waiter',
+    edit: 'Edit Waiter',
+    delete: 'Delete Waiter',
+    name: 'Full Name',
+    phone: 'Phone',
+    email: 'Email',
+    shift: 'Shift',
+    morning: 'Morning',
+    evening: 'Evening',
+    active: 'Active',
+    inactive: 'Inactive',
+    totalSales: 'Total Sales',
+    tables: 'Tables',
+    orders: 'Orders',
+  },
+
   // Errors
   errors: {
     network: 'Network connection error',

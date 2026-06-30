@@ -13,6 +13,10 @@ import {
   Package,
   LogOut,
   User,
+  Menu as MenuIcon,
+  X as CloseIcon,
+  FileText,
+  Users,
 } from 'lucide-react'
 import { useActiveOrdersCount } from '../../hooks/useOrders'
 import { useCurrentUser, useLogout } from '../../hooks/useAuth'
@@ -33,6 +37,8 @@ const secondaryNavItems = [
   { path: '/menu', icon: UtensilsCrossed, label: 'Menü Yönetimi' },
   { path: '/reservations', icon: CalendarDays, label: 'Rezervasyonlar', badge: 'reservations' },
   { path: '/analytics', icon: BarChart3, label: 'Raporlar' },
+  { path: '/daily-report', icon: FileText, label: 'Günlük Rapor' },
+  { path: '/waiters', icon: Users, label: 'Garsonlar' },
   { path: '/inventory', icon: Package, label: 'Stok Yönetimi' },
 ]
 
@@ -40,6 +46,12 @@ export default function Layout({ children }) {
   const location = useLocation()
   const navigate = useNavigate()
   const [isOnline, setIsOnline] = useState(navigator.onLine)
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+
+  // Rota değişince mobil sidebar'ı kapat
+  useEffect(() => {
+    setMobileSidebarOpen(false)
+  }, [location.pathname])
   
   const activeOrdersCount = useActiveOrdersCount()
   const reservationsCount = useTodayReservationsCount()
@@ -72,8 +84,17 @@ export default function Layout({ children }) {
 
   return (
     <div className={styles.layout}>
+      {/* Mobile overlay */}
+      {mobileSidebarOpen && (
+        <div className={styles.mobileOverlay} onClick={() => setMobileSidebarOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
+      <aside className={`${styles.sidebar} ${mobileSidebarOpen ? styles.sidebarOpen : ''}`}>
+        {/* Mobile close button */}
+        <button className={styles.mobileSidebarClose} onClick={() => setMobileSidebarOpen(false)}>
+          <CloseIcon size={20} />
+        </button>
         {/* Logo */}
         <div className={styles.logoArea}>
           <div className={styles.logoIcon}>
@@ -182,6 +203,14 @@ export default function Layout({ children }) {
         <header className={styles.header}>
           <div className={styles.headerContent}>
             <div className={styles.headerLeft}>
+              {/* Hamburger menu — only on mobile */}
+              <button
+                className={styles.hamburgerBtn}
+                onClick={() => setMobileSidebarOpen(true)}
+                aria-label="Menüyü aç"
+              >
+                <MenuIcon size={22} />
+              </button>
               <h1 className={styles.headerTitle}>
                 {mainNavItems.find(i => i.path === location.pathname)?.label ||
                  secondaryNavItems.find(i => i.path === location.pathname)?.label ||

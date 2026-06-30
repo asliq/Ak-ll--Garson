@@ -181,10 +181,25 @@ export const waitersApi = {
     const { data } = await axiosInstance.get('/waiters')
     return data
   },
-  
+
   getById: async (id) => {
     const { data } = await axiosInstance.get(`/waiters/${id}`)
     return data
+  },
+
+  create: async (waiterData) => {
+    const { data } = await axiosInstance.post('/waiters', waiterData)
+    return data
+  },
+
+  update: async ({ id, ...updates }) => {
+    const { data } = await axiosInstance.patch(`/waiters/${id}`, updates)
+    return data
+  },
+
+  delete: async (id) => {
+    await axiosInstance.delete(`/waiters/${id}`)
+    return id
   },
 }
 

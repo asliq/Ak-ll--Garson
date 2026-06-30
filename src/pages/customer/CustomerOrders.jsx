@@ -14,6 +14,7 @@ import {
   RefreshCw
 } from 'lucide-react'
 import { useOrders } from '../../hooks/useOrders'
+import { useMenuItems } from '../../hooks/useMenu'
 import styles from './CustomerOrders.module.css'
 
 const statusConfig = {
@@ -87,6 +88,12 @@ export default function CustomerOrders() {
   const [customerTable, setCustomerTable] = useState(null)
   const [selectedOrder, setSelectedOrder] = useState(null)
   const { data: allOrders, isLoading, refetch, isRefetching } = useOrders()
+  const { data: menuItems } = useMenuItems()
+
+  const getItemName = (menuItemId) => {
+    const mi = menuItems?.find(m => m.id === menuItemId || m.id === parseInt(menuItemId))
+    return mi ? mi.name : `Ürün #${menuItemId}`
+  }
 
   useEffect(() => {
     const tableData = localStorage.getItem('customerTable')
@@ -188,7 +195,7 @@ export default function CustomerOrders() {
                   {order.items.slice(0, 3).map((item, index) => (
                     <div key={index} className={styles.orderItem}>
                       <span className={styles.itemQuantity}>{item.quantity}x</span>
-                      <span className={styles.itemName}>Ürün #{item.menuItemId}</span>
+                      <span className={styles.itemName}>{getItemName(item.menuItemId)}</span>
                     </div>
                   ))}
                   {order.items.length > 3 && (
@@ -329,7 +336,7 @@ export default function CustomerOrders() {
                 {selectedOrder.items.map((item, index) => (
                   <div key={index} className={styles.detailItem}>
                     <span className={styles.detailQuantity}>{item.quantity}x</span>
-                    <span className={styles.detailName}>Ürün #{item.menuItemId}</span>
+                    <span className={styles.detailName}>{getItemName(item.menuItemId)}</span>
                     <span className={styles.detailPrice}>
                       {formatCurrency(item.price * item.quantity)}
                     </span>
