@@ -5,8 +5,9 @@ import { HealthModule } from './modules/health/health.module';
 import { MenuModule } from './modules/menu/menu.module';
 import { OrderModule } from './modules/order/order.module';
 import { PublicModule } from './modules/public/public.module';
+import { RealtimeModule } from './modules/realtime/realtime.module';
 
 @Module({
-  imports: [CoreModule, SharedModule, HealthModule, MenuModule, PublicModule, OrderModule],
+  imports: [CoreModule, SharedModule, HealthModule, MenuModule, PublicModule, OrderModule, RealtimeModule],
 })
 export class AppModule {}

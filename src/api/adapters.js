@@ -5,7 +5,7 @@ const ORDER_STATUS_FROM_API = {
   draft: 'pending',
   open: 'pending',
   in_kitchen: 'preparing',
-  partially_served: 'preparing',
+  partially_served: 'ready',
   served: 'served',
   bill_requested: 'served',
   payment_in_progress: 'served',
@@ -17,7 +17,7 @@ const ORDER_STATUS_FROM_API = {
 const ORDER_STATUS_TO_API = {
   pending: 'open',
   preparing: 'in_kitchen',
-  ready: 'served',
+  ready: 'partially_served',
   served: 'served',
   completed: 'closed',
   cancelled: 'cancelled',

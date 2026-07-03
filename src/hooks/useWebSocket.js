@@ -1,39 +1,66 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
 import { useAppStore } from '../store/useAppStore'
+import { orderKeys } from './useOrders'
 
-export const useWebSocket = (url = null) => {
+const MAX_RECONNECT_DELAY_MS = 30000
+const BASE_RECONNECT_DELAY_MS = 2000
+
+const ORDER_WS_EVENTS = new Set([
+  'order.created',
+  'order.updated',
+  'order.ready',
+  'order.served',
+])
+
+function invalidateOrderQueries(queryClient, payload) {
+  queryClient.invalidateQueries({ queryKey: orderKeys.all })
+
+  if (payload?.orderId) {
+    queryClient.invalidateQueries({ queryKey: orderKeys.detail(payload.orderId) })
+  }
+
+  if (payload?.tableId) {
+    queryClient.invalidateQueries({ queryKey: orderKeys.byTable(payload.tableId) })
+  }
+}
+
+export const useWebSocket = (url = null, options = {}) => {
+  const { getJoinMessage } = options
   const wsRef = useRef(null)
   const reconnectTimeoutRef = useRef(null)
   const reconnectAttempts = useRef(0)
+  const getJoinMessageRef = useRef(getJoinMessage)
+  const [isConnected, setIsConnected] = useState(false)
   const queryClient = useQueryClient()
   const addNotification = useAppStore((state) => state.addNotification)
 
-  const MAX_RECONNECT_ATTEMPTS = 5
-  const RECONNECT_DELAY = 3000
+  getJoinMessageRef.current = getJoinMessage
 
   const handleMessage = useCallback((event) => {
     try {
       const data = JSON.parse(event.data)
 
       switch (data.type) {
-        case 'CONNECTED':
+        case 'connected':
           break
 
-        case 'ORDER_CREATED':
-          queryClient.invalidateQueries({ queryKey: ['orders'] })
+        case 'order.created':
+          invalidateOrderQueries(queryClient, data.payload)
           queryClient.invalidateQueries({ queryKey: ['stats'] })
           addNotification()
-          if (data.payload?.tableNumber) {
-            toast.success(`Yeni sipariş: Masa ${data.payload.tableNumber}`)
+          if (data.payload?.tableId) {
+            toast.success('Yeni sipariş alındı')
           }
           break
 
-        case 'ORDER_UPDATED':
-          queryClient.invalidateQueries({ queryKey: ['orders'] })
-          if (data.payload?.id) {
-            queryClient.invalidateQueries({ queryKey: ['orders', data.payload.id] })
+        case 'order.updated':
+        case 'order.ready':
+        case 'order.served':
+          invalidateOrderQueries(queryClient, data.payload)
+          if (data.type === 'order.ready') {
+            toast.success('Sipariş hazır')
           }
           break
 
@@ -46,9 +73,6 @@ export const useWebSocket = (url = null) => {
           queryClient.invalidateQueries({ queryKey: ['tables'] })
           queryClient.invalidateQueries({ queryKey: ['payments'] })
           addNotification()
-          if (data.payload?.amount) {
-            toast.success(`Ödeme tamamlandı: ₺${data.payload.amount}`)
-          }
           break
 
         case 'STOCK_ALERT':
@@ -72,6 +96,9 @@ export const useWebSocket = (url = null) => {
           break
 
         default:
+          if (ORDER_WS_EVENTS.has(data.type)) {
+            invalidateOrderQueries(queryClient, data.payload)
+          }
           break
       }
     } catch (error) {
@@ -79,34 +106,53 @@ export const useWebSocket = (url = null) => {
     }
   }, [queryClient, addNotification])
 
+  const sendJoinMessage = useCallback((socket) => {
+    const joinMessage = getJoinMessageRef.current?.()
+    if (joinMessage && socket?.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify(joinMessage))
+    }
+  }, [])
+
   const connect = useCallback(() => {
     if (!url) return
 
-    try {
-      wsRef.current = new WebSocket(url)
+    if (wsRef.current?.readyState === WebSocket.OPEN) return
 
-      wsRef.current.onopen = () => {
+    try {
+      const socket = new WebSocket(url)
+      wsRef.current = socket
+
+      socket.onopen = () => {
         reconnectAttempts.current = 0
+        setIsConnected(true)
+        sendJoinMessage(socket)
       }
 
-      wsRef.current.onmessage = handleMessage
+      socket.onmessage = handleMessage
 
-      wsRef.current.onerror = (error) => {
+      socket.onerror = (error) => {
         console.error('WebSocket hatası:', error)
       }
 
-      wsRef.current.onclose = () => {
-        if (reconnectAttempts.current < MAX_RECONNECT_ATTEMPTS) {
-          reconnectTimeoutRef.current = setTimeout(() => {
-            reconnectAttempts.current += 1
-            connect()
-          }, RECONNECT_DELAY)
-        }
+      socket.onclose = () => {
+        setIsConnected(false)
+        wsRef.current = null
+
+        const delay = Math.min(
+          BASE_RECONNECT_DELAY_MS * 2 ** reconnectAttempts.current,
+          MAX_RECONNECT_DELAY_MS,
+        )
+
+        reconnectTimeoutRef.current = setTimeout(() => {
+          reconnectAttempts.current += 1
+          connect()
+        }, delay)
       }
     } catch (error) {
       console.error('WebSocket bağlantısı kurulamadı:', error)
+      setIsConnected(false)
     }
-  }, [url, handleMessage])
+  }, [url, handleMessage, sendJoinMessage])
 
   const sendMessage = useCallback((message) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
@@ -117,23 +163,37 @@ export const useWebSocket = (url = null) => {
   const disconnect = useCallback(() => {
     if (reconnectTimeoutRef.current) {
       clearTimeout(reconnectTimeoutRef.current)
+      reconnectTimeoutRef.current = null
     }
     if (wsRef.current) {
       wsRef.current.close()
       wsRef.current = null
     }
+    setIsConnected(false)
   }, [])
+
+  const reconnect = useCallback(() => {
+    disconnect()
+    reconnectAttempts.current = 0
+    connect()
+  }, [connect, disconnect])
 
   useEffect(() => {
     connect()
     return () => disconnect()
   }, [connect, disconnect])
 
+  useEffect(() => {
+    if (isConnected) {
+      sendJoinMessage(wsRef.current)
+    }
+  }, [getJoinMessage, isConnected, sendJoinMessage])
+
   return {
     sendMessage,
     disconnect,
-    reconnect: connect,
-    isConnected: wsRef.current?.readyState === WebSocket.OPEN,
+    reconnect,
+    isConnected,
   }
 }
 

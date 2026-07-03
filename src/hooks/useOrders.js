@@ -21,8 +21,7 @@ export function useOrders(options = {}) {
   return useQuery({
     queryKey: orderKeys.lists(),
     queryFn: ordersApi.getAll,
-    staleTime: 1000 * 10, // 10 saniye - siparişler sık değişir
-    refetchInterval: 1000 * 5, // Her 5 saniyede otomatik yenile (real-time için)
+    staleTime: 1000 * 10,
     ...options,
   })
 }

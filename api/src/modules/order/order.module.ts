@@ -27,6 +27,12 @@ import { PublicOrderController } from './presentation/controllers/public-order.c
     GetOrderUseCase,
     ChangeOrderStatusUseCase,
   ],
-  exports: [CreateOrderUseCase, ListOrdersUseCase, GetOrderUseCase, ChangeOrderStatusUseCase],
+  exports: [
+    CreateOrderUseCase,
+    ListOrdersUseCase,
+    GetOrderUseCase,
+    ChangeOrderStatusUseCase,
+    TABLE_LOOKUP,
+  ],
 })
 export class OrderModule {}
