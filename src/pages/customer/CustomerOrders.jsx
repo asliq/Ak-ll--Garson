@@ -16,6 +16,7 @@ import {
 import { useOrders, useUpdateOrderStatus } from '../../hooks/useOrders'
 import { useMenuItems } from '../../hooks/useMenu'
 import { useCreateServiceCall } from '../../hooks/useServiceCalls'
+import { setRestaurantId } from '../../api/services'
 import { useTranslation } from '../../hooks/useTranslation'
 import toast from 'react-hot-toast'
 import styles from './CustomerOrders.module.css'
@@ -90,7 +91,7 @@ export default function CustomerOrders() {
   const navigate = useNavigate()
   const [customerTable, setCustomerTable] = useState(null)
   const [selectedOrder, setSelectedOrder] = useState(null)
-  const { data: allOrders, isLoading, refetch, isRefetching } = useOrders()
+  const { data: allOrders, isLoading, isError, error, refetch, isRefetching } = useOrders()
   const { data: menuItems } = useMenuItems()
   const updateStatus = useUpdateOrderStatus()
   const createServiceCall = useCreateServiceCall()
@@ -103,6 +104,9 @@ export default function CustomerOrders() {
   }
 
   useEffect(() => {
+    const restaurantId = import.meta.env.VITE_RESTAURANT_ID
+    if (restaurantId) setRestaurantId(restaurantId)
+
     const tableData = localStorage.getItem('customerTable')
     if (!tableData) {
       navigate('/customer')
@@ -116,7 +120,7 @@ export default function CustomerOrders() {
     if (customerTable?.tableId) {
       return order.tableId === customerTable.tableId
     }
-    return true
+    return false
   }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || []
 
   const activeOrders = orders.filter(o => 
@@ -143,6 +147,16 @@ export default function CustomerOrders() {
 
   if (isLoading) {
     return <div className={styles.loading}>Yükleniyor...</div>
+  }
+
+  if (isError) {
+    return (
+      <div className={styles.loading}>
+        <p>Siparişler yüklenemedi.</p>
+        <p>{error?.message || 'Bağlantı hatası'}</p>
+        <button type="button" onClick={() => refetch()}>Tekrar Dene</button>
+      </div>
+    )
   }
 
   return (

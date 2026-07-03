@@ -10,6 +10,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import styles from './CustomerLogin.module.css'
+import { setRestaurantId } from '../../api/services'
 
 export default function CustomerLogin() {
   const navigate = useNavigate()
@@ -17,6 +18,11 @@ export default function CustomerLogin() {
   const [tableNumber, setTableNumber] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    const restaurantId = import.meta.env.VITE_RESTAURANT_ID
+    if (restaurantId) setRestaurantId(restaurantId)
+  }, [])
 
   // QR koddan gelen ?token= parametresini oku
   useEffect(() => {

@@ -42,7 +42,7 @@ export default function Menu() {
   const [addForm, setAddForm] = useState(emptyForm)
   const [deleteConfirm, setDeleteConfirm] = useState(null) // item id
 
-  const { categories, menuItems, isLoading } = useMenuWithCategories()
+  const { categories, menuItems, isLoading, isError, error, refetch } = useMenuWithCategories()
   const updateAvailability = useUpdateMenuAvailability()
   const updatePrice = useUpdateMenuPrice()
   const createItem = useCreateMenuItem()
@@ -117,6 +117,16 @@ export default function Menu() {
             <SkeletonCard key={i} />
           ))}
         </div>
+      </div>
+    )
+  }
+
+  if (isError) {
+    return (
+      <div className={styles.page}>
+        <p>Menü yüklenemedi.</p>
+        <p>{error?.message || 'API bağlantı hatası'}</p>
+        <button type="button" onClick={() => refetch()}>Tekrar Dene</button>
       </div>
     )
   }

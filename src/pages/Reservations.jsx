@@ -22,6 +22,7 @@ import {
   useCreateReservation
 } from '../hooks/useReservations'
 import { useTables, useUpdateTableStatus } from '../hooks/useTables'
+import { API_ENABLED } from '../api/services'
 import styles from './Reservations.module.css'
 
 const statusConfig = {
@@ -45,6 +46,15 @@ export default function Reservations() {
     duration: 120,
     notes: '',
   })
+
+  if (!API_ENABLED.reservations) {
+    return (
+      <div className={styles.page}>
+        <h2>Rezervasyonlar</h2>
+        <p>Rezervasyon API henüz NestJS&apos;e taşınmadı.</p>
+      </div>
+    )
+  }
 
   const { 
     data, 

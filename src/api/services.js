@@ -210,6 +210,19 @@ export const ordersApi = {
 // ==========================================
 // LEGACY STUBS (diğer ekranlar — henüz NestJS yok)
 // ==========================================
+export const API_ENABLED = {
+  tables: false,
+  waiters: false,
+  discounts: false,
+  inventory: false,
+  serviceCalls: false,
+  reservations: false,
+  payments: false,
+  kitchenLegacy: false,
+  notifications: false,
+  analyticsLegacy: false,
+}
+
 const notImplemented = (resource) => async () => {
   throw new Error(`${resource} API henüz NestJS'e taşınmadı`)
 }

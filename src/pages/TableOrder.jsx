@@ -18,6 +18,7 @@ import { Card, CardContent } from '../components/ui/Card'
 import { Button, IconButton } from '../components/ui/Button'
 import { Skeleton } from '../components/ui/Skeleton'
 import { useTable, useUpdateTableStatus } from '../hooks/useTables'
+import { API_ENABLED } from '../api/services'
 import { useMenuWithCategories } from '../hooks/useMenu'
 import { useTableOrders, useCreateOrder } from '../hooks/useOrders'
 import { calculateDiscount } from '../hooks/useDiscounts'
@@ -33,6 +34,15 @@ export default function TableOrder() {
   const [showCart, setShowCart] = useState(false)
   const [appliedDiscount, setAppliedDiscount] = useState(null)
   const [showDiscountManager, setShowDiscountManager] = useState(false)
+
+  if (!API_ENABLED.tables) {
+    return (
+      <div className={styles.page}>
+        <p>Masa siparişi ekranı, masa API aktif olana kadar kullanılamıyor.</p>
+        <Button onClick={() => navigate('/orders')}>Siparişlere Git</Button>
+      </div>
+    )
+  }
 
   // TanStack Query hooks
   const { data: table, isLoading: tableLoading } = useTable(parseInt(tableId))

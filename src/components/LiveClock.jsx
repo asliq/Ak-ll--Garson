@@ -32,7 +32,7 @@ export function LiveClock() {
     const measurePing = async () => {
       const start = performance.now()
       try {
-        await fetch('http://localhost:3001/tables', { method: 'HEAD' })
+        await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'}/health/live`, { method: 'GET' })
         const end = performance.now()
         setPing(Math.round(end - start))
       } catch {

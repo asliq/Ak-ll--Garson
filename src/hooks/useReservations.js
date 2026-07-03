@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query'
 import api from '../api/axios'
 import toast from 'react-hot-toast'
+import { API_ENABLED } from '../api/services'
 
 // ==========================================
 // REZERVASYON API SERVİSLERİ
@@ -86,7 +87,9 @@ export function useInfiniteReservations(filters = {}) {
       ...filters 
     }),
     getNextPageParam: (lastPage) => lastPage.nextPage,
+    enabled: API_ENABLED.reservations,
     staleTime: 1000 * 60 * 2,
+    retry: false,
   })
 }
 
@@ -97,8 +100,9 @@ export function useReservationsByDate(date, options = {}) {
   return useQuery({
     queryKey: reservationKeys.byDate(date),
     queryFn: () => reservationsApi.getByDate(date),
-    enabled: !!date,
+    enabled: API_ENABLED.reservations && !!date,
     staleTime: 1000 * 60 * 2,
+    retry: false,
     ...options,
   })
 }
@@ -110,7 +114,8 @@ export function useReservationsByTable(tableId, options = {}) {
   return useQuery({
     queryKey: reservationKeys.byTable(tableId),
     queryFn: () => reservationsApi.getByTable(tableId),
-    enabled: !!tableId,
+    enabled: API_ENABLED.reservations && !!tableId,
+    retry: false,
     ...options,
   })
 }
@@ -122,7 +127,8 @@ export function useReservation(id, options = {}) {
   return useQuery({
     queryKey: reservationKeys.detail(id),
     queryFn: () => reservationsApi.getById(id),
-    enabled: !!id,
+    enabled: API_ENABLED.reservations && !!id,
+    retry: false,
     ...options,
   })
 }
@@ -311,6 +317,7 @@ export function useDeleteReservation() {
 // BUGÜNKÜ REZERVASYON SAYISI
 // ==========================================
 export function useTodayReservationsCount() {
+  if (!API_ENABLED.reservations) return 0
   const today = new Date().toISOString().split('T')[0]
   const { data } = useReservationsByDate(today)
   

@@ -21,6 +21,7 @@ import {
 import { usePublicMenu } from '../../hooks/usePublicMenu'
 import { useCreatePublicOrder } from '../../hooks/useOrders'
 import { useCreateServiceCall } from '../../hooks/useServiceCalls'
+import { setRestaurantId } from '../../api/services'
 import { useTranslation } from '../../hooks/useTranslation'
 import toast from 'react-hot-toast'
 import styles from './CustomerMenu.module.css'
@@ -45,7 +46,7 @@ export default function CustomerMenu() {
   const [orderNotes, setOrderNotes] = useState('')
   const [detailItem, setDetailItem] = useState(null)   // item detail modal
 
-  const { data: publicMenu, isLoading } = usePublicMenu(customerTable?.tableToken)
+  const { data: publicMenu, isLoading, isError, error, refetch } = usePublicMenu(customerTable?.tableToken)
   const createOrder = useCreatePublicOrder()
   const createServiceCall = useCreateServiceCall()
   const { t } = useTranslation()
@@ -61,6 +62,9 @@ export default function CustomerMenu() {
   const menuItems = publicMenu?.menuItems || []
 
   useEffect(() => {
+    const restaurantId = import.meta.env.VITE_RESTAURANT_ID
+    if (restaurantId) setRestaurantId(restaurantId)
+
     const tableData = localStorage.getItem('customerTable')
     if (!tableData) {
       navigate('/customer')
@@ -148,7 +152,12 @@ export default function CustomerMenu() {
         })),
       },
       {
-        onSuccess: () => {
+        onSuccess: (order) => {
+          if (order?.tableId && customerTable) {
+            const updated = { ...customerTable, tableId: order.tableId }
+            localStorage.setItem('customerTable', JSON.stringify(updated))
+            setCustomerTable(updated)
+          }
           const recent = cart.map((i) => ({ id: i.id, name: i.name, price: i.price }))
           localStorage.setItem('customerRecentItems', JSON.stringify(recent.slice(0, 5)))
           setCart([])
@@ -166,6 +175,17 @@ export default function CustomerMenu() {
 
   if (isLoading) {
     return <div className={styles.loading}>Menü yükleniyor...</div>
+  }
+
+  if (isError) {
+    return (
+      <div className={styles.loading}>
+        <p>Menü yüklenemedi.</p>
+        <p>{error?.message || 'QR kodu geçersiz olabilir.'}</p>
+        <button type="button" onClick={() => refetch()}>Tekrar Dene</button>
+        <button type="button" onClick={() => navigate('/customer')}>Geri Dön</button>
+      </div>
+    )
   }
 
   return (

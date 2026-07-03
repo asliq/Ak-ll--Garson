@@ -12,8 +12,6 @@ import {
   Plus
 } from 'lucide-react'
 import { useTranslation } from '../hooks/useTranslation'
-import { useStats } from '../hooks/useStats'
-import { useTables } from '../hooks/useTables'
 import { useOrders } from '../hooks/useOrders'
 import { useMenuItems } from '../hooks/useMenu'
 import { useAppStore } from '../store/useAppStore'
@@ -52,22 +50,16 @@ const getTimeAgo = (dateString) => {
 export default function Dashboard() {
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { data: stats } = useStats()
-  const { data: tables } = useTables()
-  const { data: orders, refetch: refetchOrders } = useOrders()
+  const { data: orders, isLoading, isError, error, refetch: refetchOrders } = useOrders()
   const { data: menuItems } = useMenuItems()
   const activeWaiter = useAppStore((state) => state.activeWaiter)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   // İstatistikleri hesapla
   const dashboardStats = useMemo(() => {
-    if (!tables || !orders) return null
+    if (!orders) return null
 
-    const availableTables = tables.filter(t => t.status === 'available').length
-    const occupiedTables = tables.filter(t => t.status === 'occupied').length
-    const reservedTables = tables.filter(t => t.status === 'reserved').length
-    
-    const activeOrders = orders.filter(o => 
+    const activeOrders = orders.filter(o =>
       ['pending', 'preparing', 'ready'].includes(o.status)
     )
 
@@ -82,16 +74,12 @@ export default function Dashboard() {
     const avgOrderValue = todayOrders.length > 0 ? todayRevenue / todayOrders.length : 0
 
     return {
-      availableTables,
-      occupiedTables,
-      reservedTables,
       activeOrders,
       todayRevenue,
       completedToday,
       avgOrderValue,
-      totalTables: tables.length
     }
-  }, [tables, orders])
+  }, [orders])
 
   // Popüler ürünler
   const popularItems = useMemo(() => {
@@ -113,7 +101,7 @@ export default function Dashboard() {
 
     return Object.entries(itemCounts)
       .map(([id, data]) => {
-        const menuItem = menuItems.find(m => m.id === parseInt(id))
+        const menuItem = menuItems.find(m => m.id === id)
         return menuItem ? { ...menuItem, ...data } : null
       })
       .filter(Boolean)
@@ -125,6 +113,22 @@ export default function Dashboard() {
     setIsRefreshing(true)
     await refetchOrders()
     setTimeout(() => setIsRefreshing(false), 1000)
+  }
+
+  if (isLoading) {
+    return <div className={styles.dashboard}>Yükleniyor...</div>
+  }
+
+  if (isError) {
+    return (
+      <div className={styles.dashboard}>
+        <div className={styles.errorState}>
+          <p>Dashboard verileri yüklenemedi.</p>
+          <p className={styles.errorDetail}>{error?.message || 'API bağlantı hatası'}</p>
+          <button type="button" onClick={() => refetchOrders()}>Tekrar Dene</button>
+        </div>
+      </div>
+    )
   }
 
   if (!dashboardStats) {
@@ -240,31 +244,7 @@ export default function Dashboard() {
           </div>
           
           <div className={styles.tableSummary}>
-            <div className={styles.tableSummaryItem}>
-              <div className={styles.tableSummaryValue}>{dashboardStats.availableTables}</div>
-              <div className={styles.tableSummaryLabel}>Boş</div>
-            </div>
-            <div className={styles.tableSummaryItem}>
-              <div className={styles.tableSummaryValue}>{dashboardStats.occupiedTables}</div>
-              <div className={styles.tableSummaryLabel}>Dolu</div>
-            </div>
-            <div className={styles.tableSummaryItem}>
-              <div className={styles.tableSummaryValue}>{dashboardStats.reservedTables}</div>
-              <div className={styles.tableSummaryLabel}>Rezerve</div>
-            </div>
-          </div>
-
-          <div className={styles.tableGrid}>
-            {tables?.slice(0, 12).map(table => (
-              <div
-                key={table.id}
-                className={`${styles.tableItem} ${styles[table.status]}`}
-                onClick={() => navigate(`/tables/${table.id}`)}
-              >
-                <div className={styles.tableNumber}>{table.number}</div>
-                <div className={styles.tableCapacity}>{table.capacity} kişi</div>
-              </div>
-            ))}
+            <p className={styles.sectionDisabled}>Masa API henüz aktif değil</p>
           </div>
         </div>
 

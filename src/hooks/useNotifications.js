@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '../api/axios'
 import { useAppStore } from '../store/useAppStore'
+import { API_ENABLED } from '../api/services'
 
 // ==========================================
 // BİLDİRİM API SERVİSLERİ
@@ -70,8 +71,10 @@ export function useNotifications(options = {}) {
   return useQuery({
     queryKey: notificationKeys.lists(),
     queryFn: notificationsApi.getAll,
+    enabled: API_ENABLED.notifications,
     staleTime: 1000 * 30,
-    refetchInterval: 1000 * 60, // Her dakika kontrol et
+    refetchInterval: API_ENABLED.notifications ? 1000 * 60 : false,
+    retry: false,
     onSuccess: (data) => {
       const unreadCount = data.filter(n => !n.read).length
       setUnreadNotifications(unreadCount)
@@ -87,8 +90,10 @@ export function useUnreadNotifications(options = {}) {
   return useQuery({
     queryKey: notificationKeys.unread(),
     queryFn: notificationsApi.getUnread,
+    enabled: API_ENABLED.notifications,
     staleTime: 1000 * 15,
-    refetchInterval: 1000 * 30, // 30 saniyede bir kontrol et
+    refetchInterval: API_ENABLED.notifications ? 1000 * 30 : false,
+    retry: false,
     ...options,
   })
 }

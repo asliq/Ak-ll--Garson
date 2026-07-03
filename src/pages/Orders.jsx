@@ -9,10 +9,12 @@ import { useOrders, useUpdateOrderStatus, useTransferOrder, useMergeOrders } fro
 import { useTables, useUpdateTableStatus } from '../hooks/useTables'
 import { useMenuItems } from '../hooks/useMenu'
 import { useCreatePayment, useCreateSplitPayment } from '../hooks/usePayments'
+import { API_ENABLED } from '../api/services'
 import { printReceipt } from '../utils/printUtils'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useTranslation } from '../hooks/useTranslation'
 import { TableOperations } from '../components/TableOperations'
+import toast from 'react-hot-toast'
 import styles from './Orders.module.css'
 
 const statusConfig = {
@@ -46,7 +48,7 @@ export default function Orders() {
   const [splitCount, setSplitCount] = useState(2)
   const [tableOps, setTableOps] = useState(null) // { table, order }
 
-  const { data: orders, isLoading, refetch, isRefetching } = useOrders()
+  const { data: orders, isLoading, isError, error, refetch, isRefetching } = useOrders()
   const { data: tables } = useTables()
   const { data: menuItems } = useMenuItems()
   const updateStatus = useUpdateOrderStatus()
@@ -98,30 +100,27 @@ export default function Orders() {
     }
   }
 
-  const completeOrderAfterPayment = (receiptNumber) => {
-    const apiMethod = paymentMethods.find(m => m.id === paymentMethod)?.apiMethod || 'cash'
+  const completeOrderAfterPayment = () => {
     updateStatus.mutate(
-      {
-        id: paymentOrder.id,
-        status: 'completed',
-        paymentMethod: paymentMethod,
-        discount: discountPercent,
-        tip: tipAmount,
-        finalTotal,
-        receiptNumber,
-      },
+      { id: paymentOrder.id, status: 'completed' },
       {
         onSuccess: () => {
-          updateTableStatus.mutate({ id: paymentOrder.tableId, status: 'available' })
           play('payment')
           resetPaymentModal()
+          toast.success('Sipariş tamamlandı')
         },
-      }
+      },
     )
   }
 
   const handlePaymentConfirm = () => {
     if (!paymentOrder) return
+
+    if (!API_ENABLED.payments) {
+      completeOrderAfterPayment()
+      return
+    }
+
     const apiMethod = paymentMethods.find(m => m.id === paymentMethod)?.apiMethod || 'cash'
 
     if (splitMode && splitCount > 1) {
@@ -136,10 +135,10 @@ export default function Orders() {
           })),
         },
         {
-          onSuccess: (payments) => {
-            completeOrderAfterPayment(payments[0]?.receiptNumber)
+          onSuccess: () => {
+            completeOrderAfterPayment()
           },
-        }
+        },
       )
       return
     }
@@ -155,16 +154,18 @@ export default function Orders() {
         discount: discountPercent,
       },
       {
-        onSuccess: (payment) => {
-          completeOrderAfterPayment(payment.receiptNumber)
+        onSuccess: () => {
+          completeOrderAfterPayment()
         },
-      }
+      },
     )
   }
 
   const getTableNumber = (tableId) => {
     const table = tables?.find(t => t.id == tableId)
-    return table ? table.number : tableId
+    if (table) return table.number
+    if (!tableId) return '?'
+    return String(tableId).slice(-4)
   }
 
   const getMenuItemName = (menuItemId) => {
@@ -185,6 +186,10 @@ export default function Orders() {
   }
 
   const handleMerge = (fromTableId, toTableId) => {
+    if (!API_ENABLED.tables) {
+      toast('Masa birleştirme henüz kullanılamıyor', { icon: 'ℹ️' })
+      return
+    }
     if (!tableOps?.order || !orders) return
     const targetOrder = orders.find(
       o => o.tableId == toTableId && ['pending', 'preparing', 'ready', 'served'].includes(o.status)
@@ -203,6 +208,10 @@ export default function Orders() {
   }
 
   const handleTransfer = (fromTableId, toTableId) => {
+    if (!API_ENABLED.tables) {
+      toast('Masa transferi henüz kullanılamıyor', { icon: 'ℹ️' })
+      return
+    }
     if (!tableOps?.order) return
     transferOrder.mutate({
       orderId: tableOps.order.id,
@@ -224,6 +233,16 @@ export default function Orders() {
   const isPaying = createPayment.isPending || createSplitPayment.isPending || updateStatus.isPending
 
   if (isLoading) return <div className={styles.orders}>Yükleniyor...</div>
+
+  if (isError) {
+    return (
+      <div className={styles.orders}>
+        <p>Siparişler yüklenemedi.</p>
+        <p>{error?.message}</p>
+        <button type="button" onClick={() => refetch()}>Tekrar Dene</button>
+      </div>
+    )
+  }
 
   return (
     <div className={styles.orders}>

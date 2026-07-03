@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { inventoryApi } from '../api/services'
+import { inventoryApi, API_ENABLED } from '../api/services'
 import toast from 'react-hot-toast'
 
 // Get all inventory items
@@ -7,16 +7,19 @@ export function useInventory() {
   return useQuery({
     queryKey: ['inventory'],
     queryFn: inventoryApi.getAll,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    enabled: API_ENABLED.inventory,
+    staleTime: 1000 * 60 * 5,
+    retry: false,
   })
 }
 
-// Get low stock items
 export function useLowStockItems() {
   return useQuery({
     queryKey: ['inventory', 'low-stock'],
     queryFn: inventoryApi.getLowStock,
-    staleTime: 1000 * 60 * 2, // 2 minutes
+    enabled: API_ENABLED.inventory,
+    staleTime: 1000 * 60 * 2,
+    retry: false,
   })
 }
 

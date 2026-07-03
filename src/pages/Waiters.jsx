@@ -15,6 +15,7 @@ import {
   ToggleRight,
 } from 'lucide-react'
 import { useWaiters, useCreateWaiter, useUpdateWaiter, useDeleteWaiter } from '../hooks/useWaiters'
+import { API_ENABLED } from '../api/services'
 import { useOrders } from '../hooks/useOrders'
 import styles from './Waiters.module.css'
 
@@ -45,6 +46,15 @@ export default function Waiters() {
   const createWaiter = useCreateWaiter()
   const updateWaiter = useUpdateWaiter()
   const deleteWaiter = useDeleteWaiter()
+
+  if (!API_ENABLED.waiters) {
+    return (
+      <div className={styles.page}>
+        <h2>Garsonlar</h2>
+        <p>Garson yönetimi API henüz NestJS&apos;e taşınmadı.</p>
+      </div>
+    )
+  }
 
   const openAdd = () => {
     setEditWaiter(null)

@@ -13,6 +13,7 @@ import {
   TrendingUp
 } from 'lucide-react'
 import { useInventory, useUpdateInventoryItem, useDeleteInventoryItem } from '../hooks/useInventory'
+import { API_ENABLED } from '../api/services'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import styles from './Inventory.module.css'
@@ -25,6 +26,15 @@ export default function Inventory() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('all') // all, low, out
   const [showAddModal, setShowAddModal] = useState(false)
+
+  if (!API_ENABLED.inventory) {
+    return (
+      <div className={styles.page}>
+        <h2>Stok Yönetimi</h2>
+        <p>Envanter API henüz NestJS&apos;e taşınmadı.</p>
+      </div>
+    )
+  }
 
   // Debug logs
   console.log('Inventory Component Rendered')

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import api from '../api/axios'
 import toast from 'react-hot-toast'
+import { API_ENABLED } from '../api/services'
 
 // ==========================================
 // ÖDEME API SERVİSLERİ
@@ -100,7 +101,9 @@ export function usePayments(options = {}) {
   return useQuery({
     queryKey: paymentKeys.lists(),
     queryFn: paymentsApi.getAll,
+    enabled: API_ENABLED.payments,
     staleTime: 1000 * 60 * 2,
+    retry: false,
     ...options,
   })
 }
@@ -112,7 +115,8 @@ export function useOrderPayment(orderId, options = {}) {
   return useQuery({
     queryKey: paymentKeys.byOrder(orderId),
     queryFn: () => paymentsApi.getByOrder(orderId),
-    enabled: !!orderId,
+    enabled: API_ENABLED.payments && !!orderId,
+    retry: false,
     ...options,
   })
 }
@@ -124,7 +128,8 @@ export function useTablePayments(tableId, options = {}) {
   return useQuery({
     queryKey: paymentKeys.byTable(tableId),
     queryFn: () => paymentsApi.getByTable(tableId),
-    enabled: !!tableId,
+    enabled: API_ENABLED.payments && !!tableId,
+    retry: false,
     ...options,
   })
 }
@@ -136,7 +141,8 @@ export function usePaymentsByDateRange(startDate, endDate, options = {}) {
   return useQuery({
     queryKey: paymentKeys.byDateRange(startDate, endDate),
     queryFn: () => paymentsApi.getByDateRange(startDate, endDate),
-    enabled: !!startDate && !!endDate,
+    enabled: API_ENABLED.payments && !!startDate && !!endDate,
+    retry: false,
     ...options,
   })
 }
@@ -148,7 +154,12 @@ export function useCreatePayment() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: paymentsApi.create,
+    mutationFn: async (payment) => {
+      if (!API_ENABLED.payments) {
+        throw new Error('PAYMENTS_DISABLED')
+      }
+      return paymentsApi.create(payment)
+    },
     
     onSuccess: (data) => {
       // Ödeme listesini güncelle
@@ -179,7 +190,11 @@ export function useCreatePayment() {
       )
     },
     
-    onError: () => {
+    onError: (err) => {
+      if (err?.message === 'PAYMENTS_DISABLED') {
+        toast('Ödeme API henüz aktif değil', { icon: 'ℹ️' })
+        return
+      }
       toast.error('Ödeme işlemi başarısız!')
     },
   })
@@ -192,7 +207,12 @@ export function useCreateSplitPayment() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: paymentsApi.createSplit,
+    mutationFn: async (payload) => {
+      if (!API_ENABLED.payments) {
+        throw new Error('PAYMENTS_DISABLED')
+      }
+      return paymentsApi.createSplit(payload)
+    },
     
     onSuccess: (data, { tableId }) => {
       queryClient.invalidateQueries({ queryKey: paymentKeys.all })
@@ -202,7 +222,11 @@ export function useCreateSplitPayment() {
       toast.success(`${data.length} parça halinde ödeme alındı`, { icon: '💳' })
     },
     
-    onError: () => {
+    onError: (err) => {
+      if (err?.message === 'PAYMENTS_DISABLED') {
+        toast('Ödeme API henüz aktif değil', { icon: 'ℹ️' })
+        return
+      }
       toast.error('Bölünmüş ödeme işlemi başarısız!')
     },
   })
@@ -233,6 +257,7 @@ export function useRefundPayment() {
 // GÜNLÜK ÖDEME İSTATİSTİKLERİ
 // ==========================================
 export function useDailyPaymentStats() {
+  if (!API_ENABLED.payments) return null
   const { data: payments } = usePayments()
   
   if (!payments) return null

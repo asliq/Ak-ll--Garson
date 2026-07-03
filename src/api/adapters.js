@@ -55,7 +55,7 @@ export function mapMenuItem(item, categoryId = null) {
     description: item.description ?? '',
     price: minorToMajor(item.basePriceMinor),
     categoryId,
-    isAvailable: item.status === 'active',
+    isAvailable: String(item.status || '').toLowerCase() === 'active',
     status: item.status,
     image: item.imageUrl || DEFAULT_IMAGE,
     preparationTime: preparationMinutes,

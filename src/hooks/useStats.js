@@ -1,14 +1,12 @@
 import { useMemo } from 'react'
 import { useOrders } from './useOrders'
-import { useTables } from './useTables'
 
-// /stats endpoint yoktur — orders ve tables'dan client-side hesapla
+// /stats endpoint yoktur — orders'dan client-side hesapla (masa API'si henüz yok)
 export function useStats() {
-  const { data: orders, isLoading: ordersLoading } = useOrders()
-  const { data: tables, isLoading: tablesLoading } = useTables()
+  const { data: orders, isLoading, isError, error } = useOrders()
 
   const stats = useMemo(() => {
-    if (!orders || !tables) return null
+    if (!orders) return null
 
     const today = new Date().toDateString()
     const todayOrders = orders.filter(
@@ -25,25 +23,23 @@ export function useStats() {
     const avgOrderValue =
       todayOrders.length > 0 ? todayRevenue / todayOrders.length : 0
 
-    const availableTables = tables.filter(t => t.status === 'available').length
-    const occupiedTables = tables.filter(t => t.status === 'occupied').length
-    const reservedTables = tables.filter(t => t.status === 'reserved').length
-
     return {
       todayRevenue,
       todayOrders: todayOrders.length,
       activeOrders,
       completedOrders,
       avgOrderValue,
-      availableTables,
-      occupiedTables,
-      reservedTables,
-      totalTables: tables.length,
+      availableTables: null,
+      occupiedTables: null,
+      reservedTables: null,
+      totalTables: null,
     }
-  }, [orders, tables])
+  }, [orders])
 
   return {
     data: stats,
-    isLoading: ordersLoading || tablesLoading,
+    isLoading,
+    isError,
+    error,
   }
 }

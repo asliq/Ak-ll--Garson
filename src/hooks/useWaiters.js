@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { waitersApi } from '../api/services'
+import { waitersApi, API_ENABLED } from '../api/services'
 import toast from 'react-hot-toast'
 
 export const waiterKeys = {
@@ -12,7 +12,9 @@ export function useWaiters() {
   return useQuery({
     queryKey: waiterKeys.lists(),
     queryFn: waitersApi.getAll,
+    enabled: API_ENABLED.waiters,
     staleTime: 1000 * 60,
+    retry: false,
   })
 }
 

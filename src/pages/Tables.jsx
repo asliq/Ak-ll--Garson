@@ -15,6 +15,7 @@ import { Button, IconButton } from '../components/ui/Button'
 import { SkeletonTable } from '../components/ui/Skeleton'
 import { QRCodeGenerator } from '../components/QRCodeGenerator'
 import { useTables, useUpdateTableStatus, usePrefetchTable } from '../hooks/useTables'
+import { API_ENABLED } from '../api/services'
 import styles from './Tables.module.css'
 
 const statusConfig = {
@@ -33,6 +34,17 @@ export default function Tables() {
   const { data: tables, isLoading, isRefetching, refetch } = useTables()
   const updateStatus = useUpdateTableStatus()
   const prefetchTable = usePrefetchTable()
+
+  if (!API_ENABLED.tables) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.unavailable}>
+          <h2>Masalar</h2>
+          <p>Masa yönetimi API henüz NestJS&apos;e taşınmadı. Bu ekran geçici olarak kullanılamıyor.</p>
+        </div>
+      </div>
+    )
+  }
 
   // Bölümleri çıkar
   const sections = useMemo(() => {

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import api from '../api/axios'
+import { API_ENABLED } from '../api/services'
 
 // ==========================================
 // ANALİTİK API SERVİSLERİ
@@ -151,7 +152,9 @@ export function useDailyStats(options = {}) {
   return useQuery({
     queryKey: analyticsKeys.dailyStats(),
     queryFn: analyticsApi.getDailyStats,
-    staleTime: 1000 * 60 * 5, // 5 dakika
+    enabled: API_ENABLED.analyticsLegacy,
+    staleTime: 1000 * 60 * 5,
+    retry: false,
     ...options,
   })
 }
@@ -171,7 +174,9 @@ export function useInventory(options = {}) {
   return useQuery({
     queryKey: analyticsKeys.inventory(),
     queryFn: analyticsApi.getInventory,
+    enabled: API_ENABLED.analyticsLegacy,
     staleTime: 1000 * 60 * 10,
+    retry: false,
     ...options,
   })
 }
@@ -194,7 +199,9 @@ export function useCategoryPerformance(options = {}) {
   return useQuery({
     queryKey: analyticsKeys.categoryPerformance(),
     queryFn: analyticsApi.calculateCategoryPerformance,
+    enabled: API_ENABLED.analyticsLegacy,
     staleTime: 1000 * 60 * 5,
+    retry: false,
     ...options,
   })
 }
@@ -206,7 +213,9 @@ export function useTopSellingItems(limit = 10, options = {}) {
   return useQuery({
     queryKey: analyticsKeys.topSelling(limit),
     queryFn: () => analyticsApi.getTopSellingItems(limit),
+    enabled: API_ENABLED.analyticsLegacy,
     staleTime: 1000 * 60 * 5,
+    retry: false,
     ...options,
   })
 }
@@ -218,7 +227,9 @@ export function useHourlyDistribution(options = {}) {
   return useQuery({
     queryKey: analyticsKeys.hourlyDistribution(),
     queryFn: analyticsApi.getHourlyDistribution,
+    enabled: API_ENABLED.analyticsLegacy,
     staleTime: 1000 * 60 * 10,
+    retry: false,
     ...options,
   })
 }
@@ -230,7 +241,9 @@ export function useSettings(options = {}) {
   return useQuery({
     queryKey: analyticsKeys.settings(),
     queryFn: analyticsApi.getSettings,
-    staleTime: 1000 * 60 * 30, // 30 dakika
+    enabled: API_ENABLED.analyticsLegacy,
+    staleTime: 1000 * 60 * 30,
+    retry: false,
     ...options,
   })
 }

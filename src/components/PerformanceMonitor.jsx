@@ -96,7 +96,7 @@ export function PerformanceMonitor() {
     const measureResponse = async () => {
       const start = performance.now()
       try {
-        await fetch('http://localhost:3001/tables')
+        await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'}/health/live`)
         const end = performance.now()
         setMetrics(prev => ({ ...prev, responseTime: Math.round(end - start) }))
       } catch {

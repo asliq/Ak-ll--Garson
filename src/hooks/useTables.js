@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { tablesApi } from '../api/services'
+import { tablesApi, API_ENABLED } from '../api/services'
 import toast from 'react-hot-toast'
 
 // Query key factory - tutarlı key yönetimi için
@@ -18,9 +18,9 @@ export function useTables(options = {}) {
   return useQuery({
     queryKey: tableKeys.lists(),
     queryFn: tablesApi.getAll,
-    // Veri 2 dakika boyunca "fresh"
+    enabled: API_ENABLED.tables && options.enabled !== false,
     staleTime: 1000 * 60 * 2,
-    // Seçenekleri dışarıdan override edebiliriz
+    retry: false,
     ...options,
   })
 }
@@ -33,7 +33,8 @@ export function useTable(id, options = {}) {
     queryKey: tableKeys.detail(id),
     queryFn: () => tablesApi.getById(id),
     // id yoksa sorgu çalışmaz
-    enabled: !!id,
+    enabled: API_ENABLED.tables && !!id,
+    retry: false,
     ...options,
   })
 }
