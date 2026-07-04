@@ -19,7 +19,7 @@ async function waitForApp(page) {
 async function loginAsAdmin(page) {
   await page.goto(`${BASE}/login`)
   await waitForApp(page)
-  await page.locator('#email').fill('ahmet@restaurant.com')
+  await page.locator('#email').fill('ahmet@restoran.com')
   await page.locator('#pin').fill('1234')
   await page.locator('button[type="submit"]').click()
   await page.waitForURL('**/')

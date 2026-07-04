@@ -178,9 +178,20 @@ export const useWebSocket = (url = null, options = {}) => {
     connect()
   }, [connect, disconnect])
 
+  const mountGeneration = useRef(0)
+
   useEffect(() => {
+    const generation = ++mountGeneration.current
     connect()
-    return () => disconnect()
+
+    return () => {
+      const closedGeneration = generation
+      setTimeout(() => {
+        if (mountGeneration.current === closedGeneration) {
+          disconnect()
+        }
+      }, 150)
+    }
   }, [connect, disconnect])
 
   useEffect(() => {

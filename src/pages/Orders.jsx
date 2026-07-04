@@ -177,7 +177,7 @@ export default function Orders() {
     const table = tables?.find(t => t.id == order.tableId) || { number: order.tableId }
     const enriched = {
       ...order,
-      items: order.items.map(item => {
+      items: (order.items || []).map(item => {
         const mi = menuItems?.find(m => m.id == item.menuItemId)
         return { ...item, name: mi?.name || 'Ürün', price: item.price || mi?.price || 0 }
       }),
@@ -322,7 +322,7 @@ export default function Orders() {
                 </div>
 
                 <div className={styles.orderItems}>
-                  {order.items.map((item, index) => (
+                  {(order.items || []).map((item, index) => (
                     <div key={index} className={styles.orderItem}>
                       <span className={styles.itemQuantity}>{item.quantity}x</span>
                       <span className={styles.itemName}>{getMenuItemName(item.menuItemId)}</span>
@@ -409,7 +409,7 @@ export default function Orders() {
               </div>
 
               <div className={styles.paymentItems}>
-                {paymentOrder.items.map((item, i) => (
+                {(paymentOrder.items || []).map((item, i) => (
                   <div key={i} className={styles.paymentItem}>
                     <span className={styles.paymentItemQty}>{item.quantity}x</span>
                     <span className={styles.paymentItemName}>{getMenuItemName(item.menuItemId)}</span>

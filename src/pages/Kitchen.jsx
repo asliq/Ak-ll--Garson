@@ -67,10 +67,11 @@ export default function Kitchen() {
       return { ...order, elapsedTime: elapsed, autoPriority }
     })
     .filter(order => {
+      const items = order.items || []
       if (filter === 'all') return true
-      if (filter === 'pending') return order.items.some(i => i.status === 'pending')
-      if (filter === 'preparing') return order.items.some(i => i.status === 'preparing')
-      if (filter === 'ready') return order.items.every(i => i.status === 'ready' || i.status === 'served')
+      if (filter === 'pending') return items.some(i => i.status === 'pending')
+      if (filter === 'preparing') return items.some(i => i.status === 'preparing')
+      if (filter === 'ready') return items.every(i => i.status === 'ready' || i.status === 'served')
       return true
     })
     .sort((a, b) => {
@@ -82,9 +83,9 @@ export default function Kitchen() {
     })
 
   const allOrdersCount = kitchenOrders?.length || 0
-  const pendingCount = kitchenOrders?.filter(o => o.items.some(i => i.status === 'pending')).length || 0
-  const preparingCount = kitchenOrders?.filter(o => o.items.some(i => i.status === 'preparing')).length || 0
-  const readyCount = kitchenOrders?.filter(o => o.items.every(i => i.status === 'ready' || i.status === 'served')).length || 0
+  const pendingCount = kitchenOrders?.filter(o => (o.items || []).some(i => i.status === 'pending')).length || 0
+  const preparingCount = kitchenOrders?.filter(o => (o.items || []).some(i => i.status === 'preparing')).length || 0
+  const readyCount = kitchenOrders?.filter(o => (o.items || []).every(i => i.status === 'ready' || i.status === 'served')).length || 0
 
   if (isLoading && !kitchenOrders) {
     return <div className={styles.kitchen}>Yükleniyor...</div>
@@ -157,7 +158,8 @@ export default function Kitchen() {
         <div className={styles.ordersGrid}>
           {ordersWithTime.map(order => {
             const isUrgent = order.priority === 'urgent' || order.priority === 'high' || order.autoPriority === 'high'
-            const allReady = order.items.every(i => i.status === 'ready' || i.status === 'served')
+            const items = order.items || []
+            const allReady = items.every(i => i.status === 'ready' || i.status === 'served')
 
             return (
               <div
@@ -186,7 +188,7 @@ export default function Kitchen() {
 
                 {/* Items — item bazlı durum */}
                 <div className={styles.orderItems}>
-                  {order.items.map((item) => (
+                  {(order.items || []).map((item) => (
                     <div key={item.menuItemId} className={`${styles.orderItem} ${styles[item.status]}`}>
                       <div className={styles.itemInfo}>
                         <span className={styles.itemQuantity}>{item.quantity || 1}x</span>

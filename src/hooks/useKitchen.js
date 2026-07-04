@@ -18,7 +18,7 @@ function mapOrderToKitchen(order) {
     tableNumber: order.tableId?.slice(-4) || '?',
     priority: 'normal',
     createdAt: order.createdAt,
-    items: order.items.map((item) => ({
+    items: (order.items || []).map((item) => ({
       menuItemId: item.menuItemId,
       quantity: item.quantity,
       status: itemStatus,
@@ -91,7 +91,7 @@ export function useUpdateKitchenItemStatus() {
           order.id === orderId
             ? {
                 ...order,
-                items: order.items.map((item) =>
+                items: (order.items || []).map((item) =>
                   item.menuItemId === menuItemId ? { ...item, status } : item,
                 ),
               }
@@ -196,17 +196,17 @@ export function useKitchenStats() {
 
   if (!orders) return null
 
-  const totalItems = orders.reduce((sum, order) => sum + order.items.length, 0)
+  const totalItems = orders.reduce((sum, order) => sum + (order.items || []).length, 0)
   const pendingItems = orders.reduce(
-    (sum, order) => sum + order.items.filter((i) => i.status === 'pending').length,
+    (sum, order) => sum + (order.items || []).filter((i) => i.status === 'pending').length,
     0,
   )
   const preparingItems = orders.reduce(
-    (sum, order) => sum + order.items.filter((i) => i.status === 'preparing').length,
+    (sum, order) => sum + (order.items || []).filter((i) => i.status === 'preparing').length,
     0,
   )
   const readyItems = orders.reduce(
-    (sum, order) => sum + order.items.filter((i) => i.status === 'ready').length,
+    (sum, order) => sum + (order.items || []).filter((i) => i.status === 'ready').length,
     0,
   )
   const highPriorityOrders = orders.filter(

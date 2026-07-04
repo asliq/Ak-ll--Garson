@@ -1,15 +1,23 @@
 import { Navigate, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { useAuthGuard } from '../hooks/useAuth'
 import { usePermissions } from '../hooks/usePermissions'
+import { useAppStore } from '../store/useAppStore'
 
 export default function AuthGuard({ children }) {
   const location = useLocation()
   const { isAuthenticated, isLoading } = useAuthGuard()
   const { canAccess, defaultPath } = usePermissions()
+  const [storeReady, setStoreReady] = useState(() => useAppStore.persist.hasHydrated())
 
-  if (isLoading) {
+  useEffect(() => {
+    if (storeReady) return undefined
+    return useAppStore.persist.onFinishHydration(() => setStoreReady(true))
+  }, [storeReady])
+
+  if (!storeReady || isLoading) {
     return (
       <div style={{
         minHeight: '100vh',

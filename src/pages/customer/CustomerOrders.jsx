@@ -176,6 +176,7 @@ export default function CustomerOrders() {
           {activeOrders.map(order => {
             const status = statusConfig[order.status]
             const StatusIcon = status.icon
+            const items = order.items || []
 
             return (
               <div 
@@ -217,15 +218,15 @@ export default function CustomerOrders() {
                 </div>
 
                 <div className={styles.orderItems}>
-                  {order.items.slice(0, 3).map((item, index) => (
+                  {items.slice(0, 3).map((item, index) => (
                     <div key={index} className={styles.orderItem}>
                       <span className={styles.itemQuantity}>{item.quantity}x</span>
                       <span className={styles.itemName}>{getItemName(item.menuItemId, item)}</span>
                     </div>
                   ))}
-                  {order.items.length > 3 && (
+                  {items.length > 3 && (
                     <div className={styles.moreItems}>
-                      +{order.items.length - 3} ürün daha
+                      +{items.length - 3} ürün daha
                     </div>
                   )}
                 </div>
@@ -298,7 +299,7 @@ export default function CustomerOrders() {
                       <span className={styles.orderDate}>{formatTime(order.createdAt)}</span>
                     </div>
                     <div className={styles.orderStatus}>{status.label}</div>
-                    <div className={styles.orderItemCount}>{order.items.length} ürün</div>
+                    <div className={styles.orderItemCount}>{(order.items || []).length} ürün</div>
                   </div>
                   <div className={styles.orderPrice}>
                     {formatCurrency(order.total)}
@@ -359,7 +360,7 @@ export default function CustomerOrders() {
 
               <div className={styles.detailItems}>
                 <h4>Siparişiniz</h4>
-                {selectedOrder.items.map((item, index) => (
+                {(selectedOrder.items || []).map((item, index) => (
                   <div key={index} className={styles.detailItem}>
                     <span className={styles.detailQuantity}>{item.quantity}x</span>
                     <span className={styles.detailName}>{getItemName(item.menuItemId, item)}</span>

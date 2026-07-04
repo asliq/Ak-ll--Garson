@@ -1,0 +1,67 @@
+[
+  {
+    "route": "API health/live",
+    "status": "PASS",
+    "detail": "HTTP 200"
+  },
+  {
+    "route": "API orders",
+    "status": "PASS",
+    "detail": "HTTP 200"
+  },
+  {
+    "route": "API public menu",
+    "status": "PASS",
+    "detail": "HTTP 200"
+  },
+  {
+    "route": "Login",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "route": "Dashboard",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "route": "Orders",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "route": "Kitchen",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "route": "Menu",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "route": "System Health",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "route": "Settings",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "route": "Roadmap Tables",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "route": "Customer QR Menu",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "route": "Customer Orders",
+    "status": "PASS",
+    "detail": ""
+  }
+]
