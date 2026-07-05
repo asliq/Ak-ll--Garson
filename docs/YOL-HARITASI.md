@@ -300,6 +300,6 @@ M5 ─── 10+ restoran (Faz 5)
 
 ## İlgili Dokümanlar
 
-- [Master Project Report](./MASTER-PROJECT-REPORT.md)
+- [Master Project Report](./MASTER_PROJECT_REPORT.md)
 - [Mimari Tasarım](./MIMARI-TASARIM.md)
 - [Arşiv: Domain Model Analizi](./archive/DOMAIN-ANALIZI.md)

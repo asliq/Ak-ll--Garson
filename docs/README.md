@@ -8,7 +8,8 @@ Entry point for **Akıllı Garson** technical documentation (Release Candidate 1
 |----------|----------|
 | Everyone | [Repository README](../README.md) |
 | Backend setup | [api/README.md](../api/README.md) |
-| Deep technical review | [MASTER-PROJECT-REPORT.md](./MASTER-PROJECT-REPORT.md) |
+| Deep technical review | [MASTER_PROJECT_REPORT.md](./MASTER_PROJECT_REPORT.md) |
+| Quick overview | [EXECUTIVE_SUMMARY.md](./EXECUTIVE_SUMMARY.md) |
 | RC1 release notes | [RC1_P0_COMPLETION_REPORT.md](./RC1_P0_COMPLETION_REPORT.md) |
 
 ## Architecture & domain
@@ -28,7 +29,8 @@ Entry point for **Akıllı Garson** technical documentation (Release Candidate 1
 | Document | Content |
 |----------|---------|
 | [YOL-HARITASI.md](./YOL-HARITASI.md) | Product roadmap |
-| [MASTER-PROJECT-REPORT.md](./MASTER-PROJECT-REPORT.md) | Portfolio analysis & gaps |
+| [MASTER_PROJECT_REPORT.md](./MASTER_PROJECT_REPORT.md) | Full technical reference (RC1) |
+| [EXECUTIVE_SUMMARY.md](./EXECUTIVE_SUMMARY.md) | Concise overview |
 
 ## RC1 quality assurance
 

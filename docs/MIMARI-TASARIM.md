@@ -1134,7 +1134,7 @@ SecurityLog {
 
 ## İlgili Dokümanlar
 
-- [Master Project Report](./MASTER-PROJECT-REPORT.md)
+- [Master Project Report](./MASTER_PROJECT_REPORT.md)
 - [Arşiv: Domain Model Analizi](./archive/DOMAIN-ANALIZI.md)
 - [İş Kuralları ve State Machines](./IS-KURALLARI.md)
 

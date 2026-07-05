@@ -21,7 +21,11 @@ Historical documents preserved for context. **They do not describe the current R
 | `DEMO_READY_REPORT.md` | Demo stabilization report |
 | `DEMO_UX_REPORT.md` | Demo Edition UX sprint |
 | `PRODUCT_POLISH_REPORT.md` | Product polish sprint |
+| `MASTER-PROJECT-REPORT.md` | Superseded report with scores, SWOT, and recruiter sections |
 
 ## Current documentation
 
-Start at [`../README.md`](./README.md) in this folder, or the repository root [`README.md`](../../README.md).
+- [MASTER_PROJECT_REPORT.md](../MASTER_PROJECT_REPORT.md) — technical reference (RC1)
+- [EXECUTIVE_SUMMARY.md](../EXECUTIVE_SUMMARY.md) — concise overview
+- [docs/README.md](../README.md) — documentation index
+- [Repository README](../../README.md) — setup and quick start

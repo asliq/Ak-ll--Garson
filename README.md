@@ -14,7 +14,7 @@
 [![TypeScript](https://img.shields.io/badge/Backend-TypeScript-3178C6?logo=typescript&logoColor=white)](./api/)
 [![Status](https://img.shields.io/badge/status-RC1%20Demo-blue.svg)](#current-limitations)
 
-[Overview](#project-overview) · [Metrics](#project-metrics) · [Mimari](#architecture) · [Kurulum](#installation) · [Deep Dive](./docs/MASTER-PROJECT-REPORT.md)
+[Overview](#project-overview) · [Metrics](#project-metrics) · [Mimari](#architecture) · [Kurulum](#installation) · [Technical Report](./docs/MASTER_PROJECT_REPORT.md)
 
 ### Highlights
 
@@ -402,7 +402,8 @@ akilli-garson/
 │   └── utils/                    # print, sound
 │
 ├── docs/                         # Mimari ve proje dokümantasyonu
-│   └── MASTER-PROJECT-REPORT.md  # Kapsamlı teknik rapor
+│   ├── MASTER_PROJECT_REPORT.md  # Technical reference (RC1)
+│   ├── EXECUTIVE_SUMMARY.md      # Short overview
 │
 ├── public/                       # PWA manifest, service worker
 ├── package.json                  # Frontend (v2.0.0)
@@ -694,7 +695,7 @@ Week-level view of [Architecture Evolution](#architecture-evolution):
 - [ ] Analytics modülü (gerçek aggregation)
 - [ ] Billing & abonelik modeli
 
-Detaylı plan: [`docs/MASTER-PROJECT-REPORT.md`](./docs/MASTER-PROJECT-REPORT.md)
+Detaylı plan: [`docs/YOL-HARITASI.md`](./docs/YOL-HARITASI.md) · [`docs/MASTER_PROJECT_REPORT.md`](./docs/MASTER_PROJECT_REPORT.md)
 
 ---
 
@@ -839,7 +840,8 @@ LOG_LEVEL=info
 |--------|-----|
 | **Swagger UI** | http://localhost:3001/docs |
 | **Health (live)** | http://localhost:3001/api/v1/health/live |
-| **Master Report** | [docs/MASTER-PROJECT-REPORT.md](./docs/MASTER-PROJECT-REPORT.md) |
+| **Technical Report** | [docs/MASTER_PROJECT_REPORT.md](./docs/MASTER_PROJECT_REPORT.md) |
+| **Executive Summary** | [docs/EXECUTIVE_SUMMARY.md](./docs/EXECUTIVE_SUMMARY.md) |
 
 ---
 
@@ -975,7 +977,8 @@ See [`docs/README.md`](./docs/README.md) for the full documentation index.
 
 | Document | Content |
 |----------|---------|
-| [MASTER-PROJECT-REPORT.md](./docs/MASTER-PROJECT-REPORT.md) | Full technical & commercial analysis |
+| [EXECUTIVE_SUMMARY.md](./docs/EXECUTIVE_SUMMARY.md) | Concise project overview |
+| [MASTER_PROJECT_REPORT.md](./docs/MASTER_PROJECT_REPORT.md) | Full technical reference |
 | [MIMARI-TASARIM.md](./docs/MIMARI-TASARIM.md) | Architecture design decisions |
 | [RC1_P0_COMPLETION_REPORT.md](./docs/RC1_P0_COMPLETION_REPORT.md) | Release Candidate 1 P0 fixes |
 
