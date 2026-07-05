@@ -1,0 +1,203 @@
+{
+  "testedAt": "2026-07-05T12:23:06.362Z",
+  "results": [
+    {
+      "route": "Login",
+      "path": "/login",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K Akıllı Garson Restaurant Management Platform DEMO EDİTİON E-POSTA PIN KODU Giriş Yap HIZLI GİRİŞ (DEMO) 👨‍🍳 Ahmet 👩‍🍳 Ayşe PIN: 1234 © Akıllı Garson — Tüm hakları saklıdır 🍕 🍔 🍰",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Dashboard",
+      "path": "/",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Orders",
+      "path": "/orders",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Kitchen",
+      "path": "/kitchen",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Menu",
+      "path": "/menu",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Settings",
+      "path": "/system/settings",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "System Health",
+      "path": "/system/health",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Roadmap QR Orders",
+      "path": "/orders/qr",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": true,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Roadmap Categories",
+      "path": "/menu/categories",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": true,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Roadmap Tables",
+      "path": "/restaurant/tables",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": true,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Roadmap Staff",
+      "path": "/restaurant/staff",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": true,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Roadmap Reservations",
+      "path": "/restaurant/reservations",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": true,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Roadmap Inventory",
+      "path": "/operations/inventory",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": true,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Roadmap Payments",
+      "path": "/operations/payments",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": true,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Roadmap Reports",
+      "path": "/operations/reports",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": true,
+      "bodyPreview": "K AG Akıllı Garson Restaurant Management Platform DEMO EDİTİON Çevrimiçi CANLI Dashboard SİPARİŞ YÖNETİMİ Siparişler 4 Mutfak QR Siparişler PLAN MENÜ YÖNETİMİ Kategoriler PLAN Menü Ürünleri RESTORAN M",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Customer QR Redirect",
+      "path": "/customer?token=qr-masa-1",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K Masa 1 Tümü12 Başlangıçlar3 Ana Yemekler4 İçecekler3 Tatlılar2 Mercimek Çorbası Tereyağlı, limonlu klasik mercimek çorbası ₺95 Ekle Humus Zeytinyağlı, tahinli humus ₺120 Ekle Çoban Salata Domat",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Customer Menu",
+      "path": "/customer/menu",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K Masa 1 Tümü12 Başlangıçlar3 Ana Yemekler4 İçecekler3 Tatlılar2 Mercimek Çorbası Tereyağlı, limonlu klasik mercimek çorbası ₺95 Ekle Humus Zeytinyağlı, tahinli humus ₺120 Ekle Çoban Salata Domat",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "Customer Orders",
+      "path": "/customer/orders",
+      "status": "PASS",
+      "issue": null,
+      "roadmap": false,
+      "bodyPreview": "K Siparişlerim Masa Masa 1 Aktif Siparişler 1 Sipariş #660e8400-e29b-41d4-a716-446655443001 13:15 • 2 saat önce Sipariş Alındı Alındı Hazırlanıyor Hazır Servis 1x Mercimek Çorbası 1x Izgara Köfte To",
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": []
+    }
+  ]
+}

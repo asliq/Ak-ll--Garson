@@ -50,7 +50,15 @@ export default function CustomerMenu() {
   const [detailItem, setDetailItem] = useState(null)   // item detail modal
 
   const tableToken = customerTable?.tableToken
-  const { data: publicMenu, isLoading, isFetching, isError, error, refetch } = usePublicMenu(tableToken)
+  const {
+    data: publicMenu,
+    isLoading,
+    isFetching,
+    isFetched,
+    isError,
+    error,
+    refetch,
+  } = usePublicMenu(tableToken)
   const createOrder = useCreatePublicOrder()
   const { t } = useTranslation()
 
@@ -163,11 +171,9 @@ export default function CustomerMenu() {
     return <div className={styles.loading}>Menü yükleniyor...</div>
   }
 
-  if (isLoading || (isFetching && !publicMenu)) {
-    return <div className={styles.loading}>Menü yükleniyor...</div>
-  }
+  const menuLoadFailed = isError || (isFetched && !publicMenu && !isFetching)
 
-  if (isError) {
+  if (menuLoadFailed) {
     return (
       <div className={styles.loading}>
         <p>Menü yüklenemedi.</p>
@@ -176,6 +182,10 @@ export default function CustomerMenu() {
         <button type="button" onClick={() => navigate('/customer')}>Geri Dön</button>
       </div>
     )
+  }
+
+  if (isLoading || (isFetching && !publicMenu)) {
+    return <div className={styles.loading}>Menü yükleniyor...</div>
   }
 
   return (

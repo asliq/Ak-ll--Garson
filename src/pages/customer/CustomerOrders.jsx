@@ -14,6 +14,7 @@ import {
   RefreshCw
 } from 'lucide-react'
 import { useUpdateOrderStatus, useTableOrders } from '../../hooks/useOrders'
+import { usePublicMenu } from '../../hooks/usePublicMenu'
 import { setRestaurantId } from '../../api/services'
 import { useTranslation } from '../../hooks/useTranslation'
 import toast from 'react-hot-toast'
@@ -85,11 +86,31 @@ const getTimeAgo = (dateString) => {
   return `${hours} saat önce`
 }
 
+function readCustomerTable() {
+  try {
+    const raw = localStorage.getItem('customerTable')
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
 export default function CustomerOrders() {
   const navigate = useNavigate()
-  const [customerTable, setCustomerTable] = useState(null)
+  const [customerTable, setCustomerTable] = useState(readCustomerTable)
   const [selectedOrder, setSelectedOrder] = useState(null)
+  const tableToken = customerTable?.tableToken
   const tableId = customerTable?.tableId
+
+  const {
+    data: publicMenu,
+    isLoading: menuResolving,
+    isError: menuError,
+    error: menuFetchError,
+  } = usePublicMenu(tableToken, { enabled: !!tableToken && !tableId })
+
+  const resolvedTableId = tableId || publicMenu?.tableId
+
   const {
     data: orders = [],
     isLoading,
@@ -97,9 +118,9 @@ export default function CustomerOrders() {
     error,
     refetch,
     isRefetching,
-  } = useTableOrders(tableId, {
-    enabled: !!tableId,
-    refetchInterval: tableId ? 15000 : false,
+  } = useTableOrders(resolvedTableId, {
+    enabled: !!resolvedTableId,
+    refetchInterval: resolvedTableId ? 15000 : false,
   })
   const updateStatus = useUpdateOrderStatus()
   const { t } = useTranslation()
@@ -110,13 +131,23 @@ export default function CustomerOrders() {
     const restaurantId = import.meta.env.VITE_RESTAURANT_ID
     if (restaurantId) setRestaurantId(restaurantId)
 
-    const tableData = localStorage.getItem('customerTable')
-    if (!tableData) {
+    if (!customerTable?.tableToken) {
       navigate('/customer')
-      return
     }
-    setCustomerTable(JSON.parse(tableData))
-  }, [navigate])
+  }, [customerTable, navigate])
+
+  useEffect(() => {
+    if (!publicMenu?.tableId || !customerTable) return
+    if (customerTable.tableId === publicMenu.tableId) return
+
+    const updated = {
+      ...customerTable,
+      tableId: publicMenu.tableId,
+      tableName: publicMenu.tableName || customerTable.tableName,
+    }
+    localStorage.setItem('customerTable', JSON.stringify(updated))
+    setCustomerTable(updated)
+  }, [publicMenu, customerTable])
 
   // Bu masanın siparişleri (tableId public menüden alınır)
   const sortedOrders = [...orders].sort(
@@ -134,11 +165,25 @@ export default function CustomerOrders() {
     })
   }
 
-  if (!customerTable) {
+  if (!customerTable?.tableToken) {
     return <div className={styles.loading}>Yükleniyor...</div>
   }
 
-  if (!tableId) {
+  if (!resolvedTableId && menuResolving) {
+    return <div className={styles.loading}>Yükleniyor...</div>
+  }
+
+  if (!resolvedTableId && menuError) {
+    return (
+      <div className={styles.loading}>
+        <p>Siparişler yüklenemedi.</p>
+        <p>{menuFetchError?.message || 'Masa bilgisi alınamadı.'}</p>
+        <button type="button" onClick={() => navigate('/customer/menu')}>Menüye Dön</button>
+      </div>
+    )
+  }
+
+  if (!resolvedTableId) {
     return (
       <div className={styles.loading}>
         <p>Henüz sipariş yok</p>

@@ -1,0 +1,75 @@
+{
+  "testedAt": "2026-07-05T12:24:01.072Z",
+  "results": [
+    {
+      "name": "Cold start /orders → login",
+      "status": "PASS",
+      "detail": "http://localhost:5173/login"
+    },
+    {
+      "name": "Hard reload /",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Hard reload /orders",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Hard reload /kitchen",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Hard reload /menu",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Hard reload /system/health",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Hard reload /system/settings",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Sidebar nav → Siparişler",
+      "status": "PASS",
+      "detail": "/orders"
+    },
+    {
+      "name": "Sidebar nav → Mutfak",
+      "status": "PASS",
+      "detail": "/kitchen"
+    },
+    {
+      "name": "Sidebar nav → Menü Ürünleri",
+      "status": "PASS",
+      "detail": "/menu"
+    },
+    {
+      "name": "Customer QR cold start",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Customer orders (no tableId)",
+      "status": "PASS",
+      "detail": "K\nSiparişlerim\n\nMasa Masa 1\n\nAktif Siparişler\n1\nSipariş #660e8400-e29b-41d4-a716"
+    },
+    {
+      "name": "Rapid route switching",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "Customer menu API down",
+      "status": "PASS",
+      "detail": "K\n\nMenü yüklenemedi.\n\nNetwork Error\n\nTekrar Dene\nGeri Dön"
+    }
+  ]
+}

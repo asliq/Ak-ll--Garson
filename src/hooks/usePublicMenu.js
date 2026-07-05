@@ -12,6 +12,8 @@ export function usePublicMenu(tableToken, options = {}) {
     queryFn: () => publicMenuApi.getByTableToken(tableToken),
     enabled: !!tableToken,
     staleTime: 1000 * 60 * 2,
+    retry: 1,
+    retryDelay: 300,
     ...options,
   })
 }
