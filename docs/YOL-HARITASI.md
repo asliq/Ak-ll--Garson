@@ -77,7 +77,7 @@
 
 - [ ] **POS entegrasyonu (temel)**
   - Nakit ödeme kaydı (mevcut)
-  - Kart ödeme gateway (iyzico / PayTR)
+  - Kart ödeme gateway entegrasyonu
   - Ödeme durumu webhook'ları
 
 - [ ] **Offline mod**
@@ -154,7 +154,7 @@
 
 - [ ] **Abonelik sistemi**
   - Paketler: Basic / Pro / Enterprise
-  - Stripe / iyzico abonelik faturalandırma
+  - SaaS abonelik faturalandırma entegrasyonu
   - Deneme süresi (14 gün)
   - Kullanım limitleri (masa, kullanıcı sayısı)
 
@@ -198,12 +198,12 @@
 ### Görevler
 
 - [ ] Sadakat programı (puan, kupon)
-- [ ] SMS / e-posta bildirimleri (Twilio, SendGrid)
+- [ ] SMS / e-posta bildirimleri (üçüncü taraf mesajlaşma sağlayıcıları)
 - [ ] Kampanya ve promosyon motoru
 - [ ] Bekleme listesi (walk-in)
 - [ ] Alerjen / diyet filtreleri
-- [ ] Yemek platformu entegrasyonları (Yemeksepeti, Getir)
-- [ ] Muhasebe entegrasyonu (Logo, Mikro)
+- [ ] Yemek teslimat platformu entegrasyonları
+- [ ] Muhasebe yazılımı entegrasyonu
 - [ ] Enterprise raporlama (BI dashboard)
 - [ ] Kiosk / self-order terminal modu
 - [ ] Franchise yönetim paneli

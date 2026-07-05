@@ -151,7 +151,7 @@ Login.jsx → useLogin() → authApi.login()
 - [ ] Playwright E2E test suite
 - [ ] Tam i18n kapsamı
 - [ ] TypeScript migrasyonu (opsiyonel)
-- [ ] Error boundary + Sentry entegrasyonu
+- [ ] Error boundary + merkezi hata izleme entegrasyonu
 - [ ] API response validation (Zod)
 
 ### Düşük Öncelik

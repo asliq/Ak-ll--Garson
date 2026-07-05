@@ -146,7 +146,7 @@ dine_in | qr | takeaway | delivery | aggregator
 
 **Minor units tercih gerekçesi:**
 - Integer aritmetik hızlı ve deterministik
-- Stripe, Adyen, Square aynı pattern'i kullanır
+- Kurumsal ödeme platformlarında yaygın minor-units pattern'i kullanılır
 - CHECK constraint kolay: `amount_minor >= 0` (base price için)
 
 ### 2.2 Modifier Price Delta (negatif olabilir)

@@ -493,7 +493,7 @@ pending → cancelled
 | **Customer** | Sadakat, KVKK, sipariş geçmişi |
 | **Device / Terminal** | Kiosk, tablet, POS cihaz kimliği |
 | **AuditLog / DomainEvent** | Compliance, dispute çözümü |
-| **OrderChannel** | QR, kiosk, Yemeksepeti kaynak ayrımı |
+| **OrderChannel** | QR, kiosk, üçüncü taraf teslimat kanalı kaynak ayrımı |
 | **Waitlist** | Walk-in müşteri kuyruğu |
 | **Subscription / Plan** | SaaS faturalandırma |
 | **IntegrationAccount** | Muhasebe, delivery platform API |
@@ -569,7 +569,7 @@ Sipariş durum makinesi, masa güncelleme, ödeme hesaplama, merge/transfer mant
 
 ### 7.7 Muhasebe Entegrasyonu
 - `FiscalDocument`, `AccountingExport`
-- Gün sonu kapanış event'i → Logo/Mikro export
+- Gün sonu kapanış event'i → muhasebe yazılımı export
 
 ### Hedef Mimari (özet)
 

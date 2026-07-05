@@ -1056,7 +1056,7 @@ SecurityLog {
 ## 11.3 Faz 3 — SaaS
 
 - Tenant onboarding API
-- Stripe/iyzico billing module
+- SaaS abonelik faturalandırma modülü
 - Per-tenant rate limits
 - Optional: extract Payments → ayrı servis
 - Optional: extract Reports → read replica + OLAP

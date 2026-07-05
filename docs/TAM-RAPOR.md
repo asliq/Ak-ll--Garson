@@ -191,7 +191,7 @@ Akıllı Garson, restoran operasyonlarını dijitalleştirmeyi hedefleyen **web 
 - HTTPS, CORS, CSP, KVKK uyumu
 
 **C. Ödeme ve Mali Uyumluluk (Türkiye)**
-- Gerçek POS (iyzico, PayTR), ÖKC, e-Fatura/e-Arşiv
+- Gerçek POS (ödeme gateway entegrasyonu), ÖKC, e-Fatura/e-Arşiv
 - Fiş numarası, KDV dökümü, Z raporu
 
 **D. Donanım Entegrasyonu**
@@ -212,7 +212,7 @@ Akıllı Garson, restoran operasyonlarını dijitalleştirmeyi hedefleyen **web 
 
 - Multi-şube, franchise, abonelik paketleri
 - Onboarding sihirbazı, canlı destek, tam i18n
-- E2E test, CI/CD, Sentry, TypeScript
+- E2E test, CI/CD, merkezi hata izleme, TypeScript
 - Tablet-first mutfak, kiosk modu, marka özelleştirme
 
 ## 2.6 Rekabet ve Konumlandırma
@@ -375,7 +375,7 @@ Login.jsx → useLogin() → authApi.login()
 - [ ] Playwright E2E test suite
 - [ ] Tam i18n kapsamı
 - [ ] TypeScript migrasyonu (opsiyonel)
-- [ ] Error boundary + Sentry entegrasyonu
+- [ ] Error boundary + merkezi hata izleme entegrasyonu
 - [ ] API response validation (Zod)
 
 **Düşük Öncelik**
@@ -434,7 +434,7 @@ NODE_ENV=development
 **Amaç:** Günlük restoran operasyonları.
 
 - Termal yazıcı (ESC/POS), mutfak/adisyon fişi
-- POS gateway (iyzico / PayTR), webhook'lar
+- POS gateway entegrasyonu, webhook'lar
 - Offline mod (IndexedDB kuyruk, sync, conflict resolution)
 - Vardiya yönetimi, kasa sayımı
 - Mutfak istasyonları, hazırlık süresi, gecikme uyarıları
@@ -470,8 +470,8 @@ NODE_ENV=development
 
 - Sadakat programı, SMS/e-posta bildirimleri
 - Kampanya motoru, bekleme listesi, alerjen filtreleri
-- Yemek platformu entegrasyonları (Yemeksepeti, Getir)
-- Muhasebe entegrasyonu (Logo, Mikro)
+- Yemek teslimat platformu entegrasyonları
+- Muhasebe yazılımı entegrasyonu
 - Kiosk modu, franchise paneli, API marketplace
 
 ## 4.7 Öncelik Matrisi

@@ -176,7 +176,7 @@ Tek SPA içinde sidebar navigasyonu ve rol bazlı menü filtreleme kullanılır.
 - **KVKK uyumu:** aydınlatma metni, veri minimizasyonu, silme hakkı
 
 #### C. Ödeme ve Mali Uyumluluk (Türkiye)
-- Gerçek POS entegrasyonu (iyzico, PayTR, banka sanal POS)
+- Gerçek POS entegrasyonu (ödeme gateway ve sanal POS sağlayıcıları)
 - Yazar kasa / ÖKC entegrasyonu
 - e-Fatura / e-Arşiv bağlantısı
 - Fiş numarası, KDV dökümü, gün sonu Z raporu
@@ -248,7 +248,7 @@ Tek SPA içinde sidebar navigasyonu ve rol bazlı menü filtreleme kullanılır.
 - CI/CD pipeline, staging ortamı
 - Yük ve stres testleri
 - TypeScript migrasyonu veya sıkı test coverage
-- Hata izleme (Sentry vb.)
+- Hata izleme (merkezi APM / error tracking)
 
 #### N. UX ve Cihaz Uyumu
 - Tablet-first mutfak ekranı
