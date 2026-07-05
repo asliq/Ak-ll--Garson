@@ -82,7 +82,7 @@ export const menuApi = {
   },
 
   updateAvailability: async ({ id, isAvailable }) => {
-    return Promise.reject(new Error('Ürün stok durumu API üzerinden henüz desteklenmiyor'))
+    return Promise.reject(new Error('Stok güncellemesi şu an kullanılamıyor'))
   },
 
   updatePrice: async ({ id, price }) => {
@@ -120,11 +120,11 @@ export const menuApi = {
   },
 
   delete: async () => {
-    return Promise.reject(new Error('Ürün silme API üzerinden henüz desteklenmiyor'))
+    return Promise.reject(new Error('Ürün silme şu an kullanılamıyor'))
   },
 
   update: async () => {
-    return Promise.reject(new Error('Ürün güncelleme API üzerinden henüz desteklenmiyor'))
+    return Promise.reject(new Error('Ürün güncelleme şu an kullanılamıyor'))
   },
 }
 
@@ -204,24 +204,24 @@ export const ordersApi = {
   },
 
   update: async () => {
-    throw new Error('Sipariş güncelleme API üzerinden henüz desteklenmiyor')
+    throw new Error('Sipariş güncelleme şu an kullanılamıyor')
   },
 
   addItem: async () => {
-    throw new Error('Siparişe ürün ekleme API üzerinden henüz desteklenmiyor')
+    throw new Error('Siparişe ürün ekleme şu an kullanılamıyor')
   },
 
   removeItem: async () => {
-    throw new Error('Siparişten ürün çıkarma API üzerinden henüz desteklenmiyor')
+    throw new Error('Siparişten ürün çıkarma şu an kullanılamıyor')
   },
 
   delete: async () => {
-    throw new Error('Sipariş silme API üzerinden henüz desteklenmiyor')
+    throw new Error('Sipariş silme şu an kullanılamıyor')
   },
 }
 
 // ==========================================
-// LEGACY STUBS (diğer ekranlar — henüz NestJS yok)
+// ROADMAP MODULE STUBS
 // ==========================================
 export const API_ENABLED = {
   tables: false,
@@ -237,7 +237,7 @@ export const API_ENABLED = {
 }
 
 const notImplemented = (resource) => async () => {
-  throw new Error(`${resource} API henüz NestJS'e taşınmadı`)
+  throw new Error(`${resource} modülü şu an kullanılamıyor`)
 }
 
 export const tablesApi = {

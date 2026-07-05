@@ -13,7 +13,6 @@ import { useCurrentUser, useLogout } from '../../hooks/useAuth'
 import { useNotifications, NotificationPanel } from '../NotificationProvider'
 import { WebSocketStatus } from '../WebSocketStatus'
 import { LiveClock } from '../LiveClock'
-import { VoiceCommand } from '../VoiceCommand'
 import { PerformanceMonitor } from '../PerformanceMonitor'
 import { usePermissions } from '../../hooks/usePermissions'
 import { NAV_SECTIONS, getBreadcrumbs, getPageTitle } from '../../config/navigation'
@@ -207,7 +206,6 @@ export default function Layout({ children }) {
 
             <div className={styles.headerRight}>
               <span className={styles.demoPill}>{DEMO_EDITION.name}</span>
-              <VoiceCommand />
               <div className={styles.headerClock}>
                 <LiveClock />
               </div>

@@ -10,9 +10,6 @@ import {
   Bell,
   Search,
   ArrowLeft,
-  CreditCard,
-  Wallet,
-  DollarSign,
   Check,
   MessageSquare,
   Star,
@@ -39,8 +36,6 @@ export default function CustomerMenu() {
   const [searchQuery, setSearchQuery] = useState('')
   const [cart, setCart] = useState([])
   const [showCart, setShowCart] = useState(false)
-  const [showPayment, setShowPayment] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState('cash')
   const [customerTable, setCustomerTable] = useState(null)
   const [orderNotes, setOrderNotes] = useState('')
   const [detailItem, setDetailItem] = useState(null)   // item detail modal
@@ -116,12 +111,6 @@ export default function CustomerMenu() {
 
   const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0)
-  const serviceFee = cartTotal * 0.10 // %10 servis ücreti
-  const totalWithService = cartTotal + serviceFee
-
-  const handleRequestBill = () => {
-    setShowPayment(true)
-  }
 
   const handleOrder = () => {
     if (cart.length === 0 || !customerTable?.tableToken) return
@@ -145,7 +134,6 @@ export default function CustomerMenu() {
           localStorage.setItem('customerRecentItems', JSON.stringify(recent.slice(0, 5)))
           setCart([])
           setShowCart(false)
-          setShowPayment(false)
           toast.success(t('customer.orderPlaced'))
           navigate('/customer/orders')
         },
@@ -410,72 +398,21 @@ export default function CustomerMenu() {
                 </div>
 
                 <div className={styles.cartSummary}>
-                  <div className={styles.summaryRow}>
-                    <span>Ara Toplam:</span>
-                    <span>{formatCurrency(cartTotal)}</span>
-                  </div>
-                  <div className={styles.summaryRow}>
-                    <span>Servis Ücreti (%10):</span>
-                    <span>{formatCurrency(serviceFee)}</span>
-                  </div>
                   <div className={`${styles.summaryRow} ${styles.total}`}>
                     <span>Toplam:</span>
-                    <strong>{formatCurrency(totalWithService)}</strong>
+                    <strong>{formatCurrency(cartTotal)}</strong>
                   </div>
                 </div>
 
-                {!showPayment ? (
-                  <div className={styles.cartFooter}>
-                    <button 
-                      className={`${styles.orderBtn} ${styles.secondary}`}
-                      onClick={handleRequestBill}
-                    >
-                      <CreditCard size={18} />
-                      Hesap İste
-                    </button>
-                    <button 
-                      className={styles.orderBtn}
-                      onClick={handleOrder}
-                    >
-                      <Check size={18} />
-                      Sipariş Ver
-                    </button>
-                  </div>
-                ) : (
-                  <div className={styles.paymentSection}>
-                    <h3>Ödeme Yöntemi</h3>
-                    <div className={styles.paymentMethods}>
-                      <button
-                        className={`${styles.paymentBtn} ${paymentMethod === 'cash' ? styles.active : ''}`}
-                        onClick={() => setPaymentMethod('cash')}
-                      >
-                        <Wallet size={20} />
-                        <span>Nakit</span>
-                      </button>
-                      <button
-                        className={`${styles.paymentBtn} ${paymentMethod === 'card' ? styles.active : ''}`}
-                        onClick={() => setPaymentMethod('card')}
-                      >
-                        <CreditCard size={20} />
-                        <span>Kart</span>
-                      </button>
-                      <button
-                        className={`${styles.paymentBtn} ${paymentMethod === 'online' ? styles.active : ''}`}
-                        onClick={() => setPaymentMethod('online')}
-                      >
-                        <DollarSign size={20} />
-                        <span>Online</span>
-                      </button>
-                    </div>
-                    <button 
-                      className={styles.confirmBtn}
-                      onClick={handleOrder}
-                    >
-                      <Check size={18} />
-                      Ödemeyi Tamamla ({formatCurrency(totalWithService)})
-                    </button>
-                  </div>
-                )}
+                <div className={styles.cartFooter}>
+                  <button 
+                    className={styles.orderBtn}
+                    onClick={handleOrder}
+                  >
+                    <Check size={18} />
+                    Sipariş Ver
+                  </button>
+                </div>
               </>
             )}
           </div>

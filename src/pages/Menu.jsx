@@ -105,8 +105,7 @@ export default function Menu() {
   if (isError) {
     return (
       <div className={styles.page}>
-        <p>Menü yüklenemedi.</p>
-          <p>Menü yüklenemedi. Lütfen bağlantınızı kontrol edip tekrar deneyin.</p>
+        <p>Menü yüklenemedi. Lütfen bağlantınızı kontrol edip tekrar deneyin.</p>
         <button type="button" onClick={() => refetch()}>Tekrar Dene</button>
       </div>
     )
@@ -148,7 +147,7 @@ export default function Menu() {
 
       {categories.length === 0 && (
         <div className={styles.emptyState}>
-          <p>Menü kategorileri henüz tanımlanmamış. Demo veritabanında kategori oluşturulduğundan emin olun.</p>
+          <p>Menü kategorileri tanımlanmamış. Yönetim panelinden kategori ekleyebilirsiniz.</p>
         </div>
       )}
 

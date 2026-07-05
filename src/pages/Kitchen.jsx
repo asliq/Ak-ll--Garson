@@ -1,28 +1,24 @@
 import { useState } from 'react'
-import { 
-  ChefHat, 
-  Clock, 
-  CheckCircle, 
-  AlertTriangle,
-  X,
+import {
+  ChefHat,
+  Clock,
+  CheckCircle,
   RefreshCw,
-  Zap
 } from 'lucide-react'
 import {
   useKitchenOrders,
-  useUpdateKitchenItemStatus,
-  useMarkOrderReady,
-  useSetOrderPriority,
-  useKitchenStats
+  useUpdateKitchenOrderStatus,
+  useKitchenStats,
 } from '../hooks/useKitchen'
 import { useMenuItems } from '../hooks/useMenu'
 import { useTranslation } from '../hooks/useTranslation'
 import styles from './Kitchen.module.css'
 
-const PRIORITY_TIMES = {
-  high: 900,   // 15 dk
-  normal: 1200, // 20 dk
-  low: 1800    // 30 dk
+const ORDER_STATUS_LABEL = {
+  pending: 'Bekliyor',
+  preparing: 'Hazırlanıyor',
+  ready: 'Hazır',
+  served: 'Servis',
 }
 
 const formatTime = (seconds) => {
@@ -31,61 +27,41 @@ const formatTime = (seconds) => {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-const itemStatusLabel = {
-  pending: 'Bekliyor',
-  preparing: 'Hazırlanıyor',
-  ready: 'Hazır',
-  served: 'Servis Edildi',
-}
-
 export default function Kitchen() {
   const [filter, setFilter] = useState('all')
   const { t } = useTranslation()
 
   const { data: kitchenOrders, refetch, isRefetching, isLoading, isError, error } = useKitchenOrders()
   const { data: menuItems } = useMenuItems()
-  const updateItemStatus = useUpdateKitchenItemStatus()
-  const markOrderReady = useMarkOrderReady()
-  const setPriority = useSetOrderPriority()
+  const updateOrderStatus = useUpdateKitchenOrderStatus()
   const kitchenStats = useKitchenStats()
 
-  const getMenuItemName = (menuItemId) => {
-    const item = menuItems?.find(m => m.id === menuItemId)
+  const getMenuItemName = (menuItemId, fallbackName) => {
+    if (fallbackName) return fallbackName
+    const item = menuItems?.find((m) => m.id === menuItemId)
     return item ? item.name : `Ürün #${menuItemId}`
   }
 
-  // Elapsed time + auto-priority hesapla
   const ordersWithTime = (kitchenOrders || [])
-    .map(order => {
+    .map((order) => {
       const createdTime = new Date(order.createdAt || Date.now()).getTime()
       const elapsed = Math.floor((Date.now() - createdTime) / 1000)
-      const autoPriority = elapsed > PRIORITY_TIMES.high
-        ? 'high'
-        : elapsed < PRIORITY_TIMES.low
-        ? 'low'
-        : 'normal'
-      return { ...order, elapsedTime: elapsed, autoPriority }
+      return { ...order, elapsedTime: elapsed }
     })
-    .filter(order => {
-      const items = order.items || []
+    .filter((order) => {
       if (filter === 'all') return true
-      if (filter === 'pending') return items.some(i => i.status === 'pending')
-      if (filter === 'preparing') return items.some(i => i.status === 'preparing')
-      if (filter === 'ready') return items.every(i => i.status === 'ready' || i.status === 'served')
+      if (filter === 'pending') return order.status === 'pending'
+      if (filter === 'preparing') return order.status === 'preparing'
+      if (filter === 'ready') return order.status === 'ready' || order.status === 'served'
       return true
     })
-    .sort((a, b) => {
-      const priorityOrder = { high: 0, urgent: 0, normal: 1, low: 2 }
-      const pa = priorityOrder[a.priority] ?? priorityOrder[a.autoPriority]
-      const pb = priorityOrder[b.priority] ?? priorityOrder[b.autoPriority]
-      if (pa !== pb) return pa - pb
-      return a.elapsedTime - b.elapsedTime
-    })
+    .sort((a, b) => a.elapsedTime - b.elapsedTime)
 
   const allOrdersCount = kitchenOrders?.length || 0
-  const pendingCount = kitchenOrders?.filter(o => (o.items || []).some(i => i.status === 'pending')).length || 0
-  const preparingCount = kitchenOrders?.filter(o => (o.items || []).some(i => i.status === 'preparing')).length || 0
-  const readyCount = kitchenOrders?.filter(o => (o.items || []).every(i => i.status === 'ready' || i.status === 'served')).length || 0
+  const pendingCount = kitchenOrders?.filter((o) => o.status === 'pending').length || 0
+  const preparingCount = kitchenOrders?.filter((o) => o.status === 'preparing').length || 0
+  const readyCount =
+    kitchenOrders?.filter((o) => o.status === 'ready' || o.status === 'served').length || 0
 
   if (isLoading && !kitchenOrders) {
     return <div className={styles.kitchen}>Yükleniyor...</div>
@@ -103,7 +79,6 @@ export default function Kitchen() {
 
   return (
     <div className={styles.kitchen}>
-      {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <ChefHat size={32} />
@@ -129,13 +104,12 @@ export default function Kitchen() {
         </div>
       </div>
 
-      {/* Filters */}
       <div className={styles.filters}>
         {[
-          { key: 'all',       label: `Tümü (${allOrdersCount})` },
-          { key: 'pending',   label: `${t('orders.statuses.pending')} (${pendingCount})` },
+          { key: 'all', label: `Tümü (${allOrdersCount})` },
+          { key: 'pending', label: `${t('orders.statuses.pending')} (${pendingCount})` },
           { key: 'preparing', label: `${t('orders.statuses.preparing')} (${preparingCount})` },
-          { key: 'ready',     label: `${t('orders.statuses.ready')} (${readyCount})` },
+          { key: 'ready', label: `${t('orders.statuses.ready')} (${readyCount})` },
         ].map(({ key, label }) => (
           <button
             key={key}
@@ -147,7 +121,6 @@ export default function Kitchen() {
         ))}
       </div>
 
-      {/* Orders Grid */}
       {ordersWithTime.length === 0 ? (
         <div className={styles.emptyState}>
           <ChefHat size={64} />
@@ -156,102 +129,78 @@ export default function Kitchen() {
         </div>
       ) : (
         <div className={styles.ordersGrid}>
-          {ordersWithTime.map(order => {
-            const isUrgent = order.priority === 'urgent' || order.priority === 'high' || order.autoPriority === 'high'
-            const items = order.items || []
-            const allReady = items.every(i => i.status === 'ready' || i.status === 'served')
+          {ordersWithTime.map((order) => {
+            const isReady = order.status === 'ready' || order.status === 'served'
 
             return (
               <div
                 key={order.id}
-                className={`${styles.orderCard} ${isUrgent ? styles.high : ''} ${allReady ? styles.ready : ''}`}
+                className={`${styles.orderCard} ${isReady ? styles.ready : ''}`}
               >
-                {/* Priority Badge */}
-                {isUrgent && (
-                  <div className={styles.priorityBadge}>
-                    <AlertTriangle size={14} />
-                    ACİL
-                  </div>
-                )}
-
-                {/* Header */}
                 <div className={styles.orderHeader}>
                   <div className={styles.orderNumber}>
-                    <span>Sipariş #{order.id}</span>
+                    <span>Sipariş #{order.id.slice(-6).toUpperCase()}</span>
                     <span className={styles.orderTable}>Masa {order.tableNumber || order.tableId}</span>
                   </div>
-                  <div className={`${styles.timer} ${isUrgent ? styles.urgent : ''}`}>
+                  <div className={styles.timer}>
                     <Clock size={16} />
                     <span>{formatTime(order.elapsedTime)}</span>
                   </div>
                 </div>
 
-                {/* Items — item bazlı durum */}
+                <div className={styles.orderStatusRow}>
+                  <span className={`${styles.orderStatusBadge} ${styles[order.status] || ''}`}>
+                    {ORDER_STATUS_LABEL[order.status] || order.status}
+                  </span>
+                </div>
+
                 <div className={styles.orderItems}>
                   {(order.items || []).map((item) => (
-                    <div key={item.menuItemId} className={`${styles.orderItem} ${styles[item.status]}`}>
+                    <div key={`${item.menuItemId}-${item.name}`} className={styles.orderItem}>
                       <div className={styles.itemInfo}>
                         <span className={styles.itemQuantity}>{item.quantity || 1}x</span>
-                        <span className={styles.itemName}>{getMenuItemName(item.menuItemId)}</span>
+                        <span className={styles.itemName}>
+                          {getMenuItemName(item.menuItemId, item.name)}
+                        </span>
                       </div>
                       {item.notes && (
                         <div className={styles.itemNotes}>💬 {item.notes}</div>
                       )}
-                      {/* Item durum butonları */}
-                      <div className={styles.itemActions}>
-                        {item.status === 'pending' && (
-                          <button
-                            className={`${styles.itemBtn} ${styles.start}`}
-                            onClick={() => updateItemStatus.mutate({ orderId: order.id, menuItemId: item.menuItemId, status: 'preparing' })}
-                          >
-                            <ChefHat size={12} />
-                            Başla
-                          </button>
-                        )}
-                        {item.status === 'preparing' && (
-                          <button
-                            className={`${styles.itemBtn} ${styles.done}`}
-                            onClick={() => updateItemStatus.mutate({ orderId: order.id, menuItemId: item.menuItemId, status: 'ready' })}
-                          >
-                            <CheckCircle size={12} />
-                            Hazır
-                          </button>
-                        )}
-                        {item.status === 'ready' && (
-                          <span className={styles.itemDone}>✓ Hazır</span>
-                        )}
-                      </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Order Actions */}
                 <div className={styles.orderActions}>
-                  {!allReady && (
+                  {order.status === 'pending' && (
                     <button
-                      className={`${styles.actionBtn} ${styles.success}`}
-                      onClick={() => markOrderReady.mutate(order.id)}
+                      type="button"
+                      className={`${styles.actionBtn} ${styles.primary}`}
+                      onClick={() =>
+                        updateOrderStatus.mutate({ orderId: order.id, status: 'preparing' })
+                      }
                     >
-                      <Zap size={16} />
-                      Tümü Hazır
+                      <ChefHat size={16} />
+                      Hazırlamaya Al
                     </button>
                   )}
-                  {allReady && (
-                    <div className={styles.readyBadge}>
+                  {order.status === 'preparing' && (
+                    <button
+                      type="button"
+                      className={`${styles.actionBtn} ${styles.success}`}
+                      onClick={() =>
+                        updateOrderStatus.mutate({ orderId: order.id, status: 'ready' })
+                      }
+                    >
                       <CheckCircle size={16} />
                       Sipariş Hazır
+                    </button>
+                  )}
+                  {isReady && (
+                    <div className={styles.readyBadge}>
+                      <CheckCircle size={16} />
+                      Servise Hazır
                     </div>
                   )}
-                  <button
-                    className={`${styles.priorityToggle} ${(order.priority === 'high' || order.priority === 'urgent') ? styles.highActive : ''}`}
-                    onClick={() => setPriority.mutate({
-                      orderId: order.id,
-                      priority: (order.priority === 'high' || order.priority === 'urgent') ? 'normal' : 'high'
-                    })}
-                    title="Önceliği değiştir"
-                  >
-                    <AlertTriangle size={14} />
-                  </button>
                 </div>
               </div>
             )

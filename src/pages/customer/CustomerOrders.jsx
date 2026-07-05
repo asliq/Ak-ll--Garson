@@ -382,14 +382,6 @@ export default function CustomerOrders() {
               )}
 
               <div className={styles.detailTotal}>
-                <div className={styles.totalRow}>
-                  <span>Ara Toplam:</span>
-                  <span>{formatCurrency(selectedOrder.total * 0.9)}</span>
-                </div>
-                <div className={styles.totalRow}>
-                  <span>Servis Ücreti:</span>
-                  <span>{formatCurrency(selectedOrder.total * 0.1)}</span>
-                </div>
                 <div className={`${styles.totalRow} ${styles.totalMain}`}>
                   <span>Toplam:</span>
                   <strong>{formatCurrency(selectedOrder.total)}</strong>

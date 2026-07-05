@@ -4,7 +4,7 @@ import { execSync } from 'node:child_process';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { randomUUID } from 'node:crypto';
+import { seedDemoData } from './lib/demo-seed.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const apiRoot = join(__dirname, '..');
@@ -30,74 +30,10 @@ function updateEnvFile(path, key, value) {
 }
 
 async function seed(prisma) {
-  const existing = await prisma.restaurant.findUnique({ where: { id: RESTAURANT_ID } });
-  if (existing) {
-    console.log('Seed data already exists, skipping.');
-    return;
-  }
-
-  await prisma.restaurant.create({
-    data: {
-      id: RESTAURANT_ID,
-      name: 'Akıllı Garson Demo',
-      slug: 'demo-restoran',
-    },
-  });
-
-  await prisma.table.create({
-    data: {
-      restaurantId: RESTAURANT_ID,
-      tableToken: TABLE_TOKEN,
-      name: 'Masa 1',
-    },
-  });
-
-  const category = await prisma.menuCategory.create({
-    data: {
-      restaurantId: RESTAURANT_ID,
-      name: 'Ana Yemekler',
-      slug: 'ana-yemekler',
-      description: 'Demo kategori',
-      icon: '🍽️',
-      color: '#FF5733',
-      status: 'ACTIVE',
-    },
-  });
-
-  const menuItem = await prisma.menuItem.create({
-    data: {
-      restaurantId: RESTAURANT_ID,
-      name: 'Izgara Köfte',
-      sku: 'KOEFTE-01',
-      slug: 'izgara-kofte',
-      description: 'Dana kıyma ile hazırlanan ızgara köfte',
-      status: 'ACTIVE',
-      preparationTimeSeconds: 900,
-      prices: {
-        create: {
-          id: randomUUID(),
-          restaurantId: RESTAURANT_ID,
-          amountMinor: 25000n,
-          currencyCode: 'TRY',
-          status: 'ACTIVE',
-        },
-      },
-    },
-  });
-
-  await prisma.menuCategoryPlacement.create({
-    data: {
-      restaurantId: RESTAURANT_ID,
-      categoryId: category.id,
-      menuItemId: menuItem.id,
-      displayOrder: 0,
-      isPrimary: true,
-    },
-  });
-
+  const summary = await seedDemoData(prisma);
   console.log('Seed complete.');
-  console.log(`Restaurant ID: ${RESTAURANT_ID}`);
-  console.log(`Table token:   ${TABLE_TOKEN}`);
+  console.log(`Restaurant ID: ${summary.restaurantId}`);
+  console.log(`Table token:   ${summary.tableToken}`);
 }
 
 async function main() {
