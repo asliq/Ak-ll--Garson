@@ -13,8 +13,7 @@ import {
   MessageSquare,
   RefreshCw
 } from 'lucide-react'
-import { useOrders, useUpdateOrderStatus } from '../../hooks/useOrders'
-import { useMenuItems } from '../../hooks/useMenu'
+import { useUpdateOrderStatus, useTableOrders } from '../../hooks/useOrders'
 import { setRestaurantId } from '../../api/services'
 import { useTranslation } from '../../hooks/useTranslation'
 import toast from 'react-hot-toast'
@@ -90,16 +89,22 @@ export default function CustomerOrders() {
   const navigate = useNavigate()
   const [customerTable, setCustomerTable] = useState(null)
   const [selectedOrder, setSelectedOrder] = useState(null)
-  const { data: allOrders, isLoading, isError, error, refetch, isRefetching } = useOrders()
-  const { data: menuItems } = useMenuItems()
+  const tableId = customerTable?.tableId
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+    isRefetching,
+  } = useTableOrders(tableId, {
+    enabled: !!tableId,
+    refetchInterval: tableId ? 15000 : false,
+  })
   const updateStatus = useUpdateOrderStatus()
   const { t } = useTranslation()
 
-  const getItemName = (menuItemId, item) => {
-    if (item?.name) return item.name
-    const mi = menuItems?.find((m) => m.id === menuItemId || m.id === String(menuItemId))
-    return mi ? mi.name : `Ürün #${menuItemId}`
-  }
+  const getItemName = (_menuItemId, item) => item?.name || `Ürün`
 
   useEffect(() => {
     const restaurantId = import.meta.env.VITE_RESTAURANT_ID
@@ -113,16 +118,13 @@ export default function CustomerOrders() {
     setCustomerTable(JSON.parse(tableData))
   }, [navigate])
 
-  // Sadece bu masanın siparişlerini filtrele
-  const orders = allOrders?.filter((order) => {
-    if (customerTable?.tableId) {
-      return order.tableId === customerTable.tableId
-    }
-    return false
-  }).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || []
+  // Bu masanın siparişleri (tableId public menüden alınır)
+  const sortedOrders = [...orders].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+  )
 
-  const activeOrders = orders.filter(o => 
-    ['pending', 'preparing', 'ready', 'served'].includes(o.status)
+  const activeOrders = sortedOrders.filter(o =>
+    ['pending', 'preparing', 'ready', 'served'].includes(o.status),
   )
 
   const handleCancelOrder = (orderId) => {
@@ -130,6 +132,20 @@ export default function CustomerOrders() {
     updateStatus.mutate({ id: orderId, status: 'cancelled' }, {
       onSuccess: () => toast.success('Sipariş iptal edildi'),
     })
+  }
+
+  if (!customerTable) {
+    return <div className={styles.loading}>Yükleniyor...</div>
+  }
+
+  if (!tableId) {
+    return (
+      <div className={styles.loading}>
+        <p>Henüz sipariş yok</p>
+        <p>İlk siparişinizi menüden verin.</p>
+        <button type="button" onClick={() => navigate('/customer/menu')}>Menüyü Görüntüle</button>
+      </div>
+    )
   }
 
   if (isLoading) {
@@ -263,10 +279,10 @@ export default function CustomerOrders() {
       <div className={styles.allOrdersSection}>
         <div className={styles.sectionTitle}>
           <h2>Tüm Siparişler</h2>
-          <span className={styles.count}>{orders.length}</span>
+          <span className={styles.count}>{sortedOrders.length}</span>
         </div>
 
-        {orders.length === 0 ? (
+        {sortedOrders.length === 0 ? (
           <div className={styles.emptyState}>
             <AlertCircle size={48} />
             <h3>Henüz sipariş yok</h3>
@@ -280,7 +296,7 @@ export default function CustomerOrders() {
           </div>
         ) : (
           <div className={styles.ordersList}>
-            {orders.map(order => {
+            {sortedOrders.map(order => {
               const status = statusConfig[order.status]
               const StatusIcon = status.icon
 

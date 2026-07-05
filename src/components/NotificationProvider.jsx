@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Bell, 
@@ -73,7 +74,12 @@ const notificationTypes = {
   }
 }
 
+function isStaffRoute(pathname) {
+  return !pathname.startsWith('/login') && !pathname.startsWith('/customer')
+}
+
 export function NotificationProvider({ children }) {
+  const { pathname } = useLocation()
   const [notifications, setNotifications] = useState([])
   const [showPanel, setShowPanel] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
@@ -82,7 +88,7 @@ export function NotificationProvider({ children }) {
   const notificationPrefs = useAppStore((state) => state.notificationPrefs)
   const previousOrdersRef = useRef(null)
   
-  const { data: orders } = useOrders()
+  const { data: orders } = useOrders({ enabled: isStaffRoute(pathname) })
 
   // Ses çal — soundUtils ile
   const playSound = useCallback((type) => {
@@ -96,6 +102,10 @@ export function NotificationProvider({ children }) {
     const fn = soundEffects[soundMap[type] || 'success']
     if (fn) fn()
   }, [soundEnabled])
+
+  const dismissNotification = useCallback((id) => {
+    setNotifications(prev => prev.filter(n => n.id !== id))
+  }, [])
 
   // Bildirim ekle
   const addNotification = useCallback((type, message, data = {}) => {
@@ -135,12 +145,7 @@ export function NotificationProvider({ children }) {
     }, 5000)
     
     return id
-  }, [playSound, notificationPrefs])
-
-  // Bildirimi kapat
-  const dismissNotification = useCallback((id) => {
-    setNotifications(prev => prev.filter(n => n.id !== id))
-  }, [])
+  }, [playSound, notificationPrefs, dismissNotification])
 
   // Tümünü okundu işaretle
   const markAllAsRead = useCallback(() => {

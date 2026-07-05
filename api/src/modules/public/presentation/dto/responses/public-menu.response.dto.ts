@@ -52,6 +52,9 @@ export class PublicMenuResponseDto {
   @ApiProperty({ example: 'Lezzet Durağı' })
   restaurantName!: string;
 
+  @ApiProperty({ example: '660e8400-e29b-41d4-a716-446655440010' })
+  tableId!: string;
+
   @ApiProperty({ example: 'Masa 5' })
   tableName!: string;
 

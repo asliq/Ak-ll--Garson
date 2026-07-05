@@ -74,9 +74,11 @@ export function useCreatePublicOrder() {
   return useMutation({
     mutationFn: ordersApi.createPublic,
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: orderKeys.all })
-      toast.success('Sipariş oluşturuldu! 🎉')
+      if (data?.tableId) {
+        queryClient.invalidateQueries({ queryKey: orderKeys.byTable(data.tableId) })
+      }
     },
 
     onError: (error) => {

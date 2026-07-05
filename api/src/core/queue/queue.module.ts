@@ -18,6 +18,7 @@ import { QUEUE_DEFAULT } from './queue.constants';
             host: redis?.host ?? 'localhost',
             port: redis?.port ?? 6379,
             password: redis?.password,
+            maxRetriesPerRequest: null,
           },
         };
       },

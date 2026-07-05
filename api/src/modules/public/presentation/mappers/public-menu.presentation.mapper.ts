@@ -10,6 +10,7 @@ export class PublicMenuPresentationMapper {
   static toResponse(result: GetPublicMenuResult): PublicMenuResponseDto {
     return {
       restaurantName: result.restaurantName,
+      tableId: result.tableId,
       tableName: result.tableName,
       categories: result.categories.map((category) => ({
         id: category.id,

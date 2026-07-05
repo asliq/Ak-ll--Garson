@@ -143,6 +143,7 @@ export const publicMenuApi = {
     return {
       restaurantName: data.restaurantName,
       tableName: data.tableName,
+      tableId: data.tableId,
       categories,
       menuItems,
     }

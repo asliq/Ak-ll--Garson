@@ -6,6 +6,7 @@ import { orderKeys } from './useOrders'
 
 const MAX_RECONNECT_DELAY_MS = 30000
 const BASE_RECONNECT_DELAY_MS = 2000
+const MAX_RECONNECT_ATTEMPTS = 25
 
 const ORDER_WS_EVENTS = new Set([
   'order.created',
@@ -92,7 +93,7 @@ export const useWebSocket = (url = null, options = {}) => {
           break
 
         case 'DATA_CHANGED':
-          queryClient.invalidateQueries()
+          invalidateOrderQueries(queryClient, data.payload)
           break
 
         default:
@@ -137,6 +138,10 @@ export const useWebSocket = (url = null, options = {}) => {
       socket.onclose = () => {
         setIsConnected(false)
         wsRef.current = null
+
+        if (reconnectAttempts.current >= MAX_RECONNECT_ATTEMPTS) {
+          return
+        }
 
         const delay = Math.min(
           BASE_RECONNECT_DELAY_MS * 2 ** reconnectAttempts.current,

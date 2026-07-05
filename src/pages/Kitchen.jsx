@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   ChefHat,
   Clock,
@@ -35,6 +35,12 @@ export default function Kitchen() {
   const { data: menuItems } = useMenuItems()
   const updateOrderStatus = useUpdateKitchenOrderStatus()
   const kitchenStats = useKitchenStats()
+  const [, setTimerTick] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => setTimerTick((tick) => tick + 1), 30000)
+    return () => clearInterval(interval)
+  }, [])
 
   const getMenuItemName = (menuItemId, fallbackName) => {
     if (fallbackName) return fallbackName

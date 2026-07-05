@@ -54,7 +54,8 @@ export const WebSocketProvider = ({ children }) => {
 
   const getJoinMessage = useCallback(() => buildJoinMessage(pathname), [pathname])
 
-  const ws = useWebSocket(WS_URL, { getJoinMessage })
+  const wsUrl = pathname.startsWith('/login') ? null : WS_URL
+  const ws = useWebSocket(wsUrl, { getJoinMessage })
 
   const value = useMemo(() => ws, [ws])
 

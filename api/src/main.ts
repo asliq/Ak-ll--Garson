@@ -11,6 +11,7 @@ import { APP_CONFIG_KEY } from './core/config/app.config';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  app.enableShutdownHooks();
   app.useWebSocketAdapter(new WsAdapter(app));
 
   const configService = app.get(ConfigService);
@@ -56,4 +57,7 @@ async function bootstrap(): Promise<void> {
   logger.log(`Swagger docs: http://localhost:${port}/docs`);
 }
 
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('Failed to start application:', error);
+  process.exit(1);
+});

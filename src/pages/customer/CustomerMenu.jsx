@@ -30,17 +30,27 @@ const formatCurrency = (value) => {
   }).format(value)
 }
 
+function readCustomerTable() {
+  try {
+    const raw = localStorage.getItem('customerTable')
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
 export default function CustomerMenu() {
   const navigate = useNavigate()
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [cart, setCart] = useState([])
   const [showCart, setShowCart] = useState(false)
-  const [customerTable, setCustomerTable] = useState(null)
+  const [customerTable, setCustomerTable] = useState(readCustomerTable)
   const [orderNotes, setOrderNotes] = useState('')
   const [detailItem, setDetailItem] = useState(null)   // item detail modal
 
-  const { data: publicMenu, isLoading, isError, error, refetch } = usePublicMenu(customerTable?.tableToken)
+  const tableToken = customerTable?.tableToken
+  const { data: publicMenu, isLoading, isFetching, isError, error, refetch } = usePublicMenu(tableToken)
   const createOrder = useCreatePublicOrder()
   const { t } = useTranslation()
 
@@ -58,18 +68,23 @@ export default function CustomerMenu() {
     const restaurantId = import.meta.env.VITE_RESTAURANT_ID
     if (restaurantId) setRestaurantId(restaurantId)
 
-    const tableData = localStorage.getItem('customerTable')
-    if (!tableData) {
+    if (!customerTable?.tableToken) {
       navigate('/customer')
-      return
     }
-    const parsed = JSON.parse(tableData)
-    if (!parsed.tableToken) {
-      navigate('/customer')
-      return
+  }, [customerTable, navigate])
+
+  useEffect(() => {
+    if (!publicMenu?.tableId || !customerTable) return
+    if (customerTable.tableId === publicMenu.tableId) return
+
+    const updated = {
+      ...customerTable,
+      tableId: publicMenu.tableId,
+      tableName: publicMenu.tableName || customerTable.tableName,
     }
-    setCustomerTable(parsed)
-  }, [navigate])
+    localStorage.setItem('customerTable', JSON.stringify(updated))
+    setCustomerTable(updated)
+  }, [publicMenu, customerTable])
 
   const filteredMenu = useMemo(() => {
     if (!menuItems) return []
@@ -144,7 +159,11 @@ export default function CustomerMenu() {
     )
   }
 
-  if (isLoading) {
+  if (!customerTable?.tableToken) {
+    return <div className={styles.loading}>Menü yükleniyor...</div>
+  }
+
+  if (isLoading || (isFetching && !publicMenu)) {
     return <div className={styles.loading}>Menü yükleniyor...</div>
   }
 

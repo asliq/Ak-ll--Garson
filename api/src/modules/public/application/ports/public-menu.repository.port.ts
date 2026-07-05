@@ -21,6 +21,7 @@ export interface PublicMenuCategoryReadModel {
 
 export interface PublicMenuReadModel {
   restaurantName: string;
+  tableId: string;
   tableName: string;
   categories: PublicMenuCategoryReadModel[];
 }

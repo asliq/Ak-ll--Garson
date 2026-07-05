@@ -25,7 +25,7 @@ export function useSystemHealth(options = {}) {
   const { isConnected: wsConnected } = useWebSocketContext()
 
   const query = useQuery({
-    queryKey: ['system', 'health', wsConnected],
+    queryKey: ['system', 'health'],
     queryFn: async () => {
       const [live, ready] = await Promise.allSettled([
         fetchHealth('/health/live'),
@@ -44,7 +44,6 @@ export function useSystemHealth(options = {}) {
         apiLatencyMs: liveResult.latencyMs,
         database: dbStatus,
         redis: redisStatus,
-        websocket: wsConnected ? 'connected' : 'disconnected',
         checkedAt: new Date().toISOString(),
       }
     },
@@ -54,9 +53,16 @@ export function useSystemHealth(options = {}) {
     ...options,
   })
 
+  const health = query.data
+    ? {
+        ...query.data,
+        websocket: wsConnected ? 'connected' : 'disconnected',
+      }
+    : undefined
+
   return {
     ...query,
-    health: query.data,
+    health,
     wsConnected,
   }
 }

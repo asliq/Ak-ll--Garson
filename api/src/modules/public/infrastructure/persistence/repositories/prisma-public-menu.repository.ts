@@ -88,6 +88,7 @@ export class PrismaPublicMenuRepository implements PublicMenuRepositoryPort {
 
     return {
       restaurantName: table.restaurant.name,
+      tableId: table.id,
       tableName: table.name,
       categories: mappedCategories,
     };

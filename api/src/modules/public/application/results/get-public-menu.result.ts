@@ -23,12 +23,14 @@ export class PublicMenuCategoryResult {
 
 export class GetPublicMenuResult {
   restaurantName!: string;
+  tableId!: string;
   tableName!: string;
   categories!: PublicMenuCategoryResult[];
 
   static fromReadModel(model: PublicMenuReadModel): GetPublicMenuResult {
     return {
       restaurantName: model.restaurantName,
+      tableId: model.tableId,
       tableName: model.tableName,
       categories: model.categories.map((category) => ({
         id: category.id,

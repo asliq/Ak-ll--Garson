@@ -12,6 +12,7 @@ export class PublicMenuApiExamples {
 
   static readonly menu: PublicMenuResponseDto = {
     restaurantName: 'Lezzet Durağı',
+    tableId: '660e8400-e29b-41d4-a716-446655440010',
     tableName: 'Masa 5',
     categories: [
       {
