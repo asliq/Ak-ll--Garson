@@ -5,7 +5,7 @@
 **Perspektif:** Staff Software Architect  
 **Kapsam:** Mimari tasarım — kod, SQL ve proje iskeleti yok
 
-**Temel referanslar:** [Domain Analizi](./DOMAIN-ANALIZI.md) · [İş Kuralları](./IS-KURALLARI.md) · [Tam Rapor](./TAM-RAPOR.md)
+**Temel referanslar:** [İş Kuralları](./IS-KURALLARI.md) · [Menu Domain](./MENU-DOMAIN-TASARIMI.md) · [Arşiv: Domain Analizi](./archive/DOMAIN-ANALIZI.md)
 
 ---
 
@@ -1134,8 +1134,8 @@ SecurityLog {
 
 ## İlgili Dokümanlar
 
-- [Tam Proje Raporu](./TAM-RAPOR.md)
-- [Domain Model Analizi](./DOMAIN-ANALIZI.md)
+- [Master Project Report](./MASTER-PROJECT-REPORT.md)
+- [Arşiv: Domain Model Analizi](./archive/DOMAIN-ANALIZI.md)
 - [İş Kuralları ve State Machines](./IS-KURALLARI.md)
 
 ---

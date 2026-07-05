@@ -19,6 +19,7 @@ cp .env.example .env
 # 3. Install & migrate
 npm install
 npm run prisma:migrate
+npm run seed:demo
 
 # 4. Run
 npm run start:dev
@@ -36,7 +37,7 @@ Feature-based modular monolith with Clean Architecture layers:
 src/
 ├── core/       # Cross-cutting infrastructure (config, db, cache, queue, events, tenant)
 ├── shared/     # Global filters, interceptors, exceptions, repository contracts
-├── modules/    # Feature modules (Health only — Orders/Payments later)
+├── modules/    # Feature modules (menu, order, public, health, realtime)
 ├── app.module.ts
 └── main.ts
 ```
@@ -49,5 +50,6 @@ See `docs/BACKEND-ISKELET.md` and `docs/MIMARI-TASARIM.md` for full architecture
 |--------|-------------|
 | `npm run start:dev` | Development with hot reload |
 | `npm run build` | Production build |
+| `npm run seed:demo` | Idempotent demo dataset (restaurant, menu, orders) |
 | `npm run prisma:migrate` | Run database migrations |
 | `npm run prisma:studio` | Prisma Studio GUI |

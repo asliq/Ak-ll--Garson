@@ -12,7 +12,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![TypeScript](https://img.shields.io/badge/Backend-TypeScript-3178C6?logo=typescript&logoColor=white)](./api/)
-[![Status](https://img.shields.io/badge/status-MVP%20%2F%20Demo-yellow.svg)](#current-limitations)
+[![Status](https://img.shields.io/badge/status-RC1%20Demo-blue.svg)](#current-limitations)
 
 [Overview](#project-overview) · [Metrics](#project-metrics) · [Mimari](#architecture) · [Kurulum](#installation) · [Deep Dive](./docs/MASTER-PROJECT-REPORT.md)
 
@@ -82,7 +82,7 @@ Concrete learning goals:
 - **NestJS modular monolith** — bounded contexts without premature microservices
 - **WebSocket** — domain events bridged to client rooms
 - **Multi-tenant data modeling** — `restaurantId` from day one in PostgreSQL
-- **Frontend–backend migration** — moving a React SPA from json-server stubs to a real API
+- **Incremental frontend migration** — adapters and feature flags while moving a React SPA to a production API
 
 The restaurant domain gave me **just enough complexity** to make architectural decisions matter — without pretending this is a commercial POS replacement.
 
@@ -92,7 +92,7 @@ The restaurant domain gave me **just enough complexity** to make architectural d
 
 ### What this project is
 
-A **full-stack engineering portfolio** structured around a restaurant operations domain. The backend is the primary investment: NestJS, Prisma, DDD layers, 8 Prisma models, 3 migrations, WebSocket gateway. The frontend is a React 18 SPA (16 pages) that exercises those APIs — with legacy screens from an earlier json-server prototype still present but disabled.
+A **full-stack engineering portfolio** structured around a restaurant operations domain. The backend is the primary investment: NestJS, Prisma, DDD layers, 8 Prisma models, 3 migrations, WebSocket gateway. The frontend is a React 18 SPA that exercises live APIs; roadmap modules are gated in the sidebar.
 
 | Layer | Stack | Role |
 |-------|-------|------|
@@ -123,25 +123,23 @@ How the codebase reached its current shape (solo development, approximate phases
 
 ```mermaid
 flowchart TD
-    A[React MVP<br/>16-page SPA] --> B[json-server mock API<br/>frontend-first prototype]
-    B --> C[NestJS bootstrap<br/>Modular monolith]
-    C --> D[PostgreSQL + Prisma<br/>8 models, migrations]
-    D --> E[DDD refactor<br/>Menu bounded context]
-    E --> F[Order + Public API<br/>QR end-to-end flow]
-    F --> G[WebSocket realtime<br/>Domain events → rooms]
-    G --> H[Current MVP<br/>API_ENABLED migration, docs, integration tests]
+    A[React SPA<br/>Staff + customer UI] --> B[NestJS API<br/>Modular monolith]
+    B --> C[PostgreSQL + Prisma<br/>8 models, migrations]
+    C --> D[DDD refactor<br/>Menu bounded context]
+    D --> E[Order + Public API<br/>QR end-to-end flow]
+    E --> F[WebSocket realtime<br/>Domain events → rooms]
+    F --> G[RC1 Demo Edition<br/>Seed data, honest UI scope]
 ```
 
 | Phase | What changed |
 |-------|----------------|
-| React MVP | Staff + customer UI, TanStack Query, mock REST |
-| json-server | Rapid UI iteration; business rules leaked into hooks |
-| NestJS | Feature modules, DTO validation, Swagger |
+| React SPA | Staff + customer UI, TanStack Query |
+| NestJS bootstrap | Feature modules, DTO validation, Swagger |
 | PostgreSQL | Tenant schema, order snapshots, optimistic locking |
 | DDD refactor | Menu as reference BC — entities, VOs, use cases, repos |
 | Order + Public | Single `Order` aggregate; `tableToken` entry point |
 | WebSocket | `OrderRealtimeHandler` decoupled from HTTP use cases |
-| Current MVP | Honest frontend flags; 10 menu integration tests |
+| RC1 | Demo seed dataset, kitchen honesty, documentation cleanup |
 
 ---
 
@@ -660,12 +658,12 @@ Week-level view of [Architecture Evolution](#architecture-evolution):
 
 | Week | Focus |
 |------|--------|
-| 1–2 | Frontend MVP + json-server |
+| 1–2 | React SPA + customer QR flow |
 | 3–4 | NestJS + PostgreSQL + Prisma |
 | 5–6 | Menu DDD refactor |
 | 7 | Order + Public QR API |
 | 8 | WebSocket + domain events |
-| 9+ | Frontend migration, `API_ENABLED`, integration tests, docs |
+| 9+ | Frontend migration, demo seed, RC1 polish |
 
 ---
 
@@ -746,8 +744,8 @@ cd api
 npx prisma migrate deploy
 npx prisma generate
 
-# 4. Seed (demo veri: restoran, masa, menü)
-node scripts/dev-db.mjs
+# 4. Seed (demo restaurant, menu, orders)
+npm run seed:demo
 
 # 5. API başlat
 npm run start:dev
@@ -784,10 +782,13 @@ Frontend: `http://localhost:5173`
 
 ### Demo Veri (Seed)
 
+Run from `api/`: `npm run seed:demo`
+
 | Alan | Değer |
 |------|-------|
+| Restaurant | Lezzet Durağı |
 | Restaurant ID | `660e8400-e29b-41d4-a716-446655440001` |
-| Table Token | `qr-masa-1` |
+| Table Token | `qr-masa-1` (also `qr-masa-2` … `qr-masa-4`) |
 | Müşteri URL | `http://localhost:5173/customer?token=qr-masa-1` |
 
 ---
@@ -892,7 +893,7 @@ Kitchen and staff screens need sub-second updates. Polling 5s intervals felt wro
 
 ### Biggest Engineering Challenges
 
-1. **Migrating frontend without rewriting it** — 19 hook files assumed json-server shapes. Solution: `adapters.js` + `API_ENABLED` flags instead of big-bang rewrite.
+1. **Migrating frontend without rewriting it** — hooks expected legacy REST shapes. Solution: `adapters.js` + `API_ENABLED` flags instead of big-bang rewrite.
 2. **Single order aggregate vs. separate kitchen model** — Legacy UI had `kitchenOrders`. Consolidated on `Order` status machine; kitchen screen maps orders client-side.
 3. **Tenant resolution on public routes** — QR flow has no `X-Restaurant-Id`. Public use cases resolve tenant from `tableToken` → `Table` → `restaurantId`.
 4. **Optimistic locking under concurrency** — `version` column + helper prevents silent overwrites on menu and order updates.
@@ -970,11 +971,13 @@ Not a commercial POS clone. A deliberate exercise in problems that appear past C
 
 ## Further Reading
 
+See [`docs/README.md`](./docs/README.md) for the full documentation index.
+
 | Document | Content |
 |----------|---------|
 | [MASTER-PROJECT-REPORT.md](./docs/MASTER-PROJECT-REPORT.md) | Full technical & commercial analysis |
 | [MIMARI-TASARIM.md](./docs/MIMARI-TASARIM.md) | Architecture design decisions |
-| [DOMAIN-ANALIZI.md](./docs/DOMAIN-ANALIZI.md) | Domain model analysis |
+| [RC1_P0_COMPLETION_REPORT.md](./docs/RC1_P0_COMPLETION_REPORT.md) | Release Candidate 1 P0 fixes |
 
 ---
 
@@ -1018,7 +1021,7 @@ After reading this README, reasonable follow-up questions:
 5. What is your strategy for order line item updates (add/remove) on the existing aggregate?
 6. Why manual CQRS instead of `@nestjs/cqrs`?
 7. How do you test multi-tenant isolation — what cases do the 10 integration tests cover?
-8. What is the plan for the json-server legacy UI modules still in the sidebar?
+8. What is the plan for roadmap sidebar modules (tables, payments, inventory)?
 9. How would you deploy this with zero-downtime migrations?
 10. If this went to 100 restaurants, what fails first — DB, WS, or application layer?
 

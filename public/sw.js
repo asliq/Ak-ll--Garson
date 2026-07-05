@@ -1,5 +1,5 @@
 const CACHE = 'akilli-garson-v1'
-const ASSETS = ['/', '/index.html', '/vite.svg']
+const ASSETS = ['/', '/index.html', '/favicon.svg']
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)))

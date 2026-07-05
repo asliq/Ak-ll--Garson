@@ -190,5 +190,5 @@ docker compose -f docker/docker-compose.yml up -d
 
 - [MIMARI-TASARIM.md](./MIMARI-TASARIM.md) — Software Architecture Document
 - [IS-KURALLARI.md](./IS-KURALLARI.md) — State machines & business rules
-- [DOMAIN-ANALIZI.md](./DOMAIN-ANALIZI.md) — DDD entity analizi
+- [archive/DOMAIN-ANALIZI.md](./archive/DOMAIN-ANALIZI.md) — historical DDD entity analysis (mock API era)
 - [YOL-HARITASI.md](./YOL-HARITASI.md) — Proje yol haritası

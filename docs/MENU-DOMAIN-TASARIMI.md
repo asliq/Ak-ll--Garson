@@ -4,7 +4,7 @@
 > **Versiyon:** 1.0.0  
 > **Perspektif:** Staff DDD Uzmanı / Restaurant POS Mimarı  
 > **Durum:** Domain tasarımı — kod yok  
-> **Referans:** [MIMARI-TASARIM.md](./MIMARI-TASARIM.md) · [DOMAIN-ANALIZI.md](./DOMAIN-ANALIZI.md) · [IS-KURALLARI.md](./IS-KURALLARI.md)
+> **Referans:** [MIMARI-TASARIM.md](./MIMARI-TASARIM.md) · [IS-KURALLARI.md](./IS-KURALLARI.md) · [archive/DOMAIN-ANALIZI.md](./archive/DOMAIN-ANALIZI.md)
 
 ---
 
@@ -707,6 +707,6 @@ Menu Domain, restoranın **satılabilir ürün kataloğunun tek doğruluk kayna�
 ## İlgili Dokümanlar
 
 - [MIMARI-TASARIM.md](./MIMARI-TASARIM.md) — §3.12 Menu Module, §5.8 API
-- [DOMAIN-ANALIZI.md](./DOMAIN-ANALIZI.md) — §1.3 Menü, §2.4-2.5 Category/MenuItem
+- [archive/DOMAIN-ANALIZI.md](./archive/DOMAIN-ANALIZI.md) — §1.3 Menü, §2.4-2.5 Category/MenuItem
 - [IS-KURALLARI.md](./IS-KURALLARI.md) — EC #16 MenuItem86ed
 - [BACKEND-ISKELET.md](./BACKEND-ISKELET.md) — NestJS iskelet (Menu henüz yok)

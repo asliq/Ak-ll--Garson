@@ -547,8 +547,8 @@ QrSessionStarted → OrderOpened → OrderLineFired → KitchenTicketCreated
 
 ## İlgili Dokümanlar
 
-- [Tam Proje Raporu](./TAM-RAPOR.md)
-- [Domain Model Analizi](./DOMAIN-ANALIZI.md)
+- [Master Project Report](./MASTER-PROJECT-REPORT.md)
+- [Arşiv: Domain Model Analizi](./archive/DOMAIN-ANALIZI.md)
 - [Mimari Tasarım](./MIMARI-TASARIM.md)
 
 ---

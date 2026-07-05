@@ -1,6 +1,8 @@
 /**
  * Ekran görüntüsü alma scripti
  * Kullanım: node scripts/capture-screenshots.mjs
+ *
+ * Önkoşul: API (3001) + frontend (5173) çalışıyor, `npm run seed:demo` uygulandı.
  */
 import { chromium } from '@playwright/test'
 import { mkdir } from 'node:fs/promises'
@@ -48,43 +50,37 @@ async function main() {
 
   console.log('Ekran görüntüleri alınıyor...\n')
 
-  // Login (public)
   await page.goto(`${BASE}/login`)
   await waitForApp(page)
   await page.screenshot({ path: join(OUT_DIR, 'login.png') })
   console.log('  ✓ login.png')
 
-  // Staff pages (admin)
   await loginAsAdmin(page)
 
   const staffPages = [
     ['dashboard', '/'],
-    ['tables', '/tables'],
     ['orders', '/orders'],
     ['kitchen', '/kitchen'],
     ['menu', '/menu'],
-    ['analytics', '/analytics'],
+    ['system-health', '/system/health'],
   ]
 
   for (const [name, path] of staffPages) {
     await screenshot(page, name, path)
   }
 
-  // Customer pages
   await context.clearCookies()
   await page.evaluate(() => localStorage.clear())
 
-  await page.goto(`${BASE}/customer`)
+  await page.goto(`${BASE}/customer?token=qr-masa-1`)
   await waitForApp(page)
   await page.screenshot({ path: join(OUT_DIR, 'customer-login.png') })
   console.log('  ✓ customer-login.png')
 
-  // Customer menu - set session via localStorage
-  await page.goto(`${BASE}/customer`)
   await page.evaluate(() => {
     localStorage.setItem('customerTable', JSON.stringify({
-      tableId: 1,
-      tableNumber: 1,
+      tableToken: 'qr-masa-1',
+      tableNumber: '1',
       section: 'Salon',
       capacity: 4,
       sessionStart: new Date().toISOString(),
