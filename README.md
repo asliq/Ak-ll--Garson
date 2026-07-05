@@ -14,7 +14,7 @@
 [![TypeScript](https://img.shields.io/badge/Backend-TypeScript-3178C6?logo=typescript&logoColor=white)](./api/)
 [![Status](https://img.shields.io/badge/status-RC1%20Demo-blue.svg)](#current-limitations)
 
-[Overview](#project-overview) · [Metrics](#project-metrics) · [Mimari](#architecture) · [Kurulum](#installation) · [Technical Report](./docs/MASTER_PROJECT_REPORT.md)
+[Overview](#project-overview) · [Screenshots](#screenshots) · [Metrics](#project-metrics) · [Mimari](#architecture) · [Kurulum](#installation) · [Technical Report](./docs/MASTER_PROJECT_REPORT.md)
 
 ### Highlights
 
@@ -30,6 +30,44 @@
 | ✔ | Integration test infrastructure (menu module) |
 
 </div>
+
+---
+
+## Screenshots
+
+Polished **Demo Edition** walkthrough — staff operations, kitchen display, QR customer ordering, OpenAPI docs, and live infrastructure health. Captured at 1440×900 with the [demo seed dataset](./docs/SCREENSHOT_GUIDE.md).
+
+### Login
+
+![Login](docs/assets/screenshots/01-login.png)
+
+### Dashboard
+
+![Dashboard](docs/assets/screenshots/02-dashboard.png)
+
+### Menu Management
+
+![Menu Management](docs/assets/screenshots/03-menu-management.png)
+
+### Orders
+
+![Orders](docs/assets/screenshots/04-orders.png)
+
+### Kitchen Display
+
+![Kitchen Display](docs/assets/screenshots/05-kitchen.png)
+
+### Customer Menu (QR)
+
+![Customer Menu](docs/assets/screenshots/06-customer-menu.png)
+
+### Swagger API
+
+![Swagger API](docs/assets/screenshots/07-swagger.png)
+
+### System Health
+
+![System Health](docs/assets/screenshots/08-system-health.png)
 
 ---
 
@@ -166,24 +204,6 @@ flowchart TD
 | E2E testler | Playwright (kurulu, test yok) | 📋 **Planned** |
 
 > Çalışmayan modüller frontend'de `API_ENABLED` bayrağı ile devre dışı bırakılmış veya bilgilendirme mesajı gösterir.
-
----
-
-## Screenshots
-
-Capture with `npm run screenshots` (API + frontend running). Save to `docs/screenshots/`.
-
-| Screen | Scenario to capture |
-|--------|---------------------|
-| **Dashboard** | Staff login → today stats from live orders (revenue, active count) |
-| **Menu** | Category filter + item list with price edit state |
-| **Orders** | Active orders list with status badges and table ID |
-| **Kitchen** | Kitchen display with at least one `preparing` order visible |
-| **QR Ordering** | `/customer?token=qr-masa-1` login screen before menu load |
-| **Customer Menu** | Public menu with cart badge and category navigation |
-| **Swagger** | `http://localhost:3001/docs` — menu + order endpoint groups expanded |
-
-Existing assets (if present): `docs/screenshots/*.png`
 
 ---
 
@@ -676,7 +696,7 @@ Week-level view of [Architecture Evolution](#architecture-evolution):
 - [ ] JWT auth (minimal)
 - [ ] Order integration testleri
 - [ ] GitHub Actions: build + integration test
-- [ ] README screenshots & demo GIF
+- [ ] README demo GIF
 - [ ] Çalışmayan sidebar öğelerini gizle veya etiketle
 
 ### Mid Term (3 ay)
