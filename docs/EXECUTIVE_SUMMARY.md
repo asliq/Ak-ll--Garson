@@ -1,6 +1,6 @@
 # Akıllı Garson — Executive Summary
 
-**Product:** Akıllı Garson (Smart Waiter)  
+**Product:** Akıllı Garson — Restaurant Management Platform  
 **Version:** 2.0.0 (Release Candidate 1)  
 **Document date:** July 2026  
 **Audience:** Technical reviewers, engineering interviewers
@@ -9,7 +9,7 @@
 
 ## 1. Product Overview
 
-Akıllı Garson is a full-stack restaurant operations platform for dine-in scenarios. It connects a customer-facing QR menu and ordering flow with staff tools for order management, kitchen display, menu administration, and operational dashboards.
+Akıllı Garson is a **Restaurant Management Platform** for dine-in scenarios. It connects a customer-facing QR menu and ordering flow with staff tools for order management, kitchen display, menu administration, and operational dashboards.
 
 | Layer | Stack |
 |-------|-------|

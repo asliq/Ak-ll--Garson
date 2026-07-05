@@ -1,6 +1,6 @@
 # Akıllı Garson — Project Technical Report
 
-**Product:** Akıllı Garson (Smart Waiter)  
+**Product:** Akıllı Garson — Restaurant Management Platform  
 **Version:** 2.0.0 (Release Candidate 1)  
 **Document date:** July 2026  
 **Status:** Demo Edition — core flows operational on NestJS + PostgreSQL
@@ -27,7 +27,7 @@ Related documents:
 
 ### 1.1 Description
 
-Akıllı Garson is a restaurant operations platform supporting:
+Akıllı Garson is a Restaurant Management Platform supporting:
 
 - **QR-based customer menu and ordering** (dine-in)
 - **Staff order management** and status workflow

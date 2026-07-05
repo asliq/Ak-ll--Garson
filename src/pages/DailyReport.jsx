@@ -73,7 +73,7 @@ function printReport(data, date) {
       <tr><th>Yöntem</th><th>İşlem</th><th>Tutar</th></tr>
       ${data.paymentBreakdown.map(p => `<tr><td>${p.name}</td><td>${p.count}</td><td>${formatCurrency(p.total)}</td></tr>`).join('')}
     </table>
-    <p class="footer">Akıllı Garson POS — ${new Date().toLocaleString('tr-TR')}</p>
+    <p class="footer">Akıllı Garson — Restaurant Management Platform · ${new Date().toLocaleString('tr-TR')}</p>
   </body></html>`)
   win.document.close()
   setTimeout(() => win.print(), 400)

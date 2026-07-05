@@ -2,6 +2,11 @@
   "name": "akilli-garson",
   "private": true,
   "version": "2.0.0",
+  "description": "Akıllı Garson — Restaurant Management Platform",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asliq/akilli-garson.git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",

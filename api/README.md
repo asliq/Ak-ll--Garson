@@ -1,6 +1,6 @@
 # Akıllı Garson API
 
-Production-grade NestJS backend skeleton for the Akıllı Garson restaurant POS / QR ordering system.
+NestJS backend for **Akıllı Garson** — Restaurant Management Platform (QR ordering, kitchen display, menu management, realtime operations).
 
 ## Stack
 

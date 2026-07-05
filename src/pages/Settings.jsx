@@ -23,6 +23,7 @@ import {
   ClipboardList
 } from 'lucide-react'
 import { Card, CardContent } from '../components/ui/Card'
+import { DEMO_EDITION } from '../config/modules'
 import { useAppStore } from '../store/useAppStore'
 import { useCurrentUser } from '../hooks/useAuth'
 import toast from 'react-hot-toast'
@@ -336,7 +337,7 @@ export default function Settings() {
               <div className={styles.settingItem}>
                 <div className={styles.settingInfo}>
                   <span className={styles.settingLabel}>Versiyon</span>
-                  <span className={styles.settingDesc}>Akıllı Garson v1.0.0</span>
+                  <span className={styles.settingDesc}>Akıllı Garson v{DEMO_EDITION.version}</span>
                 </div>
                 <span className={styles.versionBadge}>
                   <Check size={14} />
@@ -369,8 +370,8 @@ export default function Settings() {
                 <ChefHat size={40} />
               </div>
               <div className={styles.aboutInfo}>
-                <h3>Akıllı Garson</h3>
-                <p>Modern restoran yönetim sistemi</p>
+                <h3>{DEMO_EDITION.productName}</h3>
+                <p>{DEMO_EDITION.productSubtitle}</p>
                 <div className={styles.techStack}>
                   <span>React</span>
                   <span>TanStack Query</span>

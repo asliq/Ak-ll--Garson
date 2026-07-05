@@ -1,9 +1,13 @@
 {
   "name": "akilli-garson-api",
   "version": "0.1.0",
-  "description": "Akıllı Garson — Production NestJS API",
+  "description": "Akıllı Garson — Restaurant Management Platform API",
   "private": true,
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asliq/akilli-garson.git"
+  },
   "scripts": {
     "build": "nest build && tsc-alias -p tsconfig.build.json",
     "start": "nest start",

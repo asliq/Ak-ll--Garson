@@ -12,7 +12,8 @@ export const DEMO_EDITION = {
   name: 'Demo Edition',
   productName: 'Akıllı Garson',
   productSubtitle: 'Restaurant Management Platform',
-  tagline: 'Restoran Yönetim Platformu',
+  version: '2.0.0',
+  tagline: 'Restaurant Management Platform',
   footer: '© Akıllı Garson — Tüm hakları saklıdır',
 }
 

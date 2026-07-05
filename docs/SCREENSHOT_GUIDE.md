@@ -10,6 +10,8 @@ Documentation for the README screenshot set under `docs/assets/screenshots/`.
 | **Device scale** | 1× |
 | **Theme** | Light (`data-theme=light`, staff + customer flows) |
 | **Browser** | Chromium (headless) via Playwright |
+| **Product** | Akıllı Garson — Restaurant Management Platform |
+| **Repository** | [github.com/asliq/akilli-garson](https://github.com/asliq/akilli-garson) |
 | **Capture date** | 2026-07-05 |
 | **Screenshots updated** | 2026-07-05 |
 

@@ -2,11 +2,14 @@
 
 # Akıllı Garson
 
+**Restaurant Management Platform**
+
 **Full-stack restoran operasyon platformu — DDD, modular monolith ve realtime üzerine kişisel mühendislik çalışması**
 
 [![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](./package.json)
 [![API](https://img.shields.io/badge/API-0.1.0-555.svg)](./api/package.json)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](#license)
+[![GitHub](https://img.shields.io/badge/GitHub-akilli--garson-181717?logo=github)](https://github.com/asliq/akilli-garson)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![NestJS](https://img.shields.io/badge/NestJS-11-E0234E?logo=nestjs&logoColor=white)](https://nestjs.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
@@ -130,7 +133,7 @@ The restaurant domain gave me **just enough complexity** to make architectural d
 
 ### What this project is
 
-A **full-stack engineering portfolio** structured around a restaurant operations domain. The backend is the primary investment: NestJS, Prisma, DDD layers, 8 Prisma models, 3 migrations, WebSocket gateway. The frontend is a React 18 SPA that exercises live APIs; roadmap modules are gated in the sidebar.
+**Akıllı Garson** is a **Restaurant Management Platform** demo — implemented as a full-stack engineering portfolio structured around a restaurant operations domain. The backend is the primary investment: NestJS, Prisma, DDD layers, 8 Prisma models, 3 migrations, WebSocket gateway. The frontend is a React 18 SPA that exercises live APIs; roadmap modules are gated in the sidebar.
 
 | Layer | Stack | Role |
 |-------|-------|------|
@@ -733,7 +736,7 @@ Detaylı plan: [`docs/YOL-HARITASI.md`](./docs/YOL-HARITASI.md) · [`docs/MASTER
 ### Clone
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/akilli-garson.git
+git clone https://github.com/asliq/akilli-garson.git
 cd akilli-garson
 ```
 
@@ -974,7 +977,7 @@ Kişisel mühendislik çalışması — restoran operasyonları üzerinde backen
 | | |
 |---|---|
 | LinkedIn | [linkedin.com/in/your-profile](https://linkedin.com/in/your-profile) |
-| GitHub | [github.com/YOUR_USERNAME](https://github.com/YOUR_USERNAME) |
+| GitHub | [github.com/asliq/akilli-garson](https://github.com/asliq/akilli-garson) |
 | Email | your.email@example.com |
 
 ---

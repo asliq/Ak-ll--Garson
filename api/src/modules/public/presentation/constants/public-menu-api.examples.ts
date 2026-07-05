@@ -11,7 +11,7 @@ export class PublicMenuApiExamples {
   };
 
   static readonly menu: PublicMenuResponseDto = {
-    restaurantName: 'Akıllı Garson Restoran',
+    restaurantName: 'Lezzet Durağı',
     tableName: 'Masa 5',
     categories: [
       {

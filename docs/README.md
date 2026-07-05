@@ -1,6 +1,6 @@
 # Documentation
 
-Entry point for **Akıllı Garson** technical documentation (Release Candidate 1).
+Entry point for **Akıllı Garson** — Restaurant Management Platform — technical documentation (Release Candidate 1).
 
 ## Start here
 
@@ -11,6 +11,7 @@ Entry point for **Akıllı Garson** technical documentation (Release Candidate 1
 | Deep technical review | [MASTER_PROJECT_REPORT.md](./MASTER_PROJECT_REPORT.md) |
 | Quick overview | [EXECUTIVE_SUMMARY.md](./EXECUTIVE_SUMMARY.md) |
 | RC1 release notes | [RC1_P0_COMPLETION_REPORT.md](./RC1_P0_COMPLETION_REPORT.md) |
+| Branding & assets | [SCREENSHOT_GUIDE.md](./SCREENSHOT_GUIDE.md) · [BRANDING_AUDIT_REPORT.md](./BRANDING_AUDIT_REPORT.md) |
 
 ## Architecture & domain
 

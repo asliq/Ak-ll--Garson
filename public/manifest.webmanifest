@@ -1,7 +1,7 @@
 {
-  "name": "Akıllı Garson",
-  "short_name": "Garson",
-  "description": "Restoran yönetim ve müşteri menü sistemi",
+  "name": "Akıllı Garson — Restaurant Management Platform",
+  "short_name": "Akıllı Garson",
+  "description": "Restaurant Management Platform — QR ordering, kitchen display, and staff operations",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f0f0f",

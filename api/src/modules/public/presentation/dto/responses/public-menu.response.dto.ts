@@ -49,7 +49,7 @@ export class PublicMenuCategoryResponseDto {
 }
 
 export class PublicMenuResponseDto {
-  @ApiProperty({ example: 'Akıllı Garson Restoran' })
+  @ApiProperty({ example: 'Lezzet Durağı' })
   restaurantName!: string;
 
   @ApiProperty({ example: 'Masa 5' })

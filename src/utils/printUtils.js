@@ -1,4 +1,4 @@
-// Print Utilities for Restaurant POS System
+// Print utilities for Akıllı Garson — Restaurant Management Platform
 
 /**
  * Print receipt for an order
@@ -546,7 +546,7 @@ export const printDailyReport = (stats, date) => {
       
       <div class="footer">
         <p>Bu rapor otomatik olarak oluşturulmuştur.</p>
-        <p>Akıllı Garson - Restoran Yönetim Sistemi</p>
+        <p>Akıllı Garson — Restaurant Management Platform</p>
       </div>
       
       <script>

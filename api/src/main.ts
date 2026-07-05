@@ -39,7 +39,7 @@ async function bootstrap(): Promise<void> {
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Akıllı Garson API')
-    .setDescription('Restaurant POS & QR Ordering System — Production API')
+    .setDescription('Akıllı Garson — Restaurant Management Platform API')
     .setVersion('1.0')
     .addBearerAuth()
     .addApiKey({ type: 'apiKey', name: 'X-Restaurant-Id', in: 'header' }, 'restaurant-id')
