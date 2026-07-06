@@ -15,9 +15,9 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![TypeScript](https://img.shields.io/badge/Backend-TypeScript-3178C6?logo=typescript&logoColor=white)](./api/)
-[![Status](https://img.shields.io/badge/status-RC1%20Demo-blue.svg)](#current-limitations)
+[![Status](https://img.shields.io/badge/status-RC2%20Demo-blue.svg)](#project-status)
 
-[Overview](#project-overview) · [Screenshots](#screenshots) · [Metrics](#project-metrics) · [Mimari](#architecture) · [Kurulum](#installation) · [Technical Report](./docs/MASTER_PROJECT_REPORT.md)
+[Overview](#project-overview) · [Screenshots](#screenshots) · [Status](#project-status) · [Mimari](#architecture) · [Kurulum](#installation) · [Technical Report](./docs/MASTER_PROJECT_REPORT.md)
 
 ### Highlights
 
@@ -82,12 +82,12 @@ Polished **Demo Edition** walkthrough — staff operations, kitchen display, QR 
 | **Menu module** (DDD reference) | 93 files |
 | **Frontend pages** | 16 (`src/pages`) |
 | **Frontend hooks** | 19 (`src/hooks`) |
-| **Feature modules** | 5 (menu, order, public, health, realtime) |
+| **Feature modules** | 6 (menu, order, public, health, realtime, service-call) |
 | **Use cases** | 15 |
 | **Domain events** | 13 |
 | **REST endpoints** | 16 |
 | **Prisma models** | 8 |
-| **Database migrations** | 3 |
+| **Database migrations** | 4 |
 | **Integration tests** (menu) | 10 |
 
 ---
@@ -103,10 +103,11 @@ End-to-end, locally runnable flows — no mock API for these:
 | ✔ | **Kitchen Screen** — active orders via NestJS orders API |
 | ✔ | **Order Management** — list, filter, status transitions |
 | ✔ | **Menu Management** — categories, items, price updates |
-| ✔ | **WebSocket** — `order.created`, `order.updated`, room-based broadcast |
+| ✔ | **Service Call Center** — bill request, waiter call, staff workflow |
+| ✔ | **WebSocket** — `order.created`, `order.updated`, `order.ready`, `service_call.*` |
 | ✔ | **Swagger** — `http://localhost:3001/docs` |
 
-> Tables, payments, inventory, reservations — UI exists, **backend not implemented**. See [Current Limitations](#current-limitations).
+> Tables, payments, inventory, reservations — sidebar shows roadmap pages; backend not implemented. See [Known Limitations](#known-limitations).
 
 ---
 
@@ -133,12 +134,12 @@ The restaurant domain gave me **just enough complexity** to make architectural d
 
 ### What this project is
 
-**Akıllı Garson** is a **Restaurant Management Platform** demo — implemented as a full-stack engineering portfolio structured around a restaurant operations domain. The backend is the primary investment: NestJS, Prisma, DDD layers, 8 Prisma models, 3 migrations, WebSocket gateway. The frontend is a React 18 SPA that exercises live APIs; roadmap modules are gated in the sidebar.
+**Akıllı Garson** is a **Restaurant Management Platform** demo — implemented as a full-stack engineering portfolio structured around a restaurant operations domain. The backend is the primary investment: NestJS, Prisma, DDD layers, 8 Prisma models, 4 migrations, WebSocket gateway. The frontend is a React 18 SPA that exercises live APIs; roadmap modules are gated in the sidebar.
 
 | Layer | Stack | Role |
 |-------|-------|------|
 | **Frontend** | React 18 · Vite 6 · TanStack Query · Zustand | Staff panel + customer QR flow |
-| **Backend** | NestJS 11 · TypeScript · Prisma 6 | Modular monolith, 5 feature modules |
+| **Backend** | NestJS 11 · TypeScript · Prisma 6 | Modular monolith, 6 feature modules |
 | **Data** | PostgreSQL 16 · Redis 7 | ACID orders, tenant-scoped rows |
 
 ### Engineering focus
@@ -169,7 +170,7 @@ flowchart TD
     C --> D[DDD refactor<br/>Menu bounded context]
     D --> E[Order + Public API<br/>QR end-to-end flow]
     E --> F[WebSocket realtime<br/>Domain events → rooms]
-    F --> G[RC1 Demo Edition<br/>Seed data, honest UI scope]
+    F --> G[RC2 Demo Edition<br/>Customer journey, service calls]
 ```
 
 | Phase | What changed |
@@ -181,6 +182,7 @@ flowchart TD
 | Order + Public | Single `Order` aggregate; `tableToken` entry point |
 | WebSocket | `OrderRealtimeHandler` decoupled from HTTP use cases |
 | RC1 | Demo seed dataset, kitchen honesty, documentation cleanup |
+| RC2 | Customer journey completion, service calls, release QA |
 
 ---
 
@@ -202,7 +204,7 @@ flowchart TD
 | Ödeme / POS | Payment kaydı ve entegrasyon | 📋 **Planned** |
 | Rezervasyon | Reservation modülü | 📋 **Planned** |
 | Envanter / Stok | Inventory modülü | 📋 **Planned** |
-| Garson çağırma | Service calls API | 📋 **Planned** |
+| Garson çağırma / Hesap iste | Service calls API (RC2) | ✅ **Completed** |
 | CI/CD pipeline | Otomatik build ve test | 📋 **Planned** |
 | E2E testler | Playwright (kurulu, test yok) | 📋 **Planned** |
 
@@ -647,32 +649,7 @@ Frontend `axios` interceptor bu envelope'u otomatik açar.
 
 ## Current Limitations
 
-Deliberately documented — this is an MVP / demo, not production POS software.
-
-| Limitation | Detail |
-|------------|--------|
-| **JWT / Auth** | Demo PIN (`1234`) on frontend only. JWT env vars exist; no NestJS auth module. |
-| **Tables API** | Prisma `Table` model exists. No REST endpoints. Frontend `/tables` disabled. |
-| **Payments** | No backend. Orders screen closes via status update only. |
-| **Inventory** | No backend. UI shows unavailable message. |
-| **Reservations** | No backend. |
-| **Service calls** | No backend (waiter call from customer UI shows info toast). |
-| **Menu gaps** | Archive use-cases exist but no HTTP routes. Availability toggle not exposed. |
-| **Order gaps** | No add/remove line items, transfer, or merge on API. |
-| **Tests** | 1 integration suite (menu, 10 cases). No unit tests. No E2E tests written. |
-| **CI/CD** | No pipeline. No API Dockerfile. |
-| **Frontend TS** | JavaScript only — no compile-time type safety on client. |
-| **Legacy UI** | ~40% of sidebar routes point to unimplemented APIs (gated by `API_ENABLED`). |
-
----
-
-## Current Status
-
-| Phase | Items |
-|-------|-------|
-| **Done** | Menu + Order bounded contexts, public QR API, WebSocket, Swagger, Prisma migrations, frontend core migration |
-| **In progress** | JWT auth, legacy UI cleanup, documentation |
-| **Planned** | Tables, payments, CI/CD, E2E, production deploy |
+See [Known Limitations](#known-limitations) at the end of this document for the RC2 scope statement.
 
 ---
 
@@ -693,32 +670,7 @@ Week-level view of [Architecture Evolution](#architecture-evolution):
 
 ## Roadmap
 
-### Near Term (1 ay)
-
-- [ ] Tables REST API + frontend enable
-- [ ] JWT auth (minimal)
-- [ ] Order integration testleri
-- [ ] GitHub Actions: build + integration test
-- [ ] README demo GIF
-- [ ] Çalışmayan sidebar öğelerini gizle veya etiketle
-
-### Mid Term (3 ay)
-
-- [ ] Payments modülü
-- [ ] Service calls (garson çağır)
-- [ ] Playwright E2E (QR → kitchen → complete)
-- [ ] API Dockerfile + staging deploy
-- [ ] Menu archive / availability endpoint'leri
-
-### Long Term (6–12 ay)
-
-- [ ] Multi-restaurant SaaS onboarding
-- [ ] Branch / channel fiyatlandırma
-- [ ] POS / ödeme sağlayıcı entegrasyonları (TR)
-- [ ] Analytics modülü (gerçek aggregation)
-- [ ] Billing & abonelik modeli
-
-Detaylı plan: [`docs/YOL-HARITASI.md`](./docs/YOL-HARITASI.md) · [`docs/MASTER_PROJECT_REPORT.md`](./docs/MASTER_PROJECT_REPORT.md)
+Planned improvements are listed in [Roadmap](#roadmap-1) near the end of this document. Detailed planning notes: [`docs/YOL-HARITASI.md`](./docs/YOL-HARITASI.md).
 
 ---
 
@@ -952,19 +904,97 @@ Kitchen and staff screens need sub-second updates. Polling 5s intervals felt wro
 
 ---
 
-## Future Improvements
+## Project Status
 
-| Öncelik | İyileştirme |
-|---------|-------------|
-| P0 | JWT auth + backend RBAC |
-| P0 | Tables API |
-| P1 | CI/CD (GitHub Actions) |
-| P1 | E2E testler (Playwright) |
-| P1 | Frontend TypeScript migrasyonu |
-| P2 | Payments modülü |
-| P2 | Redis cache (public menu) |
-| P3 | Kubernetes / PaaS deployment |
-| P3 | Observability (metrics, tracing) |
+**Release Candidate 2 (RC2)**
+
+This repository represents the current **Demo Edition** of Akıllı Garson.
+
+The implemented features are fully functional and demonstrated using a real NestJS backend, PostgreSQL database, Prisma ORM, and WebSocket communication.
+
+Some modules shown in the navigation are intentionally presented as roadmap features and are clearly marked as planned functionality.
+
+This repository is intended for **portfolio demonstration**, **technical interviews**, and **software company evaluations**.
+
+---
+
+## Current Scope
+
+What is implemented and runnable today (local demo with seed data):
+
+| Area | Description |
+|------|-------------|
+| **Restaurant Dashboard** | Live order stats, kitchen queue, service-call widgets |
+| **Menu Management** | Categories, items, price updates (NestJS Menu module) |
+| **Order Management** | List, filter, status transitions, short order numbers (`#1042`) |
+| **Kitchen Operations** | Kitchen display driven by Order aggregate status |
+| **Customer QR Ordering** | Public menu, cart, order notes, order tracking |
+| **Service Call Center** | Bill request, waiter call, staff accept/complete workflow |
+| **Realtime Notifications** | WebSocket: orders and service calls to staff and customer rooms |
+| **System Health** | DB + Redis health indicators |
+| **Swagger API** | OpenAPI at `http://localhost:3001/docs` |
+| **PostgreSQL + Prisma** | Migrations, tenant-scoped schema, demo seed |
+| **Clean Architecture** | Presentation / application / domain / infrastructure layers |
+| **DDD** | Aggregates, value objects, domain events, repository ports (Menu reference BC) |
+
+---
+
+## Known Limitations
+
+Documented scope boundaries — not defects. These are planned future improvements:
+
+| Limitation | Detail |
+|------------|--------|
+| **Payment gateway** | Not implemented. Orders close via status update only. |
+| **Customer ratings** | Thank-you screen stars are UI-only; not persisted. |
+| **JWT / backend auth** | Demo PIN on frontend. `X-Restaurant-Id` header for tenant context. |
+| **Roadmap sidebar modules** | Tables, payments, inventory, reservations, analytics — UI pages marked as planned; no live API. |
+| **CI/CD pipeline** | Not configured. Playwright scripts exist locally; not run on every push. |
+| **Accessibility** | No formal WCAG audit completed. |
+| **Order line edits** | No add/remove items, transfer, or merge on API. |
+| **Menu archive routes** | Archive use-cases exist; HTTP endpoints not exposed. |
+| **Frontend TypeScript** | Client is JavaScript; adapters bridge API types manually. |
+| **Horizontal WebSocket scale** | In-process rooms only; no Redis adapter yet. |
+
+Release QA notes: [`docs/RC2_FINAL_RELEASE_REPORT.md`](./docs/RC2_FINAL_RELEASE_REPORT.md)
+
+---
+
+## Roadmap
+
+Future work — not part of RC2:
+
+| Priority | Planned improvement |
+|----------|---------------------|
+| P0 | Payment integration |
+| P0 | JWT authentication + backend RBAC |
+| P0 | Table management API |
+| P1 | CI/CD (GitHub Actions: build, migrate, tests) |
+| P1 | Inventory module |
+| P1 | Reservations module |
+| P1 | Analytics and reporting |
+| P2 | Loyalty / customer retention |
+| P2 | Mobile push notifications (PWA background) |
+| P2 | Multi-restaurant SaaS onboarding |
+| P3 | Production Docker / staging deploy |
+| P3 | WebSocket Redis adapter, transactional outbox |
+
+---
+
+## Release Information
+
+| Field | Value |
+|-------|-------|
+| **Version** | `v1.0.0-rc2` |
+| **Status** | Release Candidate |
+| **Target** | Portfolio demonstration |
+| **Backend** | NestJS 11 |
+| **Frontend** | React 18 + Vite 6 |
+| **Database** | PostgreSQL 16 |
+| **Realtime** | WebSocket (`ws` adapter) |
+| **Architecture** | Clean Architecture + DDD (modular monolith) |
+
+Related reports: [RC2 Customer Experience](./docs/RC2_CUSTOMER_EXPERIENCE_REPORT.md) · [RC2 Final Release QA](./docs/RC2_FINAL_RELEASE_REPORT.md)
 
 ---
 
@@ -1003,6 +1033,8 @@ See [`docs/README.md`](./docs/README.md) for the full documentation index.
 | [EXECUTIVE_SUMMARY.md](./docs/EXECUTIVE_SUMMARY.md) | Concise project overview |
 | [MASTER_PROJECT_REPORT.md](./docs/MASTER_PROJECT_REPORT.md) | Full technical reference |
 | [MIMARI-TASARIM.md](./docs/MIMARI-TASARIM.md) | Architecture design decisions |
+| [RC2_CUSTOMER_EXPERIENCE_REPORT.md](./docs/RC2_CUSTOMER_EXPERIENCE_REPORT.md) | RC2 customer journey implementation |
+| [RC2_FINAL_RELEASE_REPORT.md](./docs/RC2_FINAL_RELEASE_REPORT.md) | RC2 release QA and verdict |
 | [RC1_P0_COMPLETION_REPORT.md](./docs/RC1_P0_COMPLETION_REPORT.md) | Release Candidate 1 P0 fixes |
 
 ---
@@ -1018,21 +1050,6 @@ Suggested reading order for a technical review:
 5. **`src/api/adapters.js`** — NestJS ↔ UI mapping (frontend migration layer)
 
 Start with `CreateCategoryUseCase` or `create-category.integration.spec.ts` if time is limited.
-
----
-
-## Known Future Work
-
-Architectural items planned — not a repeat of [Roadmap](#roadmap):
-
-| Item | Why it matters |
-|------|----------------|
-| **JWT + backend RBAC** | Replace `X-Restaurant-Id` header and demo PIN |
-| **Payments bounded context** | Separate aggregate; do not overload `Order` |
-| **CI/CD** | Build, migrate, integration tests on every push |
-| **WebSocket Redis adapter** | Horizontal scale for WS rooms |
-| **Transactional outbox** | Reliable domain event delivery to external systems |
-| **Production Docker** | API container + compose for staging |
 
 ---
 
