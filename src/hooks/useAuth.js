@@ -21,9 +21,10 @@ const authApi = {
     }
 
     const restaurantId = import.meta.env.VITE_RESTAURANT_ID
-    if (restaurantId) {
-      setRestaurantId(restaurantId)
+    if (!restaurantId) {
+      throw new Error('VITE_RESTAURANT_ID tanımlı değil — .env dosyasını kontrol edin')
     }
+    setRestaurantId(restaurantId)
 
     return {
       ...waiter,
@@ -132,11 +133,14 @@ export function useWaiters(options = {}) {
 // ==========================================
 export function useAuthGuard() {
   const activeWaiter = useAppStore((state) => state.activeWaiter)
-  const { data: session, isLoading } = useSession()
-  
+  const { data: session, isPending, isFetching } = useSession()
+
+  // Demo auth: activeWaiter from persist is sufficient once session resolves or is cached
+  const sessionLoading = !!activeWaiter?.id && isPending && isFetching && !session
+
   return {
-    isAuthenticated: !!activeWaiter && !!session,
-    isLoading,
+    isAuthenticated: !!activeWaiter,
+    isLoading: sessionLoading,
     user: activeWaiter,
   }
 }

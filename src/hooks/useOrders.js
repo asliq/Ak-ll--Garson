@@ -3,6 +3,12 @@ import { ordersApi, tablesApi, API_ENABLED } from '../api/services'
 import { tableKeys } from './useTables'
 import toast from 'react-hot-toast'
 
+function shouldRetryQuery(failureCount, error) {
+  const status = error?.status
+  if (status && status < 500) return false
+  return failureCount < 1
+}
+
 // Query key factory
 export const orderKeys = {
   all: ['orders'],
@@ -22,6 +28,8 @@ export function useOrders(options = {}) {
     queryKey: orderKeys.lists(),
     queryFn: ordersApi.getAll,
     staleTime: 1000 * 10,
+    retry: shouldRetryQuery,
+    retryDelay: 500,
     ...options,
   })
 }

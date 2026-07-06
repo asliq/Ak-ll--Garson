@@ -226,7 +226,9 @@ export default function Orders() {
 
   const isPaying = createPayment.isPending || createSplitPayment.isPending || updateStatus.isPending
 
-  if (isLoading) return <div className={styles.orders}>Yükleniyor...</div>
+  if (isLoading && orders === undefined) {
+    return <div className={styles.orders}>Yükleniyor...</div>
+  }
 
   if (isError) {
     return (

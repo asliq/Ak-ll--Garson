@@ -3,6 +3,12 @@ import { ordersApi } from '../api/services'
 import toast from 'react-hot-toast'
 import { useAppStore } from '../store/useAppStore'
 
+function shouldRetryQuery(failureCount, error) {
+  const status = error?.status
+  if (status && status < 500) return false
+  return failureCount < 1
+}
+
 function mapOrderToKitchen(order) {
   return {
     id: order.id,
@@ -47,6 +53,8 @@ export function useKitchenOrders(options = {}) {
     queryKey: kitchenKeys.activeOrders(),
     queryFn: kitchenApi.getActiveOrders,
     staleTime: 1000 * 5,
+    retry: shouldRetryQuery,
+    retryDelay: 500,
     refetchInterval: kitchenAutoRefresh ? kitchenRefreshInterval : false,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,

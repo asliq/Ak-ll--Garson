@@ -69,7 +69,7 @@ export default function Kitchen() {
   const readyCount =
     kitchenOrders?.filter((o) => o.status === 'ready' || o.status === 'served').length || 0
 
-  if (isLoading && !kitchenOrders) {
+  if (isLoading && kitchenOrders === undefined) {
     return <div className={styles.kitchen}>Yükleniyor...</div>
   }
 

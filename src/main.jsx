@@ -25,8 +25,9 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5,
       // Cache 30 dakika boyunca saklanır
       gcTime: 1000 * 60 * 30,
-      // Ağ hatası durumunda 3 kez dene
-      retry: 3,
+      // Ağ hatası durumunda 1 kez dene (sayfa başına global varsayılan)
+      retry: 1,
+      retryDelay: 500,
       // Sayfa odağı değiştiğinde yeniden fetch
       refetchOnWindowFocus: true,
       // Bağlantı yeniden kurulduğunda fetch

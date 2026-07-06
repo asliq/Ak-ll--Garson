@@ -8,7 +8,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000,
+  timeout: 8000,
 })
 
 function getRestaurantId() {
@@ -46,7 +46,9 @@ api.interceptors.response.use(
       (Array.isArray(apiError?.message) ? apiError.message.join(', ') : null) ||
       error.message
 
-    return Promise.reject(new Error(message))
+    const err = new Error(message)
+    err.status = error.response?.status
+    return Promise.reject(err)
   },
 )
 

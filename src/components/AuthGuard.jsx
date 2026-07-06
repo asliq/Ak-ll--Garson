@@ -14,7 +14,14 @@ export default function AuthGuard({ children }) {
 
   useEffect(() => {
     if (storeReady) return undefined
-    return useAppStore.persist.onFinishHydration(() => setStoreReady(true))
+
+    const unsub = useAppStore.persist.onFinishHydration(() => setStoreReady(true))
+    const timeout = setTimeout(() => setStoreReady(true), 3000)
+
+    return () => {
+      unsub?.()
+      clearTimeout(timeout)
+    }
   }, [storeReady])
 
   if (!storeReady || isLoading) {

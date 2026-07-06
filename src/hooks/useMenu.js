@@ -2,6 +2,12 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { menuApi, categoriesApi } from '../api/services'
 import toast from 'react-hot-toast'
 
+function shouldRetryQuery(failureCount, error) {
+  const status = error?.status
+  if (status && status < 500) return false
+  return failureCount < 1
+}
+
 // Query key factory
 export const menuKeys = {
   all: ['menu'],
@@ -25,7 +31,9 @@ export function useMenuItems(options = {}) {
   return useQuery({
     queryKey: menuKeys.lists(),
     queryFn: menuApi.getAll,
-    staleTime: 1000 * 60 * 5, // 5 dakika fresh
+    staleTime: 1000 * 60 * 5,
+    retry: shouldRetryQuery,
+    retryDelay: 500,
     ...options,
   })
 }
@@ -62,7 +70,9 @@ export function useCategories(options = {}) {
   return useQuery({
     queryKey: categoryKeys.lists(),
     queryFn: categoriesApi.getAll,
-    staleTime: 1000 * 60 * 10, // Kategoriler sık değişmez
+    staleTime: 1000 * 60 * 10,
+    retry: shouldRetryQuery,
+    retryDelay: 500,
     ...options,
   })
 }
@@ -189,8 +199,9 @@ export function useMenuWithCategories() {
   const menuQuery = useMenuItems()
   const categoriesQuery = useCategories()
 
-  // Her iki sorgu da yüklenene kadar bekle
-  const isLoading = menuQuery.isLoading || categoriesQuery.isLoading
+  const isLoading =
+    (menuQuery.isLoading && menuQuery.data === undefined) ||
+    (categoriesQuery.isLoading && categoriesQuery.data === undefined)
   const isError = menuQuery.isError || categoriesQuery.isError
   const error = menuQuery.error || categoriesQuery.error
 
