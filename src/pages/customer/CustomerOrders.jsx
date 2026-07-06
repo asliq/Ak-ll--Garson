@@ -16,7 +16,11 @@ import {
 import { useUpdateOrderStatus, useTableOrders } from '../../hooks/useOrders'
 import { usePublicMenu } from '../../hooks/usePublicMenu'
 import { setRestaurantId } from '../../api/services'
+import { formatOrderRef } from '../../api/adapters'
 import { useTranslation } from '../../hooks/useTranslation'
+import CustomerHeader from '../../components/customer/CustomerHeader'
+import CustomerServiceActions from '../../components/customer/CustomerServiceActions'
+import CustomerOrderSummary from '../../components/customer/CustomerOrderSummary'
 import toast from 'react-hot-toast'
 import styles from './CustomerOrders.module.css'
 
@@ -149,6 +153,8 @@ export default function CustomerOrders() {
     setCustomerTable(updated)
   }, [publicMenu, customerTable])
 
+  const orderRef = (order) => formatOrderRef(order) || `Sipariş`
+
   // Bu masanın siparişleri (tableId public menüden alınır)
   const sortedOrders = [...orders].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
@@ -157,6 +163,17 @@ export default function CustomerOrders() {
   const activeOrders = sortedOrders.filter(o =>
     ['pending', 'preparing', 'ready', 'served'].includes(o.status),
   )
+
+  useEffect(() => {
+    if (sortedOrders.length === 0) return
+    const allDone = sortedOrders.every((o) =>
+      ['served', 'completed', 'cancelled'].includes(o.status),
+    )
+    const hasServed = sortedOrders.some((o) => ['served', 'completed'].includes(o.status))
+    if (allDone && hasServed) {
+      navigate('/customer/thank-you', { replace: true })
+    }
+  }, [sortedOrders, navigate])
 
   const handleCancelOrder = (orderId) => {
     if (!window.confirm('Siparişi iptal etmek istiyor musunuz?')) return
@@ -209,15 +226,10 @@ export default function CustomerOrders() {
 
   return (
     <div className={styles.customerOrders}>
-      {/* Header */}
-      <div className={styles.header}>
-        <button className={styles.backBtn} onClick={() => navigate('/customer/menu')}>
-          <ArrowLeft size={20} />
-        </button>
-        <div className={styles.headerInfo}>
-          <h1>Siparişlerim</h1>
-          <p>Masa {customerTable?.tableNumber}</p>
-        </div>
+      <CustomerHeader backTo="/customer/menu" />
+
+      <div className={styles.toolbar}>
+        <h1>Siparişlerim</h1>
         <button 
           className={`${styles.refreshBtn} ${isRefetching ? styles.spinning : ''}`}
           onClick={() => refetch()}
@@ -225,6 +237,8 @@ export default function CustomerOrders() {
           <RefreshCw size={20} />
         </button>
       </div>
+
+      <CustomerOrderSummary orders={sortedOrders} />
 
       {/* Active Orders Summary */}
       {activeOrders.length > 0 && (
@@ -247,7 +261,7 @@ export default function CustomerOrders() {
               >
                 <div className={styles.orderHeader}>
                   <div className={styles.orderInfo}>
-                    <div className={styles.orderNumber}>Sipariş #{order.id}</div>
+                    <div className={styles.orderNumber}>{orderRef(order)}</div>
                     <div className={styles.orderTime}>
                       <Clock size={14} />
                       {formatTime(order.createdAt)} • {getTimeAgo(order.createdAt)}
@@ -356,7 +370,7 @@ export default function CustomerOrders() {
                   </div>
                   <div className={styles.orderContent}>
                     <div className={styles.orderMeta}>
-                      <span className={styles.orderNum}>Sipariş #{order.id}</span>
+                      <span className={styles.orderNum}>{orderRef(order)}</span>
                       <span className={styles.orderDate}>{formatTime(order.createdAt)}</span>
                     </div>
                     <div className={styles.orderStatus}>{status.label}</div>
@@ -407,7 +421,7 @@ export default function CustomerOrders() {
               <div className={styles.detailInfo}>
                 <div className={styles.infoRow}>
                   <span>Sipariş No:</span>
-                  <strong>#{selectedOrder.id}</strong>
+                  <strong>{orderRef(selectedOrder)}</strong>
                 </div>
                 <div className={styles.infoRow}>
                   <span>Masa:</span>
@@ -452,6 +466,8 @@ export default function CustomerOrders() {
           </div>
         </>
       )}
+
+      <CustomerServiceActions />
     </div>
   )
 }

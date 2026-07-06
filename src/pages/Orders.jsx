@@ -10,6 +10,7 @@ import { useTables, useUpdateTableStatus } from '../hooks/useTables'
 import { useMenuItems } from '../hooks/useMenu'
 import { useCreatePayment, useCreateSplitPayment } from '../hooks/usePayments'
 import { API_ENABLED } from '../api/services'
+import { formatOrderRef } from '../api/adapters'
 import { printReceipt } from '../utils/printUtils'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useTranslation } from '../hooks/useTranslation'
@@ -287,7 +288,9 @@ export default function Orders() {
               <div key={order.id} className={styles.orderCard}>
                 <div className={styles.orderHeader}>
                   <div className={styles.orderInfo}>
-                    <div className={styles.orderNumber}>Sipariş #{order.id}</div>
+                    <div className={styles.orderNumber}>
+                      {formatOrderRef(order) || `Sipariş`}
+                    </div>
                     <div className={styles.orderMeta}>
                       <span className={styles.orderTable}>Masa {getTableNumber(order.tableId)}</span>
                       <span className={styles.orderSep}>•</span>
@@ -324,6 +327,9 @@ export default function Orders() {
                 </div>
 
                 <div className={styles.orderItems}>
+                  {order.notes && (
+                    <div className={styles.orderNotes}>💬 {order.notes}</div>
+                  )}
                   {(order.items || []).map((item, index) => (
                     <div key={index} className={styles.orderItem}>
                       <span className={styles.itemQuantity}>{item.quantity}x</span>

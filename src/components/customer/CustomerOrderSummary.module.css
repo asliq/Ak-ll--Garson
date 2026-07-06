@@ -1,0 +1,29 @@
+.summary {
+  margin: 1rem;
+  padding: 1rem;
+  background: var(--bg-secondary, #fff);
+  border: 1px solid var(--border-subtle, #e5e7eb);
+  border-radius: 14px;
+}
+
+.summary h3 {
+  margin: 0 0 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--text-muted, #6b7280);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.375rem 0;
+  font-size: 0.875rem;
+}
+
+.grand {
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-subtle, #e5e7eb);
+  font-size: 1rem;
+  font-weight: 600;
+}

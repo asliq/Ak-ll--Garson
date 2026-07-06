@@ -5,6 +5,11 @@ export const WS_ORDER_EVENTS = {
   SERVED: 'order.served',
 } as const;
 
+export const WS_SERVICE_CALL_EVENTS = {
+  CREATED: 'service_call.created',
+  UPDATED: 'service_call.updated',
+} as const;
+
 export const WS_CLIENT_EVENTS = {
   JOIN: 'join',
   CONNECTED: 'connected',

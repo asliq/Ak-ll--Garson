@@ -9,6 +9,8 @@ export interface OrderProps {
   restaurantId: string;
   tableId: string;
   status: OrderStatus;
+  displayNumber: number | null;
+  notes: string | null;
   currencyCode: string;
   subtotalMinor: bigint;
   totalMinor: bigint;
@@ -70,6 +72,14 @@ export class Order {
 
   get status(): OrderStatus {
     return this.props.status;
+  }
+
+  get displayNumber(): number | null {
+    return this.props.displayNumber;
+  }
+
+  get notes(): string | null {
+    return this.props.notes;
   }
 
   get currencyCode(): string {

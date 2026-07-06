@@ -29,6 +29,8 @@ export class OrderApiExamples {
     id: '550e8400-e29b-41d4-a716-446655440000',
     tableId: '660e8400-e29b-41d4-a716-446655440001',
     status: OrderStatus.OPEN,
+    displayNumber: 1042,
+    notes: null,
     currencyCode: 'TRY',
     subtotalMinor: '50000',
     totalMinor: '50000',
@@ -41,6 +43,8 @@ export class OrderApiExamples {
   static readonly publicOrder: PublicOrderResponseDto = {
     id: '550e8400-e29b-41d4-a716-446655440000',
     status: OrderStatus.OPEN,
+    displayNumber: 1042,
+    notes: null,
     currencyCode: 'TRY',
     totalMinor: '50000',
     lines: [OrderApiExamples.line],

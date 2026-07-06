@@ -20,6 +20,8 @@ export class OrderResult {
   restaurantId!: string;
   tableId!: string;
   status!: OrderStatus;
+  displayNumber!: number | null;
+  notes!: string | null;
   currencyCode!: string;
   subtotalMinor!: string;
   totalMinor!: string;
@@ -34,6 +36,8 @@ export class OrderResult {
       restaurantId: order.restaurantId,
       tableId: order.tableId,
       status: order.status,
+      displayNumber: order.displayNumber,
+      notes: order.notes,
       currencyCode: order.currencyCode,
       subtotalMinor: order.subtotalMinor.toString(),
       totalMinor: order.totalMinor.toString(),

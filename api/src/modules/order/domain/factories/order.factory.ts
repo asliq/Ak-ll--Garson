@@ -16,6 +16,7 @@ export interface CreateOrderInput {
   restaurantId: string;
   tableId: string;
   lines: CreateOrderLineInput[];
+  notes?: string | null;
 }
 
 export class OrderFactory {
@@ -57,11 +58,15 @@ export class OrderFactory {
     const subtotalMinor = lines.reduce((sum, line) => sum + line.lineTotalMinor, 0n);
     const totalMinor = subtotalMinor;
 
+    const notes = input.notes?.trim() ? input.notes.trim() : null;
+
     const order = Order.reconstitute({
       id: orderId,
       restaurantId: input.restaurantId,
       tableId: input.tableId,
       status: OrderStatus.OPEN,
+      displayNumber: null,
+      notes,
       currencyCode,
       subtotalMinor,
       totalMinor,

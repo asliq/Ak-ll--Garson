@@ -12,6 +12,7 @@ import {
 } from '../hooks/useKitchen'
 import { useMenuItems } from '../hooks/useMenu'
 import { useTranslation } from '../hooks/useTranslation'
+import { formatOrderRef } from '../api/adapters'
 import styles from './Kitchen.module.css'
 
 const ORDER_STATUS_LABEL = {
@@ -145,7 +146,7 @@ export default function Kitchen() {
               >
                 <div className={styles.orderHeader}>
                   <div className={styles.orderNumber}>
-                    <span>Sipariş #{order.id.slice(-6).toUpperCase()}</span>
+                    <span>{formatOrderRef(order) || 'Sipariş'}</span>
                     <span className={styles.orderTable}>Masa {order.tableNumber || order.tableId}</span>
                   </div>
                   <div className={styles.timer}>
@@ -159,6 +160,10 @@ export default function Kitchen() {
                     {ORDER_STATUS_LABEL[order.status] || order.status}
                   </span>
                 </div>
+
+                {order.notes && (
+                  <div className={styles.orderNotes}>💬 {order.notes}</div>
+                )}
 
                 <div className={styles.orderItems}>
                   {(order.items || []).map((item) => (

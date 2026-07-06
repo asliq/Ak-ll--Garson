@@ -1,0 +1,270 @@
+{
+  "testedAt": "2026-07-06T07:02:37.339Z",
+  "startup": {},
+  "routes": [
+    {
+      "route": "Login",
+      "path": "/login",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 0
+    },
+    {
+      "route": "Dashboard",
+      "path": "/",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 14
+    },
+    {
+      "route": "Orders",
+      "path": "/orders",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 11
+    },
+    {
+      "route": "Kitchen",
+      "path": "/kitchen",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 12
+    },
+    {
+      "route": "Menu",
+      "path": "/menu",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 12
+    },
+    {
+      "route": "Service Calls",
+      "path": "/operations/service-calls",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 7
+    },
+    {
+      "route": "Settings",
+      "path": "/system/settings",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 6
+    },
+    {
+      "route": "System Health",
+      "path": "/system/health",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 8
+    },
+    {
+      "route": "Roadmap QR",
+      "path": "/orders/qr",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 6
+    },
+    {
+      "route": "Roadmap Categories",
+      "path": "/menu/categories",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 6
+    },
+    {
+      "route": "Roadmap Tables",
+      "path": "/restaurant/tables",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 6
+    },
+    {
+      "route": "Roadmap Inventory",
+      "path": "/operations/inventory",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 6
+    },
+    {
+      "route": "Customer Login",
+      "path": "/customer",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 0
+    },
+    {
+      "route": "Customer Menu",
+      "path": "/customer/menu",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 2
+    },
+    {
+      "route": "Customer Orders",
+      "path": "/customer/orders",
+      "status": "PASS",
+      "issue": null,
+      "errors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "apiCalls": 2
+    }
+  ],
+  "api": [
+    {
+      "name": "health",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "name": "swagger",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "name": "public-menu",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "name": "orders",
+      "status": "PASS",
+      "http": 200
+    },
+    {
+      "name": "service-calls",
+      "status": "PASS",
+      "http": 200
+    }
+  ],
+  "customerJourney": {
+    "journey": [
+      {
+        "name": "QR Scan → Menu",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "name": "Restaurant header",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "name": "Add item to cart",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "name": "Place order (API fallback)",
+        "status": "PASS",
+        "detail": "displayNumber=1008"
+      },
+      {
+        "name": "Short order number visible",
+        "status": "PASS",
+        "detail": "#1008"
+      },
+      {
+        "name": "Request bill",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "name": "Call waiter",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "name": "Staff Service Calls page",
+        "status": "PASS",
+        "detail": ""
+      }
+    ],
+    "errors": [],
+    "consoleErrors": []
+  },
+  "websocket": {
+    "connect": true,
+    "messages": [
+      "connected"
+    ],
+    "status": "PASS",
+    "issue": null
+  },
+  "responsive": [
+    {
+      "viewport": "1920",
+      "status": "PASS",
+      "overflow": false,
+      "hasContent": true
+    },
+    {
+      "viewport": "1440",
+      "status": "PASS",
+      "overflow": false,
+      "hasContent": true
+    },
+    {
+      "viewport": "1024",
+      "status": "PASS",
+      "overflow": false,
+      "hasContent": true
+    },
+    {
+      "viewport": "768",
+      "status": "PASS",
+      "overflow": false,
+      "hasContent": true
+    },
+    {
+      "viewport": "390",
+      "status": "PASS",
+      "overflow": false,
+      "hasContent": true
+    }
+  ],
+  "staffJourney": []
+}

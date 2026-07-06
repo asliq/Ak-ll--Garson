@@ -1,0 +1,93 @@
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary, #fff);
+  border-top: 1px solid var(--border-subtle, #e5e7eb);
+}
+
+.actionBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border-subtle, #e5e7eb);
+  border-radius: 12px;
+  background: var(--bg-tertiary, #f9fafb);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.waiterBtn {
+  background: var(--accent-soft, #eef2ff);
+  border-color: var(--accent, #6366f1);
+  color: var(--accent, #6366f1);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.modal {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-secondary, #fff);
+  border-radius: 20px 20px 0 0;
+  padding: 1.25rem;
+  z-index: 101;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.modalHeader button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--text-muted, #6b7280);
+}
+
+.modalHint {
+  margin: 0 0 1rem;
+  color: var(--text-muted, #6b7280);
+  font-size: 0.875rem;
+}
+
+.reasonGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.reasonBtn {
+  padding: 0.875rem;
+  border: 1px solid var(--border-subtle, #e5e7eb);
+  border-radius: 12px;
+  background: var(--bg-tertiary, #f9fafb);
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.reasonBtn:hover {
+  border-color: var(--accent, #6366f1);
+  background: var(--accent-soft, #eef2ff);
+}

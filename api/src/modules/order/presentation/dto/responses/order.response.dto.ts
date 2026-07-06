@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { MenuItemType } from '@/modules/menu/domain/enums/menu-item-type.enum';
 import { OrderStatus } from '../../../domain/enums/order-status.enum';
 
@@ -44,6 +44,12 @@ export class OrderResponseDto {
   @ApiProperty({ enum: OrderStatus, example: OrderStatus.OPEN })
   status!: OrderStatus;
 
+  @ApiPropertyOptional({ example: 1042, nullable: true })
+  displayNumber!: number | null;
+
+  @ApiPropertyOptional({ example: 'Az acılı olsun', nullable: true })
+  notes!: string | null;
+
   @ApiProperty({ example: 'TRY' })
   currencyCode!: string;
 
@@ -70,8 +76,14 @@ export class PublicOrderResponseDto {
   @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
   id!: string;
 
+  @ApiProperty({ example: 1042 })
+  displayNumber!: number;
+
   @ApiProperty({ enum: OrderStatus, example: OrderStatus.OPEN })
   status!: OrderStatus;
+
+  @ApiPropertyOptional({ example: 'Az acılı olsun', nullable: true })
+  notes!: string | null;
 
   @ApiProperty({ example: 'TRY' })
   currencyCode!: string;

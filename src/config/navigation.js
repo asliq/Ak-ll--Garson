@@ -13,6 +13,7 @@ import {
   BarChart3,
   Settings,
   Activity,
+  BellRing,
 } from 'lucide-react'
 import { MODULE_STATUS } from './modules'
 
@@ -107,6 +108,13 @@ export const NAV_SECTIONS = [
     id: 'operations',
     label: 'Operasyonlar',
     items: [
+      {
+        path: '/operations/service-calls',
+        label: 'Servis Merkezi',
+        icon: BellRing,
+        status: MODULE_STATUS.LIVE,
+        badge: 'serviceCalls',
+      },
       {
         path: '/operations/inventory',
         label: 'Stok',

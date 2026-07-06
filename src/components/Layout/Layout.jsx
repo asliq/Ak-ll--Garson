@@ -9,6 +9,7 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import { useActiveOrdersCount } from '../../hooks/useOrders'
+import { usePendingServiceCalls } from '../../hooks/useServiceCalls'
 import { useCurrentUser, useLogout } from '../../hooks/useAuth'
 import { useNotifications, NotificationPanel } from '../NotificationProvider'
 import { WebSocketStatus } from '../WebSocketStatus'
@@ -30,6 +31,7 @@ export default function Layout({ children }) {
   }, [location.pathname])
 
   const activeOrdersCount = useActiveOrdersCount()
+  const { data: pendingServiceCalls = [] } = usePendingServiceCalls()
   const currentUser = useCurrentUser()
   const logoutMutation = useLogout()
   const { canAccess } = usePermissions()
@@ -57,6 +59,7 @@ export default function Layout({ children }) {
 
   const getBadgeCount = (badgeType) => {
     if (badgeType === 'orders') return activeOrdersCount
+    if (badgeType === 'serviceCalls') return pendingServiceCalls.length
     return 0
   }
 

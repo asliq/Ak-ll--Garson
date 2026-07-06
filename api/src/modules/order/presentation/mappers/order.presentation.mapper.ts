@@ -13,6 +13,7 @@ export class OrderPresentationMapper {
     return new CreateOrderCommand(
       dto.tableToken,
       dto.lines.map((line) => new CreateOrderLineCommand(line.menuItemId, line.quantity)),
+      dto.notes,
     );
   }
 
@@ -36,6 +37,8 @@ export class OrderPresentationMapper {
       id: result.id,
       tableId: result.tableId,
       status: result.status,
+      displayNumber: result.displayNumber,
+      notes: result.notes,
       currencyCode: result.currencyCode,
       subtotalMinor: result.subtotalMinor,
       totalMinor: result.totalMinor,
@@ -60,9 +63,11 @@ export class OrderPresentationMapper {
   static toPublicResponse(result: OrderResult): PublicOrderResponseDto {
     return {
       id: result.id,
+      displayNumber: result.displayNumber ?? 0,
       status: result.status,
       currencyCode: result.currencyCode,
       totalMinor: result.totalMinor,
+      notes: result.notes,
       lines: result.lines.map((line) => ({
         id: line.id,
         lineNumber: line.lineNumber,

@@ -74,6 +74,7 @@ export class CreateOrderUseCase {
       restaurantId: table.restaurantId,
       tableId: table.tableId,
       lines: lineInputs,
+      notes: command.notes,
     });
 
     const saved = await this.orderRepository.save(order);

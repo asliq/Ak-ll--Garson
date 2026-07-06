@@ -9,5 +9,6 @@ export class CreateOrderCommand {
   constructor(
     public readonly tableToken: string,
     public readonly lines: CreateOrderLineCommand[],
+    public readonly notes?: string | null,
   ) {}
 }

@@ -552,3 +552,12 @@
     flex-direction: column;
   }
 }
+
+.orderNotes {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-tertiary, #f3f4f6);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}

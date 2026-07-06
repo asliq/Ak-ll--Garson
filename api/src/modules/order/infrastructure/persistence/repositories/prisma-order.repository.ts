@@ -58,11 +58,14 @@ export class PrismaOrderRepository implements OrderRepositoryPort {
     });
 
     if (!existing) {
+      const displayNumber = await this.allocateDisplayNumber(order.restaurantId);
+
       await this.prisma.order.create({
-        data: OrderMapper.toCreateInput(order),
+        data: OrderMapper.toCreateInput(order, displayNumber),
       });
 
-      return order;
+      const saved = await this.findById(order.restaurantId, order.id);
+      return saved ?? order;
     }
 
     const result = await this.prisma.order.updateMany({
@@ -80,6 +83,17 @@ export class PrismaOrderRepository implements OrderRepositoryPort {
       expectedVersion: order.version - 1,
     });
 
-    return order;
+    const saved = await this.findById(order.restaurantId, order.id);
+    return saved ?? order;
+  }
+
+  private async allocateDisplayNumber(restaurantId: string): Promise<number> {
+    const aggregate = await this.prisma.order.aggregate({
+      where: { restaurantId, deletedAt: null },
+      _max: { displayNumber: true },
+    });
+
+    const currentMax = aggregate._max.displayNumber;
+    return (currentMax ?? 1000) + 1;
   }
 }

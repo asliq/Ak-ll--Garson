@@ -18,6 +18,8 @@ const SystemHealthPage = lazy(() => import('./pages/SystemHealthPage'))
 const CustomerLogin  = lazy(() => import('./pages/customer/CustomerLogin'))
 const CustomerMenu   = lazy(() => import('./pages/customer/CustomerMenu'))
 const CustomerOrders = lazy(() => import('./pages/customer/CustomerOrders'))
+const CustomerThankYou = lazy(() => import('./pages/customer/CustomerThankYou'))
+const ServiceCalls = lazy(() => import('./pages/ServiceCalls'))
 
 function PageLoader() {
   return (
@@ -56,6 +58,7 @@ function App() {
             <Route path="/customer" element={<CustomerLogin />} />
             <Route path="/customer/menu" element={<CustomerMenu />} />
             <Route path="/customer/orders" element={<CustomerOrders />} />
+            <Route path="/customer/thank-you" element={<CustomerThankYou />} />
 
             <Route path="/*" element={
               <AuthGuard>
@@ -75,6 +78,7 @@ function App() {
                       <Route path="/restaurant/staff" element={<RoadmapPage moduleId="staff" />} />
                       <Route path="/restaurant/reservations" element={<RoadmapPage moduleId="reservations" />} />
 
+                      <Route path="/operations/service-calls" element={<ServiceCalls />} />
                       <Route path="/operations/inventory" element={<RoadmapPage moduleId="inventory" />} />
                       <Route path="/operations/payments" element={<RoadmapPage moduleId="payments" />} />
                       <Route path="/operations/reports" element={<RoadmapPage moduleId="reports" />} />

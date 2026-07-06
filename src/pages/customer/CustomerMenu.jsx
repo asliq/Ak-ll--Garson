@@ -19,6 +19,8 @@ import { usePublicMenu } from '../../hooks/usePublicMenu'
 import { useCreatePublicOrder } from '../../hooks/useOrders'
 import { setRestaurantId } from '../../api/services'
 import { useTranslation } from '../../hooks/useTranslation'
+import CustomerHeader from '../../components/customer/CustomerHeader'
+import CustomerServiceActions from '../../components/customer/CustomerServiceActions'
 import toast from 'react-hot-toast'
 import styles from './CustomerMenu.module.css'
 
@@ -145,6 +147,7 @@ export default function CustomerMenu() {
           menuItemId: item.id,
           quantity: item.quantity,
         })),
+        notes: orderNotes.trim() || undefined,
       },
       {
         onSuccess: (order) => {
@@ -156,6 +159,7 @@ export default function CustomerMenu() {
           const recent = cart.map((i) => ({ id: i.id, name: i.name, price: i.price }))
           localStorage.setItem('customerRecentItems', JSON.stringify(recent.slice(0, 5)))
           setCart([])
+          setOrderNotes('')
           setShowCart(false)
           toast.success(t('customer.orderPlaced'))
           navigate('/customer/orders')
@@ -190,14 +194,9 @@ export default function CustomerMenu() {
 
   return (
     <div className={styles.customerMenu}>
-      {/* Header */}
-      <div className={styles.header}>
-        <button className={styles.backBtn} onClick={() => navigate('/customer')}>
-          <ArrowLeft size={20} />
-        </button>
-        <div className={styles.tableInfo}>
-          <span>{publicMenu?.tableName || `Masa ${customerTable?.tableNumber || '-'}`}</span>
-        </div>
+      <CustomerHeader backTo="/customer/menu" />
+
+      <div className={styles.headerBar}>
         <button className={styles.cartBtn} onClick={() => setShowCart(true)}>
           <ShoppingCart size={20} />
           {cartCount > 0 && <span className={styles.cartBadge}>{cartCount}</span>}
@@ -367,6 +366,7 @@ export default function CustomerMenu() {
           <span>Siparişlerim</span>
         </button>
       </div>
+      <CustomerServiceActions />
 
       {/* Cart Sidebar */}
       {showCart && (

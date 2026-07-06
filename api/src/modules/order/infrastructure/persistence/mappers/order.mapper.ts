@@ -19,6 +19,8 @@ export class OrderMapper {
       restaurantId: record.restaurantId,
       tableId: record.tableId,
       status: OrderEnumMapper.toDomain(record.status),
+      displayNumber: record.displayNumber,
+      notes: record.notes,
       currencyCode: record.currencyCode,
       subtotalMinor: record.subtotalMinor,
       totalMinor: record.totalMinor,
@@ -52,7 +54,7 @@ export class OrderMapper {
     });
   }
 
-  static toCreateInput(order: Order): Prisma.OrderCreateInput {
+  static toCreateInput(order: Order, displayNumber: number): Prisma.OrderCreateInput {
     const props = order.toProps();
 
     return {
@@ -60,6 +62,8 @@ export class OrderMapper {
       restaurant: { connect: { id: props.restaurantId } },
       table: { connect: { id: props.tableId } },
       status: OrderEnumMapper.toPersistence(props.status),
+      displayNumber,
+      notes: props.notes,
       currencyCode: props.currencyCode,
       subtotalMinor: props.subtotalMinor,
       totalMinor: props.totalMinor,

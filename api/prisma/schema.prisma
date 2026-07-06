@@ -26,6 +26,7 @@ model Restaurant {
   menuPrices             MenuPrice[]
   tables                 Table[]
   orders                 Order[]
+  serviceCalls           ServiceCall[]
 
   @@map("restaurants")
 }
@@ -51,6 +52,7 @@ model Table {
   deletedAt DateTime? @map("deleted_at")
 
   orders Order[]
+  serviceCalls ServiceCall[]
 
   @@index([restaurantId], map: "idx_tables_restaurant")
   @@index([restaurantId, deletedAt], map: "idx_tables_restaurant_not_deleted")
@@ -299,6 +301,12 @@ model Order {
 
   status OrderStatus @default(OPEN)
 
+  /// Human-friendly order number per restaurant (e.g. 1042)
+  displayNumber Int? @map("display_number")
+
+  /// Customer order notes (kitchen instructions)
+  notes String? @db.Text
+
   currencyCode  String @default("TRY") @map("currency_code") @db.Char(3)
   subtotalMinor BigInt @map("subtotal_minor")
   totalMinor    BigInt @map("total_minor")
@@ -314,6 +322,7 @@ model Order {
   @@index([restaurantId, deletedAt], map: "idx_orders_restaurant_not_deleted")
   @@index([tableId], map: "idx_orders_table")
   @@index([restaurantId, createdAt], map: "idx_orders_restaurant_created")
+  @@unique([restaurantId, displayNumber], map: "uq_orders_restaurant_display_number")
   @@map("orders")
 }
 
@@ -347,4 +356,44 @@ model OrderLine {
   @@index([orderId], map: "idx_order_lines_order")
   @@index([restaurantId], map: "idx_order_lines_restaurant")
   @@map("order_lines")
+}
+
+// =============================================================================
+// Service Calls — customer requests (bill, waiter)
+// =============================================================================
+
+enum ServiceCallType {
+  BILL   @map("bill")
+  WAITER @map("waiter")
+
+  @@map("service_call_type")
+}
+
+enum ServiceCallStatus {
+  WAITING   @map("waiting")
+  ACCEPTED  @map("accepted")
+  COMPLETED @map("completed")
+
+  @@map("service_call_status")
+}
+
+model ServiceCall {
+  id String @id @default(uuid()) @db.Uuid
+
+  restaurantId String     @map("restaurant_id") @db.Uuid
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Restrict)
+
+  tableId String @map("table_id") @db.Uuid
+  table   Table  @relation(fields: [tableId], references: [id], onDelete: Restrict)
+
+  type   ServiceCallType
+  reason String? @db.VarChar(100)
+  status ServiceCallStatus @default(WAITING)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([restaurantId, status], map: "idx_service_calls_restaurant_status")
+  @@index([tableId], map: "idx_service_calls_table")
+  @@map("service_calls")
 }

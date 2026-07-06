@@ -61,7 +61,12 @@ export const useWebSocket = (url = null, options = {}) => {
         case 'order.served':
           invalidateOrderQueries(queryClient, data.payload)
           if (data.type === 'order.ready') {
-            toast.success('Sipariş hazır')
+            const isCustomer = window.location.pathname.startsWith('/customer')
+            toast.success(
+              isCustomer
+                ? (data.payload?.message || 'Siparişiniz hazır.')
+                : 'Sipariş hazır',
+            )
           }
           break
 
@@ -87,9 +92,13 @@ export const useWebSocket = (url = null, options = {}) => {
           break
 
         case 'CALL_WAITER':
+        case 'service_call.created':
+        case 'service_call.updated':
           queryClient.invalidateQueries({ queryKey: ['serviceCalls'] })
           addNotification()
-          toast('Garson çağrısı!', { icon: '🛎️' })
+          if (!window.location.pathname.startsWith('/customer')) {
+            toast('Servis talebi!', { icon: '🛎️' })
+          }
           break
 
         case 'DATA_CHANGED':

@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 export const serviceCallKeys = {
   all: ['serviceCalls'],
   pending: () => [...serviceCallKeys.all, 'pending'],
+  active: () => [...serviceCallKeys.all, 'active'],
 }
 
 export function useServiceCalls(options = {}) {
@@ -12,8 +13,8 @@ export function useServiceCalls(options = {}) {
     queryKey: serviceCallKeys.all,
     queryFn: serviceCallsApi.getAll,
     enabled: API_ENABLED.serviceCalls,
-    refetchInterval: API_ENABLED.serviceCalls ? 5000 : false,
-    staleTime: 2000,
+    refetchInterval: API_ENABLED.serviceCalls ? 10000 : false,
+    staleTime: 3000,
     retry: false,
     ...options,
   })
@@ -24,8 +25,8 @@ export function usePendingServiceCalls() {
     queryKey: serviceCallKeys.pending(),
     queryFn: serviceCallsApi.getPending,
     enabled: API_ENABLED.serviceCalls,
-    refetchInterval: API_ENABLED.serviceCalls ? 3000 : false,
-    staleTime: 1000,
+    refetchInterval: API_ENABLED.serviceCalls ? 5000 : false,
+    staleTime: 2000,
     retry: false,
   })
 }
@@ -33,21 +34,26 @@ export function usePendingServiceCalls() {
 export function useCreateServiceCall() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (data) => {
-      if (!API_ENABLED.serviceCalls) {
-        throw new Error('SERVICE_CALLS_DISABLED')
-      }
-      return serviceCallsApi.create(data)
+    mutationFn: serviceCallsApi.createPublic,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: serviceCallKeys.all })
+      toast.success('Talebiniz iletildi')
     },
+    onError: (err) => {
+      toast.error(err?.message || 'Talep gönderilemedi')
+    },
+  })
+}
+
+export function useUpdateServiceCallStatus() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: serviceCallsApi.updateStatus,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: serviceCallKeys.all })
     },
-    onError: (err) => {
-      if (err?.message === 'SERVICE_CALLS_DISABLED') {
-        toast('Garson çağırma şu an kullanılamıyor', { icon: 'ℹ️' })
-        return
-      }
-      toast.error('Talep gönderilemedi')
+    onError: () => {
+      toast.error('Durum güncellenemedi')
     },
   })
 }
@@ -58,7 +64,7 @@ export function useHandleServiceCall() {
     mutationFn: serviceCallsApi.markHandled,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: serviceCallKeys.all })
-      toast.success('Talep yanıtlandı')
+      toast.success('Talep tamamlandı')
     },
   })
 }

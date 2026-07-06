@@ -51,7 +51,10 @@ export class OrderRealtimeHandler {
         payload.restaurantId,
         payload.tableId,
         WS_ORDER_EVENTS.READY,
-        basePayload,
+        {
+          ...basePayload,
+          message: 'Siparişiniz hazır.',
+        },
       );
     }
 

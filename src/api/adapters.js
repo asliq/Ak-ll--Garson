@@ -86,9 +86,11 @@ export function mapOrder(order) {
 
   return {
     id: order.id,
+    displayNumber: order.displayNumber ?? null,
     tableId: order.tableId,
     restaurantId: order.restaurantId,
     status: ORDER_STATUS_FROM_API[order.status] || order.status,
+    notes: order.notes ?? null,
     total: minorToMajor(order.totalMinor),
     subtotal: minorToMajor(order.subtotalMinor),
     currencyCode: order.currencyCode || 'TRY',
@@ -107,16 +109,42 @@ export function mapOrder(order) {
   }
 }
 
+export function formatOrderRef(order) {
+  if (order?.displayNumber) return `#${order.displayNumber}`
+  return null
+}
+
 export function mapPublicOrder(order) {
   const mapped = mapOrder(order)
   return {
     id: mapped.id,
+    displayNumber: mapped.displayNumber,
     tableId: mapped.tableId,
     status: mapped.status,
+    notes: mapped.notes,
     total: mapped.total,
     currencyCode: mapped.currencyCode,
     createdAt: mapped.createdAt,
     items: mapped.items,
+  }
+}
+
+const SERVICE_CALL_STATUS_FROM_API = {
+  waiting: 'waiting',
+  accepted: 'accepted',
+  completed: 'completed',
+}
+
+export function mapServiceCall(call) {
+  return {
+    id: call.id,
+    tableId: call.tableId,
+    tableName: call.tableName,
+    type: call.type,
+    reason: call.reason,
+    status: SERVICE_CALL_STATUS_FROM_API[call.status] || call.status,
+    createdAt: call.createdAt,
+    updatedAt: call.updatedAt,
   }
 }
 

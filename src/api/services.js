@@ -6,6 +6,7 @@ import {
   mapOrder,
   mapPublicMenuItem,
   mapPublicOrder,
+  mapServiceCall,
   minorToMajor,
   toApiOrderStatus,
 } from './adapters'
@@ -186,13 +187,14 @@ export const ordersApi = {
     return mapPublicOrder(data)
   },
 
-  createPublic: async ({ tableToken, lines }) => {
+  createPublic: async ({ tableToken, lines, notes }) => {
     const { data } = await axiosInstance.post('/public/orders', {
       tableToken,
       lines: lines.map((line) => ({
         menuItemId: line.menuItemId,
         quantity: line.quantity,
       })),
+      ...(notes?.trim() ? { notes: notes.trim() } : {}),
     })
     return mapPublicOrder(data)
   },
@@ -229,7 +231,7 @@ export const API_ENABLED = {
   waiters: false,
   discounts: false,
   inventory: false,
-  serviceCalls: false,
+  serviceCalls: true,
   reservations: false,
   payments: false,
   kitchenLegacy: false,
@@ -275,10 +277,35 @@ export const inventoryApi = {
 }
 
 export const serviceCallsApi = {
-  getAll: notImplemented('Servis çağrıları'),
-  getPending: notImplemented('Servis çağrıları'),
-  create: notImplemented('Servis çağrıları'),
-  markHandled: notImplemented('Servis çağrıları'),
+  getAll: async () => {
+    const { data } = await axiosInstance.get('/service-calls')
+    return (data || []).map(mapServiceCall)
+  },
+
+  getPending: async () => {
+    const { data } = await axiosInstance.get('/service-calls', {
+      params: { status: 'waiting' },
+    })
+    return (data || []).map(mapServiceCall)
+  },
+
+  createPublic: async ({ tableToken, type, reason }) => {
+    const { data } = await axiosInstance.post('/public/service-calls', {
+      tableToken,
+      type,
+      ...(reason ? { reason } : {}),
+    })
+    return mapServiceCall(data)
+  },
+
+  updateStatus: async ({ id, status }) => {
+    const { data } = await axiosInstance.patch(`/service-calls/${id}/status`, { status })
+    return mapServiceCall(data)
+  },
+
+  markHandled: async (id) => {
+    return serviceCallsApi.updateStatus({ id, status: 'completed' })
+  },
 }
 
 export const api = {

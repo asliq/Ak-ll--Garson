@@ -14,15 +14,18 @@ import {
   Activity,
   Store,
   Flame,
+  BellRing,
 } from 'lucide-react'
 import { useTranslation } from '../hooks/useTranslation'
 import { useOrders } from '../hooks/useOrders'
 import { useMenuItems } from '../hooks/useMenu'
 import { useAppStore } from '../store/useAppStore'
 import { useSystemHealth } from '../hooks/useSystemHealth'
+import { useServiceCalls } from '../hooks/useServiceCalls'
 import SystemHealthPanel from '../components/SystemHealth/SystemHealthPanel'
 import EmptyState from '../components/EmptyState/EmptyState'
 import { DEMO_EDITION } from '../config/modules'
+import { formatOrderRef } from '../api/adapters'
 import styles from './Dashboard.module.css'
 
 const QUICK_LINKS = [
@@ -59,6 +62,7 @@ export default function Dashboard() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { data: orders, isLoading, isError, error, refetch: refetchOrders } = useOrders()
+  const { data: serviceCalls = [] } = useServiceCalls()
   const { data: menuItems, isLoading: menuLoading } = useMenuItems()
   const { health } = useSystemHealth()
   const activeWaiter = useAppStore((state) => state.activeWaiter)
@@ -91,10 +95,16 @@ export default function Dashboard() {
 
     const recentActivity = recentOrders.slice(0, 6).map((order) => ({
       id: order.id,
-      text: `Sipariş #${String(order.id).slice(0, 8)} — ${STATUS_LABELS[order.status] || order.status}`,
+      text: `${formatOrderRef(order) || 'Sipariş'} — ${STATUS_LABELS[order.status] || order.status}`,
       time: getTimeAgo(order.createdAt),
       status: order.status,
     }))
+
+    const openServiceCalls = serviceCalls.filter((c) => c.status !== 'completed')
+    const billRequests = serviceCalls.filter(
+      (c) => c.type === 'bill' && c.status !== 'completed',
+    )
+    const waitingCustomers = serviceCalls.filter((c) => c.status === 'waiting')
 
     return {
       activeOrders,
@@ -105,8 +115,11 @@ export default function Dashboard() {
       todayOrderCount: todayOrders.length,
       recentOrders,
       recentActivity,
+      openServiceCalls,
+      billRequests,
+      waitingCustomers,
     }
-  }, [orders])
+  }, [orders, serviceCalls])
 
   const popularItems = useMemo(() => {
     if (!orders?.length || !menuItems?.length) return []
@@ -264,6 +277,53 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <div className={styles.statsGrid}>
+        <div
+          className={styles.statCard}
+          role="button"
+          tabIndex={0}
+          onClick={() => navigate('/operations/service-calls')}
+          onKeyDown={(e) => e.key === 'Enter' && navigate('/operations/service-calls')}
+        >
+          <div className={styles.statHeader}>
+            <div>
+              <div className={styles.statLabel}>Açık Servis Talepleri</div>
+              <div className={styles.statValue}>{dashboardStats.openServiceCalls.length}</div>
+            </div>
+            <div className={`${styles.statIcon} ${styles.orders}`}>
+              <BellRing size={20} />
+            </div>
+          </div>
+          <div className={styles.statMeta}>Hesap ve garson çağrıları</div>
+        </div>
+
+        <div className={styles.statCard} onClick={() => navigate('/operations/service-calls')} role="button" tabIndex={0}>
+          <div className={styles.statHeader}>
+            <div>
+              <div className={styles.statLabel}>Hesap İstekleri</div>
+              <div className={styles.statValue}>{dashboardStats.billRequests.length}</div>
+            </div>
+            <div className={`${styles.statIcon} ${styles.revenue}`}>
+              <Receipt size={20} />
+            </div>
+          </div>
+          <div className={styles.statMeta}>Ödeme bekleyen masalar</div>
+        </div>
+
+        <div className={styles.statCard} onClick={() => navigate('/operations/service-calls')} role="button" tabIndex={0}>
+          <div className={styles.statHeader}>
+            <div>
+              <div className={styles.statLabel}>Bekleyen Müşteriler</div>
+              <div className={styles.statValue}>{dashboardStats.waitingCustomers.length}</div>
+            </div>
+            <div className={`${styles.statIcon} ${styles.completed}`}>
+              <Clock size={20} />
+            </div>
+          </div>
+          <div className={styles.statMeta}>Yanıt bekleyen talepler</div>
+        </div>
+      </div>
+
       <div className={styles.opsGrid}>
         <div className={`${styles.section} ${styles.column4}`}>
           <div className={styles.sectionHeader}>
@@ -292,7 +352,7 @@ export default function Dashboard() {
                   className={styles.queueItem}
                   onClick={() => navigate('/kitchen')}
                 >
-                  <span className={styles.queueId}>#{String(order.id).slice(0, 6)}</span>
+                  <span className={styles.queueId}>{formatOrderRef(order) || '—'}</span>
                   <span className={styles.queueMeta}>
                     {(order.items || []).length} ürün · {getTimeAgo(order.createdAt)}
                   </span>
@@ -403,7 +463,7 @@ export default function Dashboard() {
                   onClick={() => navigate('/orders')}
                 >
                   <div className={styles.orderTable}>
-                    #{String(order.id).slice(0, 6)}
+                    {formatOrderRef(order) || '—'}
                   </div>
                   <div className={styles.orderDetails}>
                     <div className={styles.orderNumber}>
